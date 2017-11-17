@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "Hello Dave"
+while read -r line
+do
+	echo $line
+	case $line in
+	S) echo "I don't think you want to do that, Dave" | festival --tts ;;
+	L) echo "Self destruct sequence activated" | festival --tts ;;
+	esac
+done < <(python3 click.py 25)
