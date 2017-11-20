@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+case "$1" in
+       	start) tmux new -d -s blinkt python3 /home/pi/repos/rpi/blinkt/bling.py;;
+	*) tmux send-keys -t blinkt "$*" C-m
+esac
