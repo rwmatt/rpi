@@ -15,6 +15,11 @@ sudo apt-get install python3-blinkt
 ```
 
 ## systemd setup
+
+If you want light 0 to be green when the system is running, execute the following:
+
 ```
-install-service
+./install-service
+sudo systemctl enable blinkt.service
+sudo systemctl start  blinkt.service
 ```
