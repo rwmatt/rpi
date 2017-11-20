@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo cp /home/pi/repos/rpi/blinkt/blinkt.service /lib/systemd/system/blinkt.service
+sudo systemctl daemon-reload

@@ -1,0 +1,11 @@
+[Unit]
+Description=Blinkt controller
+
+[Service]
+Environment="PATH=/home/pi/repos/rpi/blinkt:/usr/bin"
+Type=forking
+ExecStart=/home/pi/repos/rpi/blinkt/blinkt at-boot
+ExecStop=/home/pi/repos/rpi/blinkt/blinkt at-shutdown
+
+[Install]
+WantedBy=multi-user.target

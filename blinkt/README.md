@@ -13,3 +13,8 @@ Install the actual software:
 ```
 sudo apt-get install python3-blinkt
 ```
+
+## systemd setup
+```
+install-service
+```

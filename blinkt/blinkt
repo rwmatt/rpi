@@ -1,6 +1,24 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+function do_start {
+	tmux new -d -s blinkt python3 /home/pi/repos/rpi/blinkt/bling.py
+}
+
+function do_at_boot {
+	do_start
+	/home/pi/repos/rpi/blinkt/blinkt on 0
+}
+
+function do_at_shutdown {
+	/home/pi/repos/rpi/blinkt/blinkt off 0
+}
+
 
 case "$1" in
-       	start) tmux new -d -s blinkt python3 /home/pi/repos/rpi/blinkt/bling.py;;
+	at-boot) do_at_boot ;;
+	at-shutdown) do_at_shutdown ;;
+       	start) do_start ;;
 	*) tmux send-keys -t blinkt "$*" C-m
 esac
+
+exit 0
