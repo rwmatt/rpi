@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function do_start {
-	tmux new -d -s blinkt python3 /home/pi/repos/rpi/blinkt/bling.py
+	tmux new -d -s blinkt python3 /home/pi/repos/rpi/blinkt/bling.py 
 }
 
 function do_at_boot {

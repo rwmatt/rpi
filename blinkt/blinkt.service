@@ -4,6 +4,7 @@ Description=Blinkt controller
 [Service]
 Environment="PATH=/home/pi/repos/rpi/blinkt:/usr/bin"
 Type=forking
+User=pi
 ExecStart=/home/pi/repos/rpi/blinkt/blinkt at-boot
 ExecStop=/home/pi/repos/rpi/blinkt/blinkt at-shutdown
 
