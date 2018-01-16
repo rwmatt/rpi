@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+sudo gpio -g mode 22 out
+sudo gpio -g write 22 0
+sudo avrdude -p t85 -P /dev/spidev0.0 -c linuxspi -b 10000
+sudo gpio -g write 22 1
