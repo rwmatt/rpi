@@ -1,6 +1,10 @@
 # rpi
 My Raspberry Pi projects
 
+Reference information:
+
+* [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
+
 ## blinkt
 
 Playing around with [blinkt](blinkt/README.md).
