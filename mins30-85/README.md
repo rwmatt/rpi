@@ -6,3 +6,8 @@
 Circuit diagram:
 
 ![circuit](circuit.gif)
+
+
+## References
+
+* [Arduino White Noise Maker](http://patcox.net/2013/07/24/arduino-white-noise-maker/): includes link to sleepduino.

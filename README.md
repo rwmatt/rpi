@@ -3,6 +3,8 @@ My Raspberry Pi projects
 
 Reference information:
 
+* [Arduino-85](Arduino-85.md): how to program an ATTiny85 MCU from an Arduino
+
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
 
 ## blinkt
