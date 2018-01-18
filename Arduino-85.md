@@ -6,13 +6,16 @@ Programming an Attiny85 from an Arduino
 ## PINs for ATTiny/ATTiny85
 
 ```
-                         _________
-                         |   U   |
-                 Reset   | 1   8 |  VCC (+)
-(Analog Input 3) Pin 3   | 2   7 |  Pin 2 (Analog Input 1, SCK)
-(Analog Input 2) Pin 4   | 3   6 |  Pin 1 (PWM, MISO)
-               (-) GND   | 4   5 |  Pin 0 (PWM, AREF, MOSI)
-                         _________
+             _________
+             |   U   |
+     Reset   | 1   8 |  VCC (+)
+(A3) Pin 3   | 2   7 |  Pin 2 (A1, SCK)
+(A2) Pin 4   | 3   6 |  Pin 1 (PWM, MISO)
+   (-) GND   | 4   5 |  Pin 0 (PWM, AREF, MOSI)
+             _________
+
+Notes:
+* An means "Analog Input n"
 ```
 
 
