@@ -13,7 +13,7 @@ Reference information:
 ## ATTiny85
 
 * [Arduino-85](Arduino-85.md): how to program an ATTiny85 MCU from an Arduino
-
+* blinky85: directory containing code for blinking an ATTiny85 from RPi
 * [rpi-85](rpi-85.md): programming an ATTiny85 from the Pi
 * [Simples Tones for ATtiny](http://www.technoblogy.com/show?KVO)
 
