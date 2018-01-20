@@ -34,4 +34,9 @@ Results:
 
 Note that 146/18 = 8.1, which confirms that the 8MHz version is running 8X faster than the 1MHz version.
 
+## green_red
+
+Performs a slow alernation between green and red LED. Speeds up whilst the button is held down.
+
+The sketch for this is [`green_red.ino`](green_red.ino).
 
