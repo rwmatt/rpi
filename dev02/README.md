@@ -13,7 +13,7 @@ The schematic diagram (`XC4870.Srmsgl`) was made using `xcircuit`.
 
 This is an experiment to see if the bootloader can be reprogrammed, and to check the clock speed. It can!
 
-The sketch for this is `mhz85.ino`.
+The sketch for this is [`mhz85.ino`](mhz85.ino).
 
 Operating it:
 * In the Arduino IDE, set the clock speed that you want to use.
