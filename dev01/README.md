@@ -2,7 +2,7 @@
 
 ## Schematics
 
-![circuit](circuit.svg)
+![circuit](circuit.svg =400x)
 
 ## Projects using this board
 
