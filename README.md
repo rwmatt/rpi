@@ -14,6 +14,7 @@ Reference information:
 
 * [Arduino-85](Arduino-85.md): how to program an ATTiny85 MCU from an Arduino
 * blinky85: directory containing code for blinking an ATTiny85 from RPi
+* [dev01](dev01/README.md): projects for the DEV01 home-made board: om
 * [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
 * om: meditation timer using `DEV01` board
 * [rpi-85](rpi-85.md): programming an ATTiny85 from the Pi
