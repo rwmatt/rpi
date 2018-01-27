@@ -137,7 +137,7 @@ The list was for Arduino version 0.022, so it is apt to be outdated.
 ## Schematic
 
 
-<img src="ard.svg" width="400" />
+<img src="ard.svg" width="800" />
 
 The schematic was created using `fidocadj` using the source file `ard.fcd`.
 
