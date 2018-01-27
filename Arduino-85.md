@@ -134,4 +134,9 @@ According to [this](http://www.hobbytronics.co.uk/arduino-attiny) page, the foll
 The list was for Arduino version 0.022, so it is apt to be outdated.
 
 
+## Schematic
+
+![](arg.svg)
+
+The schematic was created using `fidocadj` using the source file `ard.fcd`.
 
