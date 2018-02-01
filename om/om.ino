@@ -26,7 +26,8 @@ void setup()
 
 void beep(int postDelay)
 {
-  digitalWrite(buzzer, HIGH);
+  //digitalWrite(buzzer, HIGH);
+  analogWrite(buzzer, 210); // about the right volume. 150 is too low. 
   delay(500);
   digitalWrite(buzzer, LOW);
   delay(postDelay);
