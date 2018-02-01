@@ -51,13 +51,20 @@ void blinkAll(long int duration) {
 void pattern2() { blinkAll(500); }
 void pattern3() { blinkAll(2000); }
 
+void pattern4() { // alternate
+  while(1) {
+    show(true, false, 500);
+    show(false, true, 500);
+  }
+}
+
 void setup() {
   pinMode(RED_LED,OUTPUT);  
   pinMode(GREEN_LED, OUTPUT);  
   pinMode(BUTTON, INPUT_PULLUP);
 
   // select one of the patterns
-  pattern2();
+  pattern4();
 }
 
 void loop() {
