@@ -30,7 +30,7 @@ The Blinkt uses the SPI interface. Orient the device so that the bevelled edge i
 
 Pinout diagram:
 ```
-PIN aka
+PIN Notes
 2   5V
 6   GND
 16  BCM23 (data)
@@ -45,4 +45,40 @@ The code supplied on the aforementioned link appears to be wrong, and seems to c
 ```
 sudo python3 example01.py
 ```
+
+## Arduino
+
+
+In Firefox, navigate to 
+```
+https://github.com/adafruit/Adafruit_DotStar/releases
+```
+and download the latest release in zip format.
+
+Start the Arduino IDE.
+
+Select menu item Sketch > Include library > Add .ZIP library ..., and select the zip archive you just downloaded. This will add the library under ~/Arduino/libraries/Adafruit_DotStar-1.03.
+
+To test the device, open up the file: `~/Arduino/libraries/Adafruit_DotStar-1.0.3/examples/strandtest/strandtest.ino`. 
+
+If necessary, comment out the line:
+```
+#include <Adafruit_CircuitPlayground.h>
+```
+
+Wire up the device as follows:
+```
+ARD BLI Notes
+5V  2
+GND 6
+4   16  data
+5   18  clock
+
+Legend:
+ARD: Arduino pin
+BLI: Blinkt pin. See wiring section above for pin numbering
+```
+
+Upload the sketch onto the Arduino. The device should light up.
+
 
