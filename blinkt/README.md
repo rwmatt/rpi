@@ -84,6 +84,10 @@ Upload the sketch onto the Arduino. The device should light up.
 
 ## ATTiny85
 
+Ensure you have the  Adafruit_Dotstart library installed, as detailed in section "Arduino".
+
+Upload the `strandtest85` sketch to the ATTiny85, using the Arduino as a programmer.
+
 Wire up according to this diagram:
 
 ![blinkt85](blinkt85.svg)
