@@ -24,7 +24,7 @@ sudo systemctl enable blinkt.service
 sudo systemctl start  blinkt.service
 ```
 
-## wiring
+## Wiring
 
 The Blinkt uses the SPI interface. Orient the device so that the bevelled edge is closest to the case of the RPi.
 
@@ -81,4 +81,10 @@ BLI: Blinkt pin. See wiring section above for pin numbering
 
 Upload the sketch onto the Arduino. The device should light up.
 
+
+## ATTiny85
+
+Wire up according to this diagram:
+
+![blinkt85](blinkt85.svg)
 
