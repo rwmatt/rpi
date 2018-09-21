@@ -6,6 +6,9 @@ Include files are in <code>/usr/lib/avr/include</code>, which I ascertained by t
 
 ## The board
 
+![schematic](dev04.png)
+The schematic diagram (`XC4870.Srmsgl`) was made using `xcircuit`.
+
 Connections on the Pi side:
 
 ```
