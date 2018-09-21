@@ -1,0 +1,18 @@
+#/use/bin/env bash
+
+MCU=attiny85
+AVRDUDEMCU=t85
+#CC=/usr/bin/avr-gcc
+#CFLAGS=-g -Os -Wall -mcall-prologues -mmcu=$(MCU)
+OBJ2HEX=/usr/bin/avr-objcopy
+AVRDUDE=/usr/local/bin/avrdude
+#TARGET=blinky
+HEX=$1
+
+sudo gpio -g mode 22 out
+sudo gpio -g write 22 0
+sudo $AVRDUDE -p $AVRDUDEMCU -P /dev/spidev0.0 -c linuxspi -b 10000 \
+	-U flash:w:$HEX
+
+sudo gpio -g write 22 1
+
