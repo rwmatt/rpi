@@ -1,9 +1,9 @@
 %!PS-Adobe-3.0 EPSF-3.0
 %%Title: dev04.Srmsgl
 %%Creator: XCircuit v3.8 rev78
-%%CreationDate: Fri Sep 21 19:40:17 2018
+%%CreationDate: Fri Sep 21 19:47:44 2018
 %%Pages: 1
-%%BoundingBox: 68 68 505 208
+%%BoundingBox: 68 68 490 256
 %%DocumentNeededResources: font Helvetica Times-Roman 
 %%EndComments
 %%BeginProlog
@@ -190,26 +190,6 @@ begingate
 endgate
 } def
 
-/generic::arrowhead {
-% nonetwork
-begingate
-8 -28 beginpath
-3 -18 3 -15 0 0 curveto
--3 -15 -3 -18 -8 -28 curveto
--2 -26 2 -26 8 -28 curveto
-249 
-1.000 endpath
-endgate
-} def
-
-/generic::arrow {
-% nonetwork
-begingate
-1 0.800 0 -40 0 20 2 polygon
-1.000 0 0 40 generic::arrowhead
-endgate
-} def
-
 /analog::diode {
 begingate
 248 1.000 -18 -16 0 16 18 -16 3 polygon
@@ -269,27 +249,6 @@ endgate
 1 1.000 -512 608 -304 608 2 polygon
 1 1.000 -512 448 -432 448 2 polygon
 1 1.000 -176 384 -448 384 -448 448 3 polygon
-1.000 90 288 528 generic::arrow
-(1) {/Helvetica cf} 2 16 0 1.000 336 592 label
-1.000 90 288 448 generic::arrow
-1.000 90 288 384 generic::arrow
-1.000 90 288 608 generic::arrow
-1.000 90 -464 576 generic::arrow
-1.000 90 -464 544 generic::arrow
-1.000 90 -464 512 generic::arrow
-1.000 90 -464 480 generic::arrow
-(2) {/Helvetica cf} 2 16 0 1.000 336 512 label
-(3) {/Helvetica cf} 2 16 0 1.000 336 432 label
-(4) {/Helvetica cf} 2 16 0 1.000 336 368 label
-1 1.000 -512 576 -496 576 2 polygon
-1 1.000 -512 544 -496 544 2 polygon
-1 1.000 -512 512 -496 512 2 polygon
-1 1.000 -512 480 -496 480 2 polygon
-1 1.000 128 608 256 608 2 polygon
-(2) {/Helvetica cf} 2 16 0 1.000 -416 528 label
-(1) {/Helvetica cf} 2 16 0 1.000 -416 560 label
-(3) {/Helvetica cf} 2 16 0 1.000 -416 496 label
-(4) {/Helvetica cf} 2 16 0 1.000 -416 464 label
 1.000 270 -256 448 analog::diode
 1 1.000 -208 448 -176 448 2 polygon
 1 1.000 -256 464 -240 496 -240 480 -224 512 4 polygon
@@ -298,9 +257,13 @@ endgate
 (1R) {/Helvetica cf} 2 16 0 1.000 176 464 label
 (1R) {/Helvetica cf} 2 16 0 1.000 176 400 label
 (1R) {/Helvetica cf} 2 16 0 1.000 -256 624 label
-(1R) {/Helvetica cf} 2 16 0 1.000 -384 416 label
+(1R) {/Helvetica cf} 2 16 0 1.000 -368 464 label
 (\(Vcc\)) {/Helvetica cf} 2 16 0 1.000 -784 560 label
 (\(GND\)) {/Helvetica cf} 2 16 0 1.000 -784 432 label
+1 1.000 -512 576 -480 576 -480 704 160 704 160 608 128 608 6 polygon
+1 1.000 -512 544 -448 544 -448 736 256 736 256 528 5 polygon
+1 1.000 -512 512 -416 512 -416 768 288 768 288 448 256 448 6 polygon
+1 1.000 -512 480 -384 480 -384 800 320 800 320 384 256 384 6 polygon
 pgsave restore showpage
 
 %%Trailer
