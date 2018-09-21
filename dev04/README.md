@@ -6,7 +6,8 @@ Include files are in <code>/usr/lib/avr/include</code>, which I ascertained by t
 
 ## The board
 
-![schematic](dev04.svg =250x)
+
+<img src="dev04.svg" width="400">
 
 Connections on the Pi side:
 
