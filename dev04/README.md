@@ -9,25 +9,17 @@ Include files are in <code>/usr/lib/avr/include</code>, which I ascertained by t
 
 <img src="dev04.svg" width="800">
 
-Connections on the Pi side:
+Hooking up the Pi to the board:
 
 ```
-R15  GPIO15	Brown
-R17  3V3 	Red
-R19  MOSI	Orange
-R21  MISO	Yellow
-R23  SCLK	Green
-R25  GND	Black
-```
-
-The board connections:
-```
-B1  A1    Brown
-B2  A8    Red (3V3)
-B3  A7    Green
-B4  A6    Yellow
-B5  A5    Orange
-B6  A4+A3 Black (GND)
+PI          | DUPONT | BOARD
+------------|--------|------
+15  GPIO15  | Brown  | PCB1
+17  3V3     | Red    | PCB2
+19  MOSI    | Orange | PCB5
+21  MISO    | Yellow | PCB4
+23  SCLK    | Green  | PCB3
+25  GND     | Black  | PCB6
 ```
 
 The connections are unintuitive because I messed up the soldering. Grr.
