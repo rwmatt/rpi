@@ -2,6 +2,11 @@
 
 Programming an Attiny85 from an Arduino
 
+## Setup
+```
+sudo usermod -a -G dialout <username>
+sudo chmod a+rw /dev/ttyACM0
+```
 
 ## PINs for ATTiny/ATTiny85
 
