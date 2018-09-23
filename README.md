@@ -9,11 +9,11 @@ Reference information:
 
 ## Arduino
 
+* [IDE](Arduino-IDE.md) : general setup, particularly about ATTiny85 setup.
 * [Multithreading](https://create.arduino.cc/projecthub/reanimationxp/how-to-multithread-an-arduino-protothreading-tutorial-dd2c37)
 
 ## ATTiny85
 
-* [Arduino-85](Arduino-85.md): how to program an ATTiny85 MCU from an Arduino
 * blinky85: directory containing code for blinking an ATTiny85 from RPi
 * [dev01](dev01/README.md): projects for the DEV01 home-made board: om
 * [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85

@@ -1,12 +1,24 @@
-# Arduino-85
+# Arduino-IDE
 
-Programming an Attiny85 from an Arduino
+Programming an Attiny85 from an Arduino, esp. wrt ATTiny85.
 
 ## Setup
 ```
 sudo usermod -a -G dialout <username>
 sudo chmod a+rw /dev/ttyACM0
 ```
+
+IDE 1.8.7 Default programmer is: AVRISP mkll
+
+### Set up the ATTiny85 board:
+
+File : Preferences : URL:
+```
+https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json
+```
+
+Restart IDE
+
 
 ## PINs for ATTiny/ATTiny85
 

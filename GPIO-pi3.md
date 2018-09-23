@@ -24,16 +24,4 @@ GPIO26   37 :: 38   GPIO20
 GND      39 :: 40   GPIO21
 ```
 
-## Example usage
-
-Hook up an LED and resistor to GND (pin 6) and GPIO14 (pin 8).
-Issue the following commands from Glute:
-```
-gfs 14 1
-gos 14 0
-```
-
-`gfs` calls `SysGPIOFunctionSelect(pin, mode)`. Use `mode=0` for input,
-and `mode=1` for output.
-
-'gos` calls `SysGPIOOutputSet(pin, mode)`.
+For more detailed information, type `gpio readall`
