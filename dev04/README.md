@@ -34,6 +34,10 @@ Bn is the numbering-scheme for the board, with B1 at the top, and B6 at the bott
 
 Connect Dupont cables to the Pi using the suggested colour scheme. Hook up the board in a similar manner.
 
+## The bridge
+
+<img src="bridge.jpg">
+
 ### Testing
 
 Use project blinky85 for test purposes.
