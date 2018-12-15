@@ -2,6 +2,11 @@
 
 Programming an Attiny85 from an Arduino, esp. wrt ATTiny85.
 
+## Disable checks for updates
+
+File : Preferences : Settings. Uncheck "Check for updates on startup"
+
+
 ## Setup
 ```
 sudo usermod -a -G dialout <username>
