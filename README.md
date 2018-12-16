@@ -15,6 +15,7 @@ Reference information:
 ## ATTiny85
 
 * blinky85: directory containing code for blinking an ATTiny85 from RPi
+* [clock85](clock85.md): setting the clock
 * [dev01](dev01/README.md): projects for the DEV01 home-made board: om
 * [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
 * [dev04](dev04/README.md): Programming an ATTiny85 from the Pi
