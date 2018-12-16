@@ -8,11 +8,11 @@
  * Incomplete
  */
  
-#define F_CPU 8000000L
+#define F_CPU 8'000'000UL
 //#include <util/delay.h>
 
 unsigned long startTime;
-constexpr int buzzer = 1;
+constexpr int buzzer = 7;
 constexpr unsigned long mins30 = 30L * 60L * 1000L; // 30 minutes
 enum state {RUNNING, TIMES_UP} the_state;
 
@@ -26,10 +26,15 @@ void setup()
 
 void beep(int postDelay)
 {
-  //digitalWrite(buzzer, HIGH);
+  /*
   analogWrite(buzzer, 210); // about the right volume. 150 is too low. 
   delay(500);
   digitalWrite(buzzer, LOW);
+  delay(postDelay);
+  */
+  tone(buzzer, 750);
+  delay(500);
+  noTone(buzzer);
   delay(postDelay);
 }
 void beepbeep(int postDelay)
@@ -52,5 +57,3 @@ void loop()
 	}
 
 }
-
-
