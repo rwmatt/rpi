@@ -13,7 +13,7 @@
 #define F_CPU 8'000'000UL
 constexpr int buzzer = PB0;
 constexpr int btn = PB4;
-static_assert(0, "X");
+//static_assert(0, "X");
 #else
 constexpr int buzzer = 7;
 constexpr int btn = 8;
