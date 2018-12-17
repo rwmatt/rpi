@@ -21,7 +21,7 @@ Reference information:
 * [dev04](dev04/README.md): Programming an ATTiny85 from the Pi
 * [minitone85](/minitone/README.md): working version of tone() for ATtiny85
 * om: meditation timer using `DEV01` board
-* [Simples Tones for ATtiny](http://www.technoblogy.com/show?KVO)
+
 
 
 ## Projects
