@@ -53,10 +53,12 @@ bool pdelay(ms_t ms) { // true => completed, flase => interrupted
   return true;
 }
 
+#if defined(__AVR_ATtiny85__)
 void miniTone(unsigned long freq)
 {
   TCCR1 = 0;
   TCNT1 = 0;
+  OCR1C = 0;
   if(freq==0) {
     //TCCR1 = 0x90; // stop the counter
     return;
@@ -70,6 +72,11 @@ void miniTone(unsigned long freq)
   int divisor = F_CPU/(1<<(prescale-1))/freq;
   OCR1C = divisor;         // set the OCR
 }
+#else
+void miniTone(unsigned long freq) {
+  if(freq) tone(buzzer, freq); else noTone(buzzer);
+}
+#endif
 
 void setup()
 {
@@ -88,18 +95,17 @@ void setup()
 
 bool toner(ms_t freq, ms_t duration) {
   miniTone(freq);
-  //return pdelay(duration);
+  return pdelay(duration);
   delay(duration);
   return true;
 }
-void beep(int postDelay)
-{
-  toner(750, 500) && toner(0, postDelay);
+bool beep(int postDelay) {
+  return toner(750, 500) && toner(0, postDelay);
 }
+
 void beepbeep(int postDelay)
 {
-  beep(500);
-  beep(postDelay); 
+  beep(500) && beep(postDelay); 
 }
 
 void loop()
@@ -126,7 +132,7 @@ void loop()
 	  case WHITE:
 	    miniTone(0);
 	    //noTone(buzzer);
-	    TCCR1 = 0;
+	    //if (defined(__AVR_ATtiny85__)) {TCCR1 = 0; }
 	    delayMicroseconds(100);
 	    //miniTone(random(400, 10000));
 	    digitalWrite(buzzer, random(2));
