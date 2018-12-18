@@ -55,8 +55,10 @@ bool pdelay(ms_t ms) { // true => completed, flase => interrupted
 
 void miniTone(unsigned long freq)
 {
+  TCCR1 = 0;
+  TCNT1 = 0;
   if(freq==0) {
-    TCCR1 = 0x90; // stop the counter
+    //TCCR1 = 0x90; // stop the counter
     return;
   }
   
@@ -78,6 +80,7 @@ void setup()
   pinMode(btn, INPUT_PULLUP);
   startTime = millis();
   the_state = WHITE;
+  //the_state = START_TIMER;
   pinMode(buzzer, OUTPUT);
   //digitalWrite(buzzer, HIGH);
   //Serial.begin(9600);
@@ -85,7 +88,9 @@ void setup()
 
 bool toner(ms_t freq, ms_t duration) {
   miniTone(freq);
-  return pdelay(duration);
+  //return pdelay(duration);
+  delay(duration);
+  return true;
 }
 void beep(int postDelay)
 {
@@ -115,13 +120,16 @@ void loop()
   }
 
   //return;
+  //the_state = TIMING;
 	ms_t timeNow = millis();
 	switch(the_state) {
 	  case WHITE:
+	    miniTone(0);
 	    //noTone(buzzer);
+	    TCCR1 = 0;
 	    delayMicroseconds(100);
-	    miniTone(random(400, 10000));
-	    //digitalWrite(buzzer, random(2));
+	    //miniTone(random(400, 10000));
+	    digitalWrite(buzzer, random(2));
 	    break;
 	  case START_TIMER:
 	    startTime = timeNow;
