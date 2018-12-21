@@ -14,7 +14,11 @@ Reference information:
 
 ## ATTiny85
 
-* blinky85: directory containing code for blinking an ATTiny85 from RPi
+Necessary, but not sufficient:
+```sudo apt install avr-libc```
+
+Projects:
+* blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
 * [clock85](clock85.md): setting the clock
 * [dev01](dev01/README.md): projects for the DEV01 home-made board: om
 * [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85

@@ -1,22 +1,29 @@
-MCU=attiny85
+#MCU=attiny85
 AVRDUDEMCU=t85
-CC=/usr/bin/avr-gcc
-CFLAGS=-g -Os -Wall -mcall-prologues -mmcu=$(MCU)
-OBJ2HEX=/usr/bin/avr-objcopy
+CXX=avr-g++
+CXX_FLAGS=-g -Os -Wall -mcall-prologues -mmcu=attiny85
+#OBJ2HEX=/usr/bin/avr-objcopy
 #AVRDUDE=/usr/local/bin/avrdude
 TARGET=blinky
 HEX=$(TARGET).hex
 
-.PHONY: install
+.PHONY: install clean
 
-all:
-	$(CC) $(CFLAGS) $(TARGET).c -o $(TARGET)
-	$(OBJ2HEX) -R .eeprom -O ihex $(TARGET) $(TARGET).hex
-	rm -f $(TARGET)
+blinky.hex : blinky.o
+	avr-objcopy -R .eeprom -O ihex $^ $@
+
+blinky.o : blinky.cc
+	$(CXX) $(CXX_FLAGS) -c blinky.cc 
+
 
 install:$(HEX)
 	install-hex $<
 
+clean :
+	rm -f *.hex *.obj *.o
+
+# Maybe the rest is redundant??
+#
 noreset : all
 	sudo avrdude -p $(AVRDUDEMCU) -P /dev/spidev0.0 -c linuxspi -b 10000 -U flash:w:$(TARGET).hex
 
@@ -26,6 +33,4 @@ fuse :
 	sudo avrdude -p $(AVRDUDEMCU) -P /dev/spidev0.0 -c linuxspi -b 10000 -U lfuse:w:0x62:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 	sudo gpio -g write 22 1
 
-clean :
-	rm -f *.hex *.obj *.o
 
