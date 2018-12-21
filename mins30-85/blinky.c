@@ -4,6 +4,9 @@
 
 #include "millis.h"
 
+// TODO this is a bad name for the project
+
+// also in blinky project
 typedef long int delay_t;
 void delay_ms_a(delay_t ms)
 {

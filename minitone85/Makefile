@@ -1,22 +1,19 @@
 CXX=avr-g++
 CXX_FLAGS=-g -Os -Wall -mcall-prologues -mmcu=attiny85
-BASE=blinky
+BASE=minitone85
 
 .PHONY: install clean
 
-$(BASE).hex : $(BASE).elf
+$(BASE).hex : $(BASE).o
 	avr-objcopy -R .eeprom -O ihex $^ $@
 
-$(BASE).elf : $(BASE).o
-	$(CXX) -g -mmcu=attiny85 -o $@ $^
-
-$(BASE).o : $(BASE).cc
-	$(CXX) $(CXX_FLAGS) -c $^ 
+main.o : main.cc
+	$(CXX) $(CXX_FLAGS) -c main.cc 
 
 
 install:$(BASE).hex
 	install-hex $<
 
 clean :
-	rm -f *.hex *.obj *.o *.elf
+	rm -f *.hex *.obj *.o
 
