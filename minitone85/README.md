@@ -2,6 +2,7 @@
 
 Similar to tone() for the Uno. Limitations: you need to use PB1 for speaker output.
 
+![schematic](minitone85.svg)
 
 ## References
 

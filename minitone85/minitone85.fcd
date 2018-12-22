@@ -1,0 +1,19 @@
+[FIDOCAD]
+SA 65 30 0
+TY 55 25 4 3 0 0 0 aakar 3V
+MC 105 60 1 0 600
+SA 90 80 0
+MC 105 30 0 0 970
+LI 105 85 105 95 0
+MC 105 95 0 0 ey_libraries.refpnt0
+MC 100 55 3 0 ey_libraries.trnbjt1
+LI 115 50 115 90 0
+LI 115 90 105 90 0
+LI 105 50 115 50 0
+MC 95 40 3 0 ey_libraries.diddid0
+LI 80 30 105 30 0
+LI 95 45 95 50 0
+LI 105 45 95 45 0
+MC 80 30 1 0 750
+TY 65 110 4 3 0 0 0 aakar Made using fidocadj
+LI 90 60 90 30 0
