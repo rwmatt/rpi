@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+nh java -jar ~/tools/fidocadj.jar
