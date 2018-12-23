@@ -1,59 +1,36 @@
-#define F_CPU 1000000L
+#define F_CPU 8000000L
 #include <avr/io.h>
 #include <util/delay.h>
+#include "../minitone85/minitone85.h"
 
 #include "millis.h"
 
-// TODO this is a bad name for the project
-
-// also in blinky project
-typedef long int delay_t;
-void delay_ms_a(delay_t ms)
+void delay_ms(unsigned long  ms)
 {
-	while(0<ms) {
-		_delay_ms(10);
-		ms -= 10;
-	}
+	while(0<ms--) _delay_ms(1);
 }
 
-//void TinyTone(unsigned char divisor, unsigned char octave, unsigned long duration)
-void TinyTone(unsigned char divisor, unsigned char octave, delay_t duration)
-{
-	TCCR1 = 0x90 | (8-octave); // for 1MHz clock
-	// TCCR1 = 0x90 | (11-octave); // for 8MHz clock
-	OCR1C = divisor-1;         // set the OCR
-	delay_ms_a(duration);
-	TCCR1 = 0x90;              // stop the counter
-	    
-}
-	    
 
 unsigned long startTime;
-unsigned long mins30;
+constexpr unsigned long mins30  = (long) 30 * (long) 60 * (long) 1000; // 30 minutes
 enum state {RUNNING, TIMES_UP} the_state;
 
-void beepbeep(delay_t postDelay)
-{
-	//TinyTone(239, 4, 500);
-	PORTB = 0xFF;
-	_delay_ms(500);
-	//TinyTone(239, 4, 500);
-	PORTB = 0x00;
-	_delay_ms(500);
-	PORTB = 0xFF;
-	_delay_ms(500);
-	PORTB = 0x00;
-	delay_ms_a(postDelay);
-	//_delay_ms(postDelay);
 
-}
-void blink()
+void chime(unsigned long freq, unsigned long duration = 250)
 {
-	//PORTB ^= 0xFF; // invert all the pins
-	PORTB = 0xFF ; // set pins high
-	_delay_ms(500); // wait some time
-	PORTB = 0x00; // turn them off
-	_delay_ms(500);
+	miniTone(freq);
+	delay_ms(duration);
+	miniTone(0);
+	delay_ms(25);
+}
+
+void airport_tanoy()
+{
+	chime(267);
+	chime(328);
+	chime(394);
+	chime(532);
+	delay_ms(1500);
 }
 
 void loop()
@@ -61,11 +38,14 @@ void loop()
 	unsigned long timeNow = millis();
 	switch(the_state) {
 		case RUNNING:
-			beepbeep(5000);
+			miniTone(1000);
+			delay_ms(500);
+			miniTone(0);
+			delay_ms(3000);
 			if(timeNow >= startTime + mins30) the_state = TIMES_UP;
 			break;
 		case TIMES_UP:
-			beepbeep(750);
+			airport_tanoy();
 			break;
 	}
 
@@ -80,7 +60,6 @@ int main(void)
 
 	init_millis();
 	startTime = millis();
-	mins30 = (long) 30 * (long) 60 * (long) 1000; // 30 minutes
 
 	for (;;) loop();
 	return 0;

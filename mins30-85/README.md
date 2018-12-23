@@ -1,11 +1,8 @@
 # mins30-85
 
-30 minute timer for ATTing85, programable from the Pi.
+30 minute timer for ATTiny85, programable from the Pi.
 
-
-Circuit diagram:
-
-![circuit](circuit.gif)
+Schematic is as per minitone85.
 
 
 ## References

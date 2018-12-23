@@ -7,7 +7,8 @@ interrupt do to it)
 Code in public domain
 **********************************/
 
-#define F_CPU 1000000UL
+//#define F_CPU 1000000UL
+#define F_CPU 8000000UL
 #include <avr/io.h>
 #include <inttypes.h>
 #include <avr/interrupt.h>
@@ -37,7 +38,8 @@ ISR(TIM0_OVF_vect) {
 uint64_t millis() {
 	uint64_t m;
 	cli();
-	static const uint64_t scale = (uint64_t) 8; // mcarter 14-Jan-2018
+	//static const uint64_t scale = (uint64_t) 8; // mcarter 14-Jan-2018
+	constexpr auto scale = (uint64_t) 1; // mcarter 23-Dec-2018
 	m = _millis * scale ;
 	sei();
 	return m;

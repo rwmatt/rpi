@@ -11,7 +11,7 @@ CXXFLAGS = -g -Os -Wall -mcall-prologues -mmcu=attiny85 -std=c++11
 image.hex : image.elf
 	avr-objcopy -R .eeprom -O ihex $^ $@
 
-image.elf : main.o millis.cc ../minitone85/minitone85.o
+image.elf : main.o millis.o ../minitone85/minitone85.o
 	$(CXX) -g -mmcu=attiny85 $^ -o $@ 
 
 

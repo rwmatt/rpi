@@ -14,11 +14,8 @@ void delay_ms(unsigned long  ms)
 
 void chime(unsigned long freq, unsigned long duration = 250) 
 {
-	//miniTone(freq);
-	//delay_ms(duration);
 	miniTone(freq); 
 	delay_ms(duration);
-	//_delay_ms(duration);
 	miniTone(0);
 	delay_ms(25);
 }
