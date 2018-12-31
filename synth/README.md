@@ -8,6 +8,8 @@ It should also work with many other microcontrollers or single-board computers w
 
 **What's the point?** My knowledge of electronics is bad, so I couldn't really figure out how to get good amplification on a speaker. Producing a consistent sound also proved to be difficult. Raspbian is not a RTOS (Real Time Operating System), which leads to glitchiness if you try to twiddle the pins directly. Execution of programs can be interrupted at any time, which messes with the timing. I toyed with using the [Ultibo](https://ultibo.org) unikernel, which worked better, but it still had the occasional problems with thread scheduling. One possible solution would be to dedicate a core to the task, but I could not get that working.
 
+**Demo?**  Yes, on [YouTube](https://youtu.be/3DuH876Wv-k)
+
 ## schematics
 
 <img src="synth_bb_1.jpg" width="800">
