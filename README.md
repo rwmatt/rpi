@@ -29,6 +29,9 @@ Projects:
 * [synth](synth/README.md): sound synthesizer/tone-maker
 * om: meditation timer using `DEV01` board
 
+Technical:
+* [pins85](pins85.md):pinout diagram for ATTiny85
+
 
 
 ## Projects
