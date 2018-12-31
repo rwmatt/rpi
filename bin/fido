@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 JAVA=java
 
-#slackware nonsense
+#slackware 14.2 nonsense 2018-12-31
 #Fido looks pretty bad using openjdk as it happens
 #Hopefully a new version will come along in 15.0
-SL_JAVA=/usr/lib64/jvm/bin/java
-[[ -x "$SL_JAVA" ]] && JAVA=$SL_JAVA
+#SL_JAVA=/usr/lib64/jvm/bin/java
+#[[ -x "$SL_JAVA" ]] && JAVA=$SL_JAVA
+#If using 14.2 You probably want the Alien Bob version from slackbuilds
 
 nh $JAVA -jar ~/tools/fidocadj.jar
