@@ -1,2 +1,8 @@
 #!/usr/bin/env bash
-nh java -jar ~/tools/fidocadj.jar
+JAVA=java
+
+#slackware nonsense
+SL_JAVA=/usr/lib64/jvm/bin/java
+[[ -x "$SL_JAVA" ]] && JAVA=$SL_JAVA
+
+$JAVA -jar ~/tools/fidocadj.jar
