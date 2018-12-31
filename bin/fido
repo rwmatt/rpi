@@ -2,7 +2,9 @@
 JAVA=java
 
 #slackware nonsense
+#Fido looks pretty bad using openjdk as it happens
+#Hopefully a new version will come along in 15.0
 SL_JAVA=/usr/lib64/jvm/bin/java
 [[ -x "$SL_JAVA" ]] && JAVA=$SL_JAVA
 
-$JAVA -jar ~/tools/fidocadj.jar
+nh $JAVA -jar ~/tools/fidocadj.jar
