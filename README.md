@@ -23,8 +23,10 @@ Projects:
 * [dev01](dev01/README.md): projects for the DEV01 home-made board: om
 * [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
 * ~~[dev04](dev04/README.md): Programming an ATTiny85 from the Pi~~
-* [dev05](dev05/README.md): Programming an ATTiny85 from the Pi
+* [dev05](dev05/README.md): ATTiny85 programmer for the Pi
 * [minitone85](minitone/README.md): working version of tone() for ATtiny85
+* [mins30-85](mins30-85/README.md): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
+* [synth](synth/README.md): sound synthesizer/tone-maker
 * om: meditation timer using `DEV01` board
 
 
@@ -41,9 +43,7 @@ Projects that come to mind with the CamJam EduKit 1, including
 a self-destruct sequence [here](edukit1/README.md).
 
 
-### mins30-85
 
-30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). [Project page](mins30-85/README.md).
 
 ## Hats
 
