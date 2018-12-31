@@ -2,3 +2,4 @@
 *.hex
 *.lst
 *.o
+__pycache__
