@@ -3,7 +3,7 @@ import datetime, os, sys, pygame
 from time import sleep
 
 #from master import usleep
-os.system('sleep 1; xset r off')
+#os.system('sleep 1; xset r off')
 
 pygame.init()
 scr = pygame.display.set_mode((200,200))
