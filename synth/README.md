@@ -10,7 +10,7 @@ It should also work with many other microcontrollers or single-board computers w
 
 ## schematics
 
-<img src="synth_bb_1.jpg" width="400">
+<img src="synth_bb_1.jpg" width="800">
 
 ```
            A85  (P85) BCM   (BRD) ARD  DUP
