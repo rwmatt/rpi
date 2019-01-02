@@ -51,6 +51,8 @@ a self-destruct sequence [here](edukit1/README.md).
 
 
 
-## Hats
+## Hardware
 
 * [Explorer HAT pro](https://shop.pimoroni.com/products/explorer-hat)
+* [Microcontroller - Introduction - A Beginners Guide to the Atmel AVR Atmega32](https://newbiehack.com/MicrocontrollerIntroductionABeginnersGuidetotheAtmelAVRAtmega32.aspx)
+* [Mini USB nano](https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=mini+usb+nano&_sacat=0). Amazon also has good deals on these
