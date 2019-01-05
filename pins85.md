@@ -4,9 +4,9 @@
              _________
              |   U   |
 Reset (PB5)  | 1   8 |  VCC (+)
-(A3)   PB3   | 2   7 |  PB2 (A1, SCK)
+(A3)   PB3   | 2   7 |  PB2 (A1, SCK, SCL)
 (A2)   PB4   | 3   6 |  PB1 (PWM, MISO)
-(-)    GND   | 4   5 |  PB0 (PWM, AREF, MOSI)
+(-)    GND   | 4   5 |  PB0 (PWM, AREF, MOSI, SDA)
              _________
 
 Notes:
