@@ -2,5 +2,6 @@
 
 Putting the ATTiny85 to sleep for 8 seconds, conserving a lot of power in the process.
 
-Without the cbi()/sbi() lines, the chip uses about 0.27mA at 4.5V when it is asleep. When the lines are included, it uses about 5uA, a massive reduction! According to some sites, it should be able to get it down to 0.1uA.
-To test the circuit, set up the ATTiny85 in the usual way. PB1 (pin 6) goes through a 330R and LED and ground in series. 
+A blank sketch uses 1.3mA. Using the sleep85 code, the power draw is 0.3mA when the LED is off. Using the sketch in bak, I was able to get the power draw down to 5uA. However, the board seemed to reset, losing the value of the variables, and starting setup() again.
+
+Adding an ISR(WDT_vect) seems crucial to stopping the board reset, so the sketch in bak may yet have more mileage to it.

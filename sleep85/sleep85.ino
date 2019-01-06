@@ -1,74 +1,192 @@
 /*
-   2019-01-05 mcarter created
-
-   Ref:
-   https://simple-ee.com/2017/05/16/arduino-attiny85-as-an-arduino-and-sleep-mode/
-   https://www.re-innovation.co.uk/docs/sleep-modes-on-attiny85/
-*/
+ * Sketch for testing sleep mode with wake up on WDT.
+ * Donal Morrissey - 2011.
+ * 
+ * http://donalmorrissey.blogspot.com/2010/04/sleeping-arduino-part-5-wake-up-via.html
+ *
+ */
 #include <avr/sleep.h>
+#include <avr/power.h>
 #include <avr/wdt.h>
-//#include <avr/interrupt.h> 
 
-// Routines to set and claer bits (used in the sleep code)
-#ifndef cbi
-#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
-#endif
-#ifndef sbi
-#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
-#endif
+constexpr auto led = PB4; // pin 4 on Ardunio; pin 3 on tiny85
+//static_assert(PB0 == 14, "unexpected pin numbering");
 
-constexpr auto led = PB1;
+//#define LED_PIN (13)
 
-// set system into the sleep state 
-// system wakes up when wtchdog is timed out
-void system_sleep() {
-  
-  cbi(ADCSRA,ADEN);                    // switch Analog to Digitalconverter OFF 
-  //ADCSRA &= 0b01111111;
-  //PRR=0xFF;
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN); // sleep mode is set here
-  sleep_enable(); 
-  sleep_mode();                        // System actually sleeps here 
-  sleep_disable();                     // System continues execution here when watchdog timed out   
-  sbi(ADCSRA,ADEN);                    // switch Analog to Digitalconverter ON  
+//volatile int f_wdt=1;
+
+
+
+/***************************************************
+ *  Name:        ISR(WDT_vect)
+ *
+ *  Returns:     Nothing.
+ *
+ *  Parameters:  None.
+ *
+ *  Description: Watchdog Interrupt Service. This
+ *               is executed when watchdog timed out.
+ *
+ ***************************************************/
+
+ // You need to have this, whether you use it or not. Otherwise the device will reset
+ISR(WDT_vect)
+{
+  /*
+  if(f_wdt == 0)
+  {
+    f_wdt=1;
+  }
+  else
+  {
+    Serial.println("WDT Overrun!!!");
+  }
+  */
 }
- 
-// 0=16ms, 1=32ms,2=64ms,3=128ms,4=250ms,5=500ms
-// 6=1 sec,7=2 sec, 8=4 sec, 9= 8sec
-void setup_watchdog(int ii) {
- 
-  byte bb;
-  int ww;
-  if (ii > 9 ) ii=9;
-  bb=ii & 7;
-  if (ii > 7) bb|= (1<<5);
-  bb|= (1<<WDCE);
-  ww=bb;
- 
+
+#if defined(__AVR_ATtiny85__)
+#pragma message "Using watchdog register for ATTiny85"
+#define WDTCSR WDTCR
+#endif
+
+void initSleep()
+{
+
+  /*** Setup the WDT ***/
+  
+  /* Clear the reset flag. */
   MCUSR &= ~(1<<WDRF);
-  // start timed sequence
-  WDTCR |= (1<<WDCE) | (1<<WDE);
-  // set new watchdog timeout value
-  WDTCR = bb;
-  WDTCR |= _BV(WDIE);
+  
+  /* In order to change WDE or the prescaler, we need to
+   * set WDCE (This will allow updates for 4 clock cycles).
+   */
+  WDTCSR |= (1<<WDCE) | (1<<WDE);
+
+  /* set new watchdog timeout prescaler value */
+  WDTCSR = 1<<WDP0 | 1<<WDP3; /* 8.0 seconds */
+  
+  /* Enable the WD interrupt (note no reset). */
+  WDTCSR |= _BV(WDIE);
 }
 
-void setup() {
-  DDRB |= (1<<PB1); // set PB1 for output. Everything else is output
-  //PORTB = 0xff; // set state high for everything (implies input pullup)
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN); // Power down everything, will only wake up from WDT
-  //sleep_enable(); // Enable sleep
-  setup_watchdog(9);
+/***************************************************
+ *  Name:        enterSleep
+ *
+ *  Returns:     Nothing.
+ *
+ *  Parameters:  None.
+ *
+ *  Description: Enters the arduino into sleep mode.
+ *
+ ***************************************************/
+void enterSleep(void)
+{
+  //set_sleep_mode(SLEEP_MODE_PWR_SAVE);   /* EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. */
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);   /* EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. */
+  sleep_enable();
+  
+  /* Now enter sleep mode. */
+  sleep_mode();
+  
+  /* The program will continue from here after the WDT timeout*/
+  sleep_disable(); /* First thing to do is disable sleep. */
+  
+  /* Re-enable the peripherals. */
+  power_all_enable();
 }
 
-void loop() {
 
-  //DDRB = 0; // set everything as an input
-  digitalWrite(led, 1);
-  delay(5);
-  digitalWrite(led, 0);
 
-  system_sleep();
+/***************************************************
+ *  Name:        setup
+ *
+ *  Returns:     Nothing.
+ *
+ *  Parameters:  None.
+ *
+ *  Description: Setup for the serial comms and the
+ *                Watch dog timeout. 
+ *
+ ***************************************************/
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("Initialising...");
+  //Serial.println(PB1, DEC);
+  delay(100); //Allow for serial print to complete.
+
+  pinMode(led,OUTPUT);
+  initSleep();
+  
+  Serial.println("Initialisation complete.");
+  delay(100); //Allow for serial print to complete.
+}
+
+
+
+/***************************************************
+ *  Name:        enterSleep
+ *
+ *  Returns:     Nothing.
+ *
+ *  Parameters:  None.
+ *
+ *  Description: Main application loop.
+ *
+ ***************************************************/
+
+void test() {
+
+  // a counter
+  static int i = 0;
+  Serial.println(i, DEC);
+  Serial.flush();
+  i++;  
+
+  // a blinker
+  digitalWrite(led, HIGH);
+  delay(100);
+  digitalWrite(led, LOW);  
+
+}
+
+/*
+void test2() {
+  digitalWrite(led, HIGH);
+  delay(100);
+  digitalWrite(led, LOW);  
+}
+*/
+
+void loop()
+{
+  test();
+  enterSleep();
+}
+
+
+void yuk() {
   
 
+  
+  static int i = 0;
+  //if(f_wdt == 1)
+  {
+    /* Toggle the LED */
+    //digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+    Serial.println(i, DEC);
+    Serial.flush();
+    i++;
+    
+    /* Don't forget to clear the flag. */
+    //f_wdt = 0;
+    
+    /* Re-enter sleep mode. */
+    enterSleep();
+  }
+  //else
+  {
+    /* Do nothing. */
+  }
 }
