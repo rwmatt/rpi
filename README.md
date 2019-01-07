@@ -26,6 +26,7 @@ Projects:
 * [dev05](dev05/README.md): ATTiny85 programmer for the Pi
 * [minitone85](minitone/README.md): working version of tone() for ATtiny85
 * [mins30-85](mins30-85/README.md): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
+* [pills](pills/README.mf): remember to take your pills
 * [synth](synth/README.md): sound synthesizer/tone-maker
 * [sleep85](sleep75/README.md): conserving power by putting the ATTiny85 to sleep
 

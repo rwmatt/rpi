@@ -1,0 +1,50 @@
+[FIDOCAD]
+SA 100 90 0
+TY 85 85 4 3 0 0 0 Century++Schoolbook++L 4.5V
+MC 165 105 1 0 600
+SA 150 125 0
+LI 205 115 205 130 0
+MC 135 160 0 0 ey_libraries.refpnt0
+MC 200 135 0 0 ey_libraries.trnbjt1
+LI 150 70 150 105 0
+LI 160 130 160 135 0
+LI 150 90 205 90 0
+LI 115 90 150 90 0
+LI 205 140 205 160 0
+LI 205 160 135 160 0
+MC 115 90 1 0 750
+TY 65 110 4 3 0 0 0 aakar Made using fidocadj
+LI 135 160 135 70 0
+EV 180 65 150 35 0
+LI 165 50 165 40 0
+LI 165 130 165 160 0
+LI 165 50 170 45 0
+SA 135 70 0
+SA 150 70 0
+SA 165 70 0
+SA 195 70 0
+SA 180 70 0
+RV 205 75 125 30 0
+TY 130 65 4 3 0 0 0 Century++Schoolbook++L GND
+TY 145 65 4 3 0 0 0 Century++Schoolbook++L VCC
+TY 160 65 4 3 0 0 0 Century++Schoolbook++L SDA
+TY 175 65 4 3 0 0 0 Century++Schoolbook++L SCL
+TY 190 65 4 3 0 0 0 Century++Schoolbook++L DS
+TY 130 35 4 3 0 0 0 Century++Schoolbook++L RTC Tiny
+SA 150 90 0
+SA 135 160 0
+MC 205 90 1 0 571
+TY 215 95 4 3 0 0 0 Century++Schoolbook++L Piezo buzzer
+SA 165 160 0
+LI 165 70 165 105 0
+LI 180 70 180 85 0
+LI 180 85 155 85 0
+LI 155 85 155 105 0
+LI 160 135 200 135 0
+TY 210 135 4 3 0 0 0 Century++Schoolbook++L PN2222A
+TY 140 150 4 3 0 0 0 Century++Schoolbook++L 330R
+MC 155 135 1 0 ey_libraries.didled0
+MC 155 150 1 0 ey_libraries.pasres0
+SA 155 160 0
+SA 135 90 0
+TY 145 115 4 3 0 0 0 Century++Schoolbook++L ATTiny85

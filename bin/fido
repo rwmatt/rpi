@@ -8,4 +8,4 @@ JAVA=java
 #[[ -x "$SL_JAVA" ]] && JAVA=$SL_JAVA
 #If using 14.2 You probably want the Alien Bob version from slackbuilds
 
-nh $JAVA -jar ~/tools/fidocadj.jar
+nh $JAVA -jar ~/tools/fidocadj.jar $1
