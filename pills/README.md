@@ -17,6 +17,11 @@ The code is a bit scrappy I'm afraid. I have been trying to get the watchdog sle
 
 ![schematic](pills.svg)
 
+Physical layout:
+
+![physical](physical.png)
+
+
 ## Implementation details
 
 There is a class called `At`, which switches to `ACTIVATED` when its given hour is reached. You instantiate as many instances of this class as you require. In the code, I have set 4 alarms, to be activated at 8am, 12pm, 5pm, and 9pm.
