@@ -30,47 +30,102 @@ void delay_ms(unsigned long  ms)
 #define delay_ms delay
 #endif
 
+void configure_wdt(void)
+{
+ 
+  cli();                           // disable interrupts for changing the registers
+
+  MCUSR = 0;                       // reset status register flags
+
+                                   // Put timer in interrupt-only mode:                                       
+  WDTCSR |= 0b00011000;            // Set WDCE (5th from left) and WDE (4th from left) to enter config mode,
+                                   // using bitwise OR assignment (leaves other bits unchanged).
+  WDTCSR =  0b01000000 | 0b100001; // set WDIE: interrupt enabled
+                                   // clr WDE: reset disabled
+                                   // and set delay interval (right side of bar) to 8 seconds
+
+  sei();                           // re-enable interrupts 
+}
+/*
 void initSleep()
 {
+  cli();
+  // MCUSR = 0; // reset status 
 
-  /*** Setup the WDT ***/
-  
-  /* Clear the reset flag. */
+ 
+  // Clear the reset flag. 
   MCUSR &= ~(1<<WDRF);
   
-  /* In order to change WDE or the prescaler, we need to
-   * set WDCE (This will allow updates for 4 clock cycles).
-   */
+  // In order to change WDE or the prescaler, we need to
+  // set WDCE (This will allow updates for 4 clock cycles).
+  //
   WDTCSR |= (1<<WDCE) | (1<<WDE);
 
-  /* set new watchdog timeout prescaler value */
-  WDTCSR = 1<<WDP0 | 1<<WDP3; /* 8.0 seconds */
+  // set new watchdog timeout prescaler value 
+  WDTCSR = 1<<WDP0 | 1<<WDP3; // 8.0 seconds 
   
-  /* Enable the WD interrupt (note no reset). */
+  // Enable the WD interrupt (note no reset). 
   //WDTCSR |= _BV(WDIE);
 }
+*/
 
+// how many times remain to sleep before wake up
+int nbr_remaining; 
+
+// Put the Arduino to deep sleep. Only an interrupt can wake it up.
+void sleep(int ncycles)
+{  
+  nbr_remaining = ncycles; // defines how many cycles should sleep
+
+  // Set sleep to full power down.  Only external interrupts or
+  // the watchdog timer can wake the CPU!
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+ 
+  // Turn off the ADC while asleep.
+  power_adc_disable();
+ 
+  while (nbr_remaining > 0){ // while some cycles left, sleep!
+
+  // Enable sleep and enter sleep mode.
+  sleep_mode();
+
+  // CPU is now asleep and program execution completely halts!
+  // Once awake, execution will resume at this point if the
+  // watchdog is configured for resume rather than restart
+ 
+  // When awake, disable sleep mode
+  sleep_disable();
+ 
+  }
+ 
+  // put everything on again
+  power_all_enable();
+ 
+}
+
+/*
 void enterSleep(void)
 {
-   /* Enable the WD interrupt (note no reset). */
-  WDTCR |= (1<<WDIE); 
+   // Enable the WD interrupt (note no reset). 
+  //WDTCR |= (1<<WDIE); 
   
-  //set_sleep_mode(SLEEP_MODE_PWR_SAVE);   /* EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. */
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);   /* EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. */
+  //set_sleep_mode(SLEEP_MODE_PWR_SAVE);   // EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. 
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);   // EDIT: could also use SLEEP_MODE_PWR_DOWN for lowest power consumption. 
   sleep_enable();
   
-  /* Now enter sleep mode. */
+  // Now enter sleep mode. 
   sleep_mode();
   //sleep_cpu();
   
-  /* The program will continue from here after the WDT timeout*/
-  sleep_disable(); /* First thing to do is disable sleep. */
+  // The program will continue from here after the WDT timeout
+  sleep_disable(); // First thing to do is disable sleep. 
   
-  /* Re-enable the peripherals. */
+  // Re-enable the peripherals. 
   power_all_enable();
-   /* Disable the WD interrupt */
-  WDTCR &= ~_BV(WDIE);
+   // Disable the WDT interrupt 
+  //WDTCR &= ~_BV(WDIE);
 }
+*/
 
 constexpr auto led = PB3; // Arduino pin 3; tiny85 pin 2
 constexpr auto buzzer = PB4; // Arduino pin 4; tiny85 pin 3
@@ -108,7 +163,9 @@ void setup () {
   if(already_setup) return;
   already_setup = true;
   #ifdef USE_WATCHDOG
-  initSleep();
+  //initSleep();
+  //wdt_enable(WDTO_2S);
+  configure_wdt();
   #endif
   /*
   Serial.begin(9600);
@@ -120,7 +177,7 @@ void setup () {
   Wire.begin();
   RTC.begin(); 
 
-  ats[0].m_hour = 8;
+  ats[0].m_hour = 9;
   ats[1].m_hour = 12;
   ats[2].m_hour = 17;
   ats[3].m_hour = 21;
@@ -170,9 +227,12 @@ void  prin_info() {
     Serial.flush();
 }    
 void blinky() {
-   digitalWrite(led, HIGH);
+  //return;
+  constexpr auto device = led;
+  //constexpr auto device = buzzer;
+   digitalWrite(device, HIGH);
    delay_ms(5);
-   digitalWrite(led, LOW);   
+   digitalWrite(device, LOW);   
 }
 
 void loop () {
@@ -184,11 +244,15 @@ void loop () {
   blinky();
   prin_info();
   #ifdef USE_WATCHDOG
-  enterSleep();
+  //enterSleep();
+  sleep(1);
   #else
-  delay_ms(5000);
+  delay_ms(1000);
   #endif
 }
 
-ISR(TIMER1_vect) {}
-ISR(WDT_vect) {}
+#ifdef USE_WATCHDOG
+ISR(WDT_vect) {
+  wdt_reset();
+}
+#endif
