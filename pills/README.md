@@ -2,7 +2,10 @@
 
 A reminder to take your pills.
 
-The code is a bit scrappy I'm afraid. I have been trying to get the watchdog sleep function to work, so far to no avail. The device currently uses about 2.4mA whilst idle, giving the battery life of 43 days, assuming the use of 2500mA rechargeable batteries. A properly-functioning watchdog should extend its expected life considerably.
+There are two versions of the code:
+* pills-1 uses about 2.4mA whilsts idle, giving the battery life of 43 days, assuming the use of 2500mA rechargeable batteries. Reality seems to suggest that the battery life is far shorter
+* pills-2 uses about half the energy of pills-1. It requires the [narcoleptic](https://github.com/brabl2/narcoleptic) library.
+
 
 ## Components
 
