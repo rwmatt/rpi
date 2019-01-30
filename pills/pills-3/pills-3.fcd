@@ -1,0 +1,27 @@
+[FIDOCAD]
+MC 105 70 0 0 ey_libraries.refpnt0
+TY 120 100 4 3 0 0 0 aakar Made using fidocadj
+RV 205 75 125 60 0
+TY 130 65 4 3 0 0 0 Century++Schoolbook++L GND
+TY 145 65 4 3 0 0 0 Century++Schoolbook++L VCC
+TY 160 65 4 3 0 0 0 Century++Schoolbook++L SDA
+TY 175 65 4 3 0 0 0 Century++Schoolbook++L SCL
+TY 190 65 4 3 0 0 0 Century++Schoolbook++L DS
+TY 210 65 4 3 0 0 0 Century++Schoolbook++L RTC Tiny
+MC 105 45 1 0 571
+TY 65 55 4 3 0 0 0 Century++Schoolbook++L Piezo buzzer
+TY 105 35 4 3 0 0 0 aakar A2
+TY 130 35 4 3 0 0 0 aakar GND
+TY 150 35 4 3 0 0 0 aakar 5V
+TY 165 35 4 3 0 0 0 aakar A4
+TY 180 35 4 3 0 0 0 aakar A5
+RV 100 45 190 30 0
+TY 195 35 4 3 0 0 0 aakar Arduino Nano
+LI 135 60 135 45 0
+FCJ 1 0 3 2 0 0
+LI 150 60 150 45 0
+FCJ 1 0 3 2 0 0
+LI 165 60 165 45 0
+FCJ 1 0 3 2 0 0
+LI 185 60 185 45 0
+FCJ 1 0 3 2 0 0

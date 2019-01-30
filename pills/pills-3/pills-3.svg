@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?> 
+<!DOCTYPE svg PUBLIC "-//W3C//Dtd SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/Dtd/svg11.dtd">
+<svg width="704.0" height="324.0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Created by FidoCadJ ver. 0.24.7, export filter by Davide Bucci -->
+<polygon points="160.0,180.0 184.0,180.0 172.0,192.0 172.0,192.0 " style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<line x1="172.0" y1="172.0" x2="172.0" y2="180.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<g transform="translate(232.0,292.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">Made using fidocadj</text>
+</g>
+<rect x="252.0" y="132.0" rx="0" ry="0" width="320.0" height="60.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<g transform="translate(272.0,152.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">GND</text>
+</g>
+<g transform="translate(332.0,152.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">VCC</text>
+</g>
+<g transform="translate(392.0,152.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">SDA</text>
+</g>
+<g transform="translate(452.0,152.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">SCL</text>
+</g>
+<g transform="translate(512.0,152.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">DS</text>
+</g>
+<g transform="translate(592.0,152.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">RTC Tiny</text>
+</g>
+<line x1="172.0" y1="72.0" x2="172.0" y2="92.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<line x1="172.0" y1="152.0" x2="172.0" y2="172.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<ellipse cx="172.0" cy="122.0" rx="32.0" ry="30.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<ellipse cx="172.0" cy="122.0" rx="24.0" ry="22.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<g transform="translate(12.0,112.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="Century Schoolbook L" font-size="16.0" font-style="" font-weigth="" fill="#000000">Piezo buzzer</text>
+</g>
+<g transform="translate(172.0,32.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">A2</text>
+</g>
+<g transform="translate(272.0,32.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">GND</text>
+</g>
+<g transform="translate(352.0,32.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">5V</text>
+</g>
+<g transform="translate(412.0,32.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">A4</text>
+</g>
+<g transform="translate(472.0,32.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">A5</text>
+</g>
+<rect x="152.0" y="12.0" rx="0" ry="0" width="360.0" height="60.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<g transform="translate(532.0,32.0) scale(1.2954545454545454,1) "><text x="0" y="16.0" font-family="aakar" font-size="16.0" font-style="" font-weigth="" fill="#000000">Arduino Nano</text>
+</g>
+<line x1="292.0" y1="132.0" x2="292.0" y2="72.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<polygon points="292.0,132.0 284.0,120.0 300.0,120.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="#000000"/>
+<line x1="352.0" y1="132.0" x2="352.0" y2="72.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<polygon points="352.0,132.0 344.0,120.0 360.0,120.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="#000000"/>
+<line x1="412.0" y1="132.0" x2="412.0" y2="72.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<polygon points="412.0,132.0 404.0,120.0 420.0,120.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="#000000"/>
+<line x1="492.0" y1="132.0" x2="492.0" y2="72.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="none"/>
+<polygon points="492.0,132.0 484.0,120.0 500.0,120.0" style="stroke:#000000;stroke-width:2.0;fill-rule: evenodd;" fill="#000000"/>
+</svg>
