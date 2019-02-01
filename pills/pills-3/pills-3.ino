@@ -47,15 +47,22 @@ void setup () {
   ats[3].m_hour = 21;
 }
 
-void beep() {
-  //Serial.println("beeping");
-  //Serial.println(ACTIVATED);
-  for(int i=0; i<4; i++) {
+void beepn(int n)
+{
+  for(int i=0; i<n; i++) {
     digitalWrite(buzzer, HIGH);
     delay(1000);
     digitalWrite(buzzer, LOW);
     delay(1000);
   }
+}
+
+void beep() {
+  //Serial.println("beeping");
+  //Serial.println(ACTIVATED);
+  beepn(4); // initial reminder
+  for(int i = 0; i<60; ++i) delay(1000); // leave it a minute
+  beepn(2); // remind again
   //Serial.println("... finished beeping");
 }
 
