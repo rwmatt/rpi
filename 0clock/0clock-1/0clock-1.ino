@@ -29,6 +29,7 @@ void rtc_to_serial() {
     Serial.print(':');
     Serial.print(now.second(), DEC);
     Serial.println(); 
+    Serial.flush();
 }
 
 void setup () {
@@ -55,11 +56,69 @@ void write_to_0seg() {
   show_dec(7, now.day());
 }
 
-void loop () {
-  rtc_to_serial();
-  write_to_0seg();
+typedef unsigned long ulong;
+
+class Every {
+  public:
+  Every(ulong interval) : interval(interval) {}
+  bool rising();
+  private:
+  ulong interval, start = millis();
+  
+};
+bool Every::rising() { 
+    ulong now = millis();
+    if(now<start) { start = now; } // timer overflow
+    if(now-start < interval) return false;
+    start = now;    
+    return true; 
+}
+
+
+int toint(char* buf, int offset) {
+  return 10*(buf[offset]-'0') + (buf[offset+1] -'0');
+}
+void  process_serial(){
+  char buf[20], ch;
+  if(!Serial.available()) return;
+  int i= 0;
+loop: 
+  if(!Serial.available()) goto loop; 
+  ch = Serial.read();
+  //Serial.print(ch);
+  if(ch == '\n') ch = 0;
+  buf[i] = ch;
+  if(ch == 0) goto eol;
+  i++;
+  i = min(i, sizeof(buf) -2);
+  goto loop;
+eol:
+
+  if(buf[0] == '?') rtc_to_serial();
+  //if(buf[0] == 'S') {for(int j = 1 ; j < strlen(buf); j++) Serial.println( buf[j]); }
+  if(buf[0] == '!') {
+    // set the time
+    int yr  = toint(buf, 3) + 2000;
+    int mth = toint(buf, 5);
+    int dy  = toint(buf, 7);
+    int hr  = toint(buf, 9);
+    int mn  = toint(buf, 11);
+    int sec = toint(buf, 13);
+    DateTime dt{yr, mth, dy, hr, mn, sec};
+    RTC.adjust(dt);
+    Serial.println( buf); }
+  //Serial.read(); // newline expected
   Serial.flush();
-  delay(1000);
+  
+}
+
+void loop () {
+  process_serial();
+  static Every ev{5000};
+  if(!ev.rising()) return;  
+  write_to_0seg();
+  //Serial.flush();
+  //delay(1000);
 }
 
 
