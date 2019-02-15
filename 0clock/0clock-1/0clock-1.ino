@@ -95,7 +95,7 @@ loop:
 eol:
 
   if(buf[0] == '?') rtc_to_serial();
-  //if(buf[0] == 'S') {for(int j = 1 ; j < strlen(buf); j++) Serial.println( buf[j]); }
+  if(buf[0] == 'H') { Serial.println("HELLO"); }
   if(buf[0] == '!') {
     // set the time
     int yr  = toint(buf, 3) + 2000;
@@ -106,9 +106,11 @@ eol:
     int sec = toint(buf, 13);
     DateTime dt{yr, mth, dy, hr, mn, sec};
     RTC.adjust(dt);
-    Serial.println( buf); }
+    Serial.println("OK"); 
+  }
   //Serial.read(); // newline expected
   Serial.flush();
+  buf[0] = 0;
   
 }
 
