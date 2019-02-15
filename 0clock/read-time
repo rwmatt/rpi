@@ -23,8 +23,8 @@ DEV=/dev/ttyACM0
 stty -F $DEV 9600
 #cat $DEV &
 #bgPid=$!
-echo $CMD
-echo -e $CMD >$DEV
+#echo $CMD
+echo -e "?" >$DEV
 #echo "" > $DEV
 #kill $bgPid
 exit

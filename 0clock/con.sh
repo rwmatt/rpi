@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 if [[ $# -lt 1 ]]; then
     echo "Usage:"
