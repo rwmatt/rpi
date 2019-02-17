@@ -114,10 +114,22 @@ eol:
   
 }
 
+void nudge () { // tweak the time: 1 second every 3 hours
+  static int last_nudge = -1;
+  DateTime dt = RTC.now();
+  int s = dt.second();
+  if(s <3) return;
+  if(dt.hour() % 3 != 0 || last_nudge == dt.hour()) return;
+  last_nudge = dt.hour();
+  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - 1};
+  RTC.adjust(dt1);  
+}
+
 void loop () {
   process_serial();
   static Every ev{5000};
   if(!ev.rising()) return;  
+  nudge();
   write_to_0seg();
   //Serial.flush();
   //delay(1000);
