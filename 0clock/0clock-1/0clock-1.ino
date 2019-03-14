@@ -6,13 +6,6 @@ RTC_DS1307 RTC;
 void init_rtc(){  
     Wire.begin();
     RTC.begin();
-    bool reset = ! RTC.isrunning();
-    reset = 0;
-    if (reset) {
-      Serial.println("RTC is NOT running!");
-      // following line sets the RTC to the date & time this sketch was compiled
-      RTC.adjust(DateTime(__DATE__, __TIME__));
-      }
 }
 
 void rtc_to_serial() {
@@ -125,14 +118,26 @@ void nudge () { // tweak the time: 1 second every 3 hours
   RTC.adjust(dt1);  
 }
 
+void nudge1 () { // tweak the time: 1 second every 3 hours
+  static bool nudged = false;
+  DateTime dt = RTC.now();
+  int s = dt.second();
+  if(s <10) return;
+  if(dt.hour() != 0) { nudged = false; return; }
+  if(nudged) return;
+  Serial.println("nudge1()");
+  Serial.flush();
+  nudged = true;
+  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - 8};
+  RTC.adjust(dt1);  
+}
+
 void loop () {
   process_serial();
   static Every ev{5000};
   if(!ev.rising()) return;  
-  nudge();
+  nudge1();
   write_to_0seg();
-  //Serial.flush();
-  //delay(1000);
 }
 
 

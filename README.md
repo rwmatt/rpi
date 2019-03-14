@@ -57,6 +57,7 @@ a self-destruct sequence [here](edukit1/README.md).
 
 ## Hardware
 
+* [Enclosures](https://www.banggood.com/10pcs-75-x-54-x-27mm-DIY-Plastic-Project-Housing-Electronic-Junction-Case-Power-Supply-Box-p-1168741.html?cur_warehouse=CN) 10pcs 75 x 54 x 27mm DIY Plastic Project Housing Electronic Junction Case Power Supply Box 
 * [Explorer HAT pro](https://shop.pimoroni.com/products/explorer-hat)
 * [Microcontroller - Introduction - A Beginners Guide to the Atmel AVR Atmega32](https://newbiehack.com/MicrocontrollerIntroductionABeginnersGuidetotheAtmelAVRAtmega32.aspx)
 * [Mini USB nano](https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=mini+usb+nano&_sacat=0). Amazon also has good deals on these
