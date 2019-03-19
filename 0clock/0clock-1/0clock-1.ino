@@ -1,5 +1,7 @@
 #include <SPI.h>
 
+#include "maltime.h"
+
 #include <Wire.h>
 #include "RTClib.h"
 RTC_DS1307 RTC;
@@ -42,11 +44,15 @@ void show_dec(int pos, int val, bool dp = false) {
 }
 void write_to_0seg() {
   DateTime now = RTC.now();
+  int d = now.day();
+  int mo = now.month();
+  int hr = now.hour();
+  adjBST(now.year(), mo, d, hr);
   show_dec(1, now.minute());
-  show_dec(3, now.hour(), true);
+  show_dec(3, hr, true);
   maxTransfer(5, 0b1111); // blank
   maxTransfer(6, 0b1111); // blank
-  show_dec(7, now.day());
+  show_dec(7, d);
 }
 
 typedef unsigned long ulong;
@@ -128,7 +134,7 @@ void nudge1 () { // tweak the time: 1 second every 3 hours
   Serial.println("nudge1()");
   Serial.flush();
   nudged = true;
-  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - 8};
+  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - 8 -6};
   RTC.adjust(dt1);  
 }
 
@@ -152,6 +158,7 @@ void init_0seg() {
   maxTransfer(0x0F, 0x00);
   maxTransfer(0x09, 0xFF); // Enable mode B  
   maxTransfer(0x0A, 0x0F); // set intensity (page 9)  
+  maxTransfer(0x0A, 0x08); // set intensity (page 9)  
   maxTransfer(0x0B, 0x07); // use all pins    
   maxTransfer(0x0C, 0x01); // Turn on chip
 }
