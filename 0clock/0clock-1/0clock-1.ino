@@ -128,7 +128,7 @@ void nudge1 () { // tweak the time: 1 second every 3 hours
   static bool nudged = false;
   DateTime dt = RTC.now();
   int s = dt.second();
-  if(s <10) return;
+  if(s <30) return;
   if(dt.hour() != 0) { nudged = false; return; }
   if(nudged) return;
   Serial.println("nudge1()");
