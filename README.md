@@ -7,8 +7,9 @@ Reference information:
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
 * [i2c](i2c/README.md): Arduino and RPi3 master, ATTiny85 slave
 
-## Arduino
+## Arduino Nano/Uno
 
+* [0clock[[0clock/README.md]: clock made with nano, 0seg, and tiny RTC.
 * [abaclock](abaclock/README.md): clock made with a RTC clock and an Arduino LED backpack
 * [clock](clock/README.md): shield for reading/resetting a Tiny RTC clock from Arduino
 * [IDE](Arduino-IDE.md) : general setup, particularly about ATTiny85 setup.
