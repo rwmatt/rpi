@@ -2,6 +2,10 @@
 
 Clock using Nano, 0seg (zerosegment display) and Tiny RTC.
 
+Use tdiff.pl6 for fine-tune nudge offsets.
+
+Install "RTClib by Adafruit".
+
 
 Picture:
 

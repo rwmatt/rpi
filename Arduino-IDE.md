@@ -11,6 +11,7 @@ File : Preferences : Settings. Uncheck "Check for updates on startup"
 ```
 sudo usermod -a -G dialout <username>
 sudo chmod a+rw /dev/ttyACM0
+sudo chmod a+rw /dev/ttyUSB0
 ```
 
 IDE 1.8.7 Default programmer is: AVRISP mkll

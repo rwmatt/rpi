@@ -113,16 +113,6 @@ eol:
   
 }
 
-void nudge () { // tweak the time: 1 second every 3 hours
-  static int last_nudge = -1;
-  DateTime dt = RTC.now();
-  int s = dt.second();
-  if(s <3) return;
-  if(dt.hour() % 3 != 0 || last_nudge == dt.hour()) return;
-  last_nudge = dt.hour();
-  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - 1};
-  RTC.adjust(dt1);  
-}
 
 void nudge1 () { // tweak the time: 1 second every 3 hours
   static bool nudged = false;
@@ -134,7 +124,8 @@ void nudge1 () { // tweak the time: 1 second every 3 hours
   Serial.println("nudge1()");
   Serial.flush();
   nudged = true;
-  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - 8 -6};
+  int offset = 13 + random(0,1); // calculated on 02-May-2019
+  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - offset};
   RTC.adjust(dt1);  
 }
 
