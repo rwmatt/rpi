@@ -124,8 +124,8 @@ void nudge1 () { // tweak the time: 1 second every 3 hours
   Serial.println("nudge1()");
   Serial.flush();
   nudged = true;
-  int offset = 13 + random(0,1); // calculated on 02-May-2019
-  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s - offset};
+  int offset = -13 + random(0,1); // calculated on 02-May-2019
+  DateTime dt1{dt.year(), dt.month(), dt.day(), dt.hour(), dt.minute(), s + offset};
   RTC.adjust(dt1);  
 }
 
