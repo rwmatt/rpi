@@ -10,6 +10,13 @@ void init_rtc(){
     RTC.begin();
 }
 
+typedef unsigned long ulong;
+
+//constexpr int sw2 = 16 ; // Nano A2
+constexpr int btnBlue = 3 ; // Nano D3
+static bool timing = false; // are we timing, or displaying normal time
+unsigned long timer_start;
+
 void rtc_to_serial() {
     DateTime now = RTC.now(); 
     Serial.print(now.year(), DEC);
@@ -31,6 +38,7 @@ void setup () {
   Serial.begin(9600);
   init_rtc();
   init_0seg();
+  pinMode(btnBlue, INPUT_PULLUP);
 }
 
 // set dp to true to show decimal point
@@ -55,7 +63,7 @@ void write_to_0seg() {
   show_dec(7, d);
 }
 
-typedef unsigned long ulong;
+
 
 class Every {
   public:
@@ -129,12 +137,52 @@ void nudge1 () { // tweak the time: 1 second every 3 hours
   RTC.adjust(dt1);  
 }
 
+void change_major_mode()
+{
+  timing = ! timing;
+  if(timing) {
+    timer_start = millis();
+  } else {
+    write_to_0seg();
+  }
+}
+void tmrButton()
+{
+  static uint8_t btnState = 0x00;
+  static bool released = true;
+  btnState = (btnState << 1) + (LOW == digitalRead(btnBlue) ? 1 : 0);
+  //Serial.println(btnState);
+  if(btnState == 0xFF && released) {
+    released = false;
+    change_major_mode();
+    //Serial.println("button activated");
+    //Serial.println(digitalRead(btnBlue));
+  }
+  if(btnState == 0x00) released = true;    
+}
+
+void print_elapsed_time()
+{
+  ulong elapsed_time = (millis() - timer_start)/1000;
+  for(int pos = 1; pos<7 ; ++pos) {
+    int digit = elapsed_time % 10;
+    elapsed_time /= 10;
+    maxTransfer(pos, digit);
+  }  
+}
 void loop () {
+  //Serial.println(digitalRead(sw2));
   process_serial();
+  static Every tmr{3};
+  if(tmr.rising()) tmrButton();
+
+  static Every prtimer{500};
+  if(prtimer.rising() && timing) print_elapsed_time();
+  
   static Every ev{5000};
   if(!ev.rising()) return;  
   nudge1();
-  write_to_0seg();
+  if(!timing) write_to_0seg();
 }
 
 
