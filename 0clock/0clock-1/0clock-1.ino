@@ -14,8 +14,11 @@ typedef unsigned long ulong;
 
 //constexpr int sw2 = 16 ; // Nano A2
 constexpr int btnBlue = 3 ; // Nano D3
+constexpr int buzz = 8 ; // Nano D8
+
 static bool timing = false; // are we timing, or displaying normal time
 unsigned long timer_start;
+bool timer_expired = false;
 
 void rtc_to_serial() {
     DateTime now = RTC.now(); 
@@ -39,6 +42,8 @@ void setup () {
   init_rtc();
   init_0seg();
   pinMode(btnBlue, INPUT_PULLUP);
+  pinMode(buzz, OUTPUT);
+  digitalWrite(buzz, LOW);
   write_to_0seg();
 }
 
@@ -170,22 +175,32 @@ void tmrButton()
 void print_elapsed_time()
 {
   ulong elapsed_time = (millis() - timer_start)/1000;
+  timer_expired = elapsed_time > 1800; // 30 mins
   elapsed_time %= 3600; // lop off beyond hour
   show_dec(1, elapsed_time % 60); // show seconds
-  show_dec(3, elapsed_time / 60, true); // show mins with dec point
-  return;
-  
-  for(int pos = 1; pos<7 ; ++pos) {
-    int digit = elapsed_time % 10;
-    elapsed_time /= 10;
-    maxTransfer(pos, digit);
-  }  
+  show_dec(3, elapsed_time / 60, true); // show mins with dec point    
 }
+
+void beep(){  
+  digitalWrite(buzz, HIGH);
+  delay(100);
+  digitalWrite(buzz, LOW);
+  delay(100);
+}
+
+void ev_buzz() {
+  if(!timing) return;
+  beep();
+  if(timer_expired) beep();
+}
+
 void loop () {
   //Serial.println(digitalRead(sw2));
   process_serial();
   static Every tmr{3};
   if(tmr.rising()) tmrButton();
+  static Every evbuzz{5000};
+  if(evbuzz.rising()) ev_buzz();
 
   static Every prtimer{500};
   if(prtimer.rising() && timing) print_elapsed_time();
