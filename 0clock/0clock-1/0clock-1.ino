@@ -39,6 +39,7 @@ void setup () {
   init_rtc();
   init_0seg();
   pinMode(btnBlue, INPUT_PULLUP);
+  write_to_0seg();
 }
 
 // set dp to true to show decimal point
@@ -47,8 +48,7 @@ void show_dec(int pos, int val, bool dp = false) {
   if(dp) v |= 1<<7; // add in the decimal point  
   maxTransfer(pos, v);
   //int v1 = val/10;
-  maxTransfer(pos+1, val/10);
-  
+  maxTransfer(pos+1, val/10);  
 }
 void write_to_0seg() {
   DateTime now = RTC.now();
@@ -64,6 +64,10 @@ void write_to_0seg() {
 }
 
 
+// blank out the entire display
+void cls0() {
+  for(char i = 1; i<= 8; ++i) maxTransfer(i, 0b1111);    
+}
 
 class Every {
   public:
@@ -142,6 +146,8 @@ void change_major_mode()
   timing = ! timing;
   if(timing) {
     timer_start = millis();
+    cls0();
+    print_elapsed_time();
   } else {
     write_to_0seg();
   }
@@ -164,6 +170,11 @@ void tmrButton()
 void print_elapsed_time()
 {
   ulong elapsed_time = (millis() - timer_start)/1000;
+  elapsed_time %= 3600; // lop off beyond hour
+  show_dec(1, elapsed_time % 60); // show seconds
+  show_dec(3, elapsed_time / 60, true); // show mins with dec point
+  return;
+  
   for(int pos = 1; pos<7 ; ++pos) {
     int digit = elapsed_time % 10;
     elapsed_time /= 10;
@@ -200,6 +211,7 @@ void init_0seg() {
   maxTransfer(0x0A, 0x08); // set intensity (page 9)  
   maxTransfer(0x0B, 0x07); // use all pins    
   maxTransfer(0x0C, 0x01); // Turn on chip
+  cls0();
 }
 
 
