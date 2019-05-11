@@ -66,5 +66,5 @@ a self-destruct sequence [here](edukit1/README.md).
 * [ZeroSeg](zeroseg/README.md)
 
 ---
-[](4.jpg) Some text
+![](4.jpg) Some text
 ---
