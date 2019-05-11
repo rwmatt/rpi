@@ -64,3 +64,7 @@ a self-destruct sequence [here](edukit1/README.md).
 * [Mini USB nano](https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=mini+usb+nano&_sacat=0). Amazon also has good deals on these
 * [Tiny RTC](https://www.elecrow.com/wiki/index.php?title=Tiny_RTC) - module based on clock chip DS1307
 * [ZeroSeg](zeroseg/README.md)
+
+---
+[](4.jpg) Some text
+---
