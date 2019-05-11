@@ -65,6 +65,9 @@ a self-destruct sequence [here](edukit1/README.md).
 * [Tiny RTC](https://www.elecrow.com/wiki/index.php?title=Tiny_RTC) - module based on clock chip DS1307
 * [ZeroSeg](zeroseg/README.md)
 
----
+___
+
 ![](4.jpg) Some text
----
+
+___
+
