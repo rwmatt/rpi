@@ -71,4 +71,4 @@ ___
 
 ___
 
-![](8x8.jpg) TODO more text
+![](8x8.jpg) [8x8](8x8)
