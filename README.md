@@ -67,7 +67,7 @@ a self-destruct sequence [here](edukit1/README.md).
 
 ___
 
-![](4.jpg) Some text
+![](4.jpg) [4](4)
 
 ___
 
