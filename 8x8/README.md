@@ -20,5 +20,6 @@ SCL    C     A5
 
 ## See also
 
+* [Datasheet](https://cdn-shop.adafruit.com/datasheets/ht16K33v110.pdf)
 * [I2C with ATTiny85 on Adafruit Trinket](https://mythopoeic.org/adafruit-trinket-i2c/)
 
