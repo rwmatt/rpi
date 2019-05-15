@@ -17,12 +17,17 @@ static const uint8_t  smile[] =
     B01000010,
     B00111100 };
 
+void send_cmd(uint8_t cmd) {
+  Wire.beginTransmission(addr);
+  Wire.write(cmd);
+  Wire.endTransmission();
+}
     
 void setup() {
   Wire.begin();
-  Wire.beginTransmission(addr);
-  Wire.write(0x20 | 1); // turn on oscillator
-  Wire.endTransmission();
+  send_cmd(0x20 | 1); // turn on oscillator
+  send_cmd(0x81); // display on
+  send_cmd(0xE0 | 0); // brightness to dimmest (but you should probably set it)
 
   pinMode(btnSmiley, INPUT_PULLUP);
   randomise_bitmap();
