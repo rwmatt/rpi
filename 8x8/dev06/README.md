@@ -1,5 +1,7 @@
 # led matrix device
 
+Uses arduino nano.
+
 ## Hookup
 
 ```
