@@ -28,7 +28,7 @@ Projects:
 * [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
 * ~~[dev04](dev04/README.md): Programming an ATTiny85 from the Pi~~
 * [dev05](dev05/README.md): ATTiny85 programmer for the Pi
-* [dev06](8x8/dev06/READNE.md): 8x8, nano
+* [dev06](8x8/dev06/README.md): 8x8, nano
 * [minitone85](minitone/README.md): working version of tone() for ATtiny85
 * [mins30-85](mins30-85/README.md): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
 * [pills](pills/README.mf): remember to take your pills
