@@ -1,8 +1,13 @@
 # zeroseg
 
-`basic.py` is my water-down version of putting a random char (one of: 5, H, I) to the display. I use it as a migration mechanism for C and Arduino.
+SPI
 
-`sket_feb04b` sets the display to random digits. Similar to `basic.cc`
+**`basic.py`** is my water-down version of putting a random char (one of: 5, H, I) to the display. I use it as a migration mechanism for C and Arduino.
+
+**`espzero.ipynb`** - example written for **nodemcu esp8266**, similar 
+to `sketch_feb04b`.
+
+**`sketch_feb04b`** sets the display to random digits. Similar to `basic.cc`
 
 ## See also
 
