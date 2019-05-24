@@ -11,7 +11,6 @@ Reference information:
 
 * [0clock](0clock/README.md): clock made with nano, 0seg, and tiny RTC.
 * [abaclock](abaclock/README.md): clock made with a RTC clock and an Arduino LED backpack
-* [clock](clock/README.md): shield for reading/resetting a Tiny RTC clock from Arduino
 * [IDE](Arduino-IDE.md) : general setup, particularly about ATTiny85 setup.
 * [Multithreading](https://create.arduino.cc/projecthub/reanimationxp/how-to-multithread-an-arduino-protothreading-tutorial-dd2c37)
 * sketch_feb05a : RTC clock + zeroseg (0seg) to create a digital clock
@@ -73,3 +72,7 @@ ___
 ___
 
 ![](8x8.jpg) [8x8](8x8)
+
+---
+
+![](rtc/rtc.jpg) [rtc](rtc)

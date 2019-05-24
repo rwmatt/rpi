@@ -8,7 +8,7 @@ void setup () {
     Wire.begin();
     RTC.begin();
     bool reset = ! RTC.isrunning();
-    reset = 1;
+    //reset = 1;
     if (reset) {
       Serial.println("RTC is NOT running!");
       // following line sets the RTC to the date & time this sketch was compiled
