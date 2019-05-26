@@ -5,7 +5,7 @@ Reference information:
 
 
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
-* [i2c](i2c/README.md): Arduino and RPi3 master, ATTiny85 slave
+* [i2c](i2c): Arduino and RPi3 master, ATTiny85 slave
 
 ## Arduino Nano/Uno
 
@@ -27,22 +27,22 @@ Technical:
 
 ## Projects
 
-* [0clock](0clock/README.md): clock made with nano, 0seg, and tiny RTC.
-* [abaclock](abaclock/README.md): clock made with a RTC clock and an Arduino LED backpack
+* [0clock](0clock): clock made with nano, 0seg, and tiny RTC.
+* [abaclock](abaclock): clock made with a RTC clock and an Arduino LED backpack
 * blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
-* [blinkt](blinkt/README.md).
+* [blinkt](blinkt).
 * [clock85](clock85.md): setting the clock
-* [dev01](dev01/README.md): projects for the DEV01 home-made board: om
-* [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
-* ~~[dev04](dev04/README.md): Programming an ATTiny85 from the Pi~~
-* [dev05](dev05/README.md): ATTiny85 programmer for the Pi
+* [dev01](dev01): projects for the DEV01 home-made board: om
+* [dev02](dev02): projects for the DEV02 home-made board: green_red and mhz85
+* ~~[dev04](dev04): Programming an ATTiny85 from the Pi~~
+* [dev05](dev05): ATTiny85 programmer for the Pi
 * [dev06](8x8/dev06): 8x8, nano
-* [edukit](edukit1/README.md)
-* [minitone85](minitone/README.md): working version of tone() for ATtiny85
-* [mins30-85](mins30-85/README.md): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
-* [pills](pills/README.md): remember to take your pills
-* [synth](synth/README.md): sound synthesizer/tone-maker
-* [sleep85](sleep85/README.md): conserving power by putting the ATTiny85 to sleep
+* [edukit](edukit1)
+* [minitone85](minitone): working version of tone() for ATtiny85
+* [mins30-85](mins30-85): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
+* [pills](pills): remember to take your pills
+* [synth](synth): sound synthesizer/tone-maker
+* [sleep85](sleep85): conserving power by putting the ATTiny85 to sleep
 
 ## Hardware
 
