@@ -20,20 +20,6 @@ Reference information:
 Necessary, but not sufficient:
 ```sudo apt install avr-libc```
 
-Projects:
-* blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
-* [clock85](clock85.md): setting the clock
-* [dev01](dev01/README.md): projects for the DEV01 home-made board: om
-* [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
-* ~~[dev04](dev04/README.md): Programming an ATTiny85 from the Pi~~
-* [dev05](dev05/README.md): ATTiny85 programmer for the Pi
-* [dev06](8x8/dev06): 8x8, nano
-* [minitone85](minitone/README.md): working version of tone() for ATtiny85
-* [mins30-85](mins30-85/README.md): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
-* [pills](pills/README.mf): remember to take your pills
-* [synth](synth/README.md): sound synthesizer/tone-maker
-* [sleep85](sleep75/README.md): conserving power by putting the ATTiny85 to sleep
-
 Technical:
 * [pins85](pins85.md):pinout diagram for ATTiny85
 
@@ -43,6 +29,19 @@ Technical:
 * [debounce](https://gist.github.com/blippy/430cc73cb50b9e44c3423c2717ab22ee) a button
 
 ## Projects
+
+* blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
+* [clock85](clock85.md): setting the clock
+* [dev01](dev01/README.md): projects for the DEV01 home-made board: om
+* [dev02](dev02/README.md): projects for the DEV02 home-made board: green_red and mhz85
+* ~~[dev04](dev04/README.md): Programming an ATTiny85 from the Pi~~
+* [dev05](dev05/README.md): ATTiny85 programmer for the Pi
+* [dev06](8x8/dev06): 8x8, nano
+* [minitone85](minitone/README.md): working version of tone() for ATtiny85
+* [mins30-85](mins30-85/README.md): 30 minute timer for ATTiny85, programmable from the Pi (`DEV01`). 
+* [pills](pills/README.md): remember to take your pills
+* [synth](synth/README.md): sound synthesizer/tone-maker
+* [sleep85](sleep85/README.md): conserving power by putting the ATTiny85 to sleep
 
 ### blinkt
 
