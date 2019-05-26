@@ -28,3 +28,8 @@ SDL       A5     D1 (GPIO05)
 ```
 
 ![](rtc.jpg)
+
+## See also
+
+
+* [Tiny RTC](https://www.elecrow.com/wiki/index.php?title=Tiny_RTC) - module based on clock chip DS1307
