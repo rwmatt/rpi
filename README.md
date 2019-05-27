@@ -17,10 +17,6 @@ Reference information:
 Necessary, but not sufficient:
 ```sudo apt install avr-libc```
 
-Technical:
-* [pins85](pins85.md):pinout diagram for ATTiny85
-
-
 ## General
 
 * [debounce](https://gist.github.com/blippy/430cc73cb50b9e44c3423c2717ab22ee) a button
@@ -31,7 +27,6 @@ Technical:
 * [abaclock](abaclock): clock made with a RTC clock and an Arduino LED backpack
 * blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
 * [blinkt](blinkt).
-* [clock85](clock85.md): setting the clock
 * [clockesp](clockesp) IN PROGRESS
 * [dev01](dev01): projects for the DEV01 home-made board: om
 * [dev02](dev02): projects for the DEV02 home-made board: green_red and mhz85

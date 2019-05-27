@@ -1,4 +1,9 @@
-# Pinout for ATTiny85
+# ATTiny85
+
+Necessary, but not sufficient:
+```sudo apt install avr-libc```
+
+## pins
 
 ```
              _________
@@ -15,3 +20,6 @@ Notes:
 * PB5 requires a "fuse" to be set in order to use it.
 ```
 
+## See also
+
+* [clock](clock.md) - setting the clock frequency
