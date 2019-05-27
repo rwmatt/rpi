@@ -4,6 +4,7 @@ My Arduino, ATTiny85, ESP8266/32 and RPi (Raspberry Pi) projects
 Reference information:
 
 
+* [ATTiny85](ATTiny85)
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
 * [i2c](i2c): Arduino and RPi3 master, ATTiny85 slave
 
@@ -11,11 +12,6 @@ Reference information:
 
 * [IDE](Arduino-IDE.md) : general setup, particularly about ATTiny85 setup.
 * sketch_feb05a : RTC clock + zeroseg (0seg) to create a digital clock
-
-## ATTiny85
-
-Necessary, but not sufficient:
-```sudo apt install avr-libc```
 
 ## General
 
