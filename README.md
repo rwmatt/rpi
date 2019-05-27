@@ -24,7 +24,7 @@ Reference information:
 * blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
 * [blinkt](blinkt).
 * [clockesp](clockesp) IN PROGRESS
-* [dev01](dev01): projects for the DEV01 home-made board: om
+* [dev01](dev01): meditation timer
 * [dev02](dev02): projects for the DEV02 home-made board: green_red and mhz85
 * ~~[dev04](dev04): Programming an ATTiny85 from the Pi~~
 * [dev05](dev05): ATTiny85 programmer for the Pi

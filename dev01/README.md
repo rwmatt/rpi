@@ -1,4 +1,5 @@
-# DEV01 home-made board
+# DEV01 meditation timer
+
 
 ## Schematics
 
@@ -6,5 +7,4 @@
 
 ## Projects using this board
 
-* om
 
