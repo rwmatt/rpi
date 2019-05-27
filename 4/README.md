@@ -7,6 +7,8 @@ Install libraries:
 git clone git@github.com:blippy/lcddogmspi.git
 ```
 
+**`lcdard`** is a low-level controller for a Nano/Uno
+
 **`lcdpi.py`** is a low-level controller written by me to control the device. Use it as a jumping off point to program other mcus.
 
 ## See also
