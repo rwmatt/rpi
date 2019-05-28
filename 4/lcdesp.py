@@ -1,6 +1,3 @@
-
-%serialconnect to --port=/dev/ttyUSB0
-
 from machine import Pin, SPI
 from utime import sleep_ms
 
