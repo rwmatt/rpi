@@ -1,4 +1,4 @@
-import network
+import network, time, utime
 
 import settings
 
@@ -9,7 +9,7 @@ def do_connect():
         sta_if.active(True)
         sta_if.connect(settings.wifi_essid, settings.wifi_password)
         while not sta_if.isconnected():
-            pass
+		time.sleep(1)
 	print('network config:', sta_if.ifconfig())
 
 # http://my-small-projects.blogspot.com/2015/05/arduino-checking-for-british-summer-time.html
@@ -68,3 +68,23 @@ def adjustBST(yr, imonth, iday, hr):
               
 #print(adjustBST(2019, 5, 31, 23))
 #print(adjustBST(2019, 2, 24, 20))
+
+
+class Every:
+    def __init__(self, interval_ms, func = None ):
+        self.start = utime.ticks_ms()
+        self.interval_ms = interval_ms
+        self.func = func
+        
+    def rising(self):
+        now =utime.ticks_ms()
+        if now<self.start: self.start = now
+        if now - self.start < self.interval_ms: return False
+        self.start = now
+        return True
+    
+    def update(self):
+        if not self.rising(): return
+        #print("Updating")
+        self.func() 
+
