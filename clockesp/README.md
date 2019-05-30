@@ -1,8 +1,8 @@
 # clockesp
 
-Uses esp8266, rtc, zeroseg
+Uses esp8266, zeroseg
 
-Schematics d5.113
+Schematics d5.115
 
 ## See also
 
