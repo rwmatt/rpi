@@ -4,6 +4,14 @@ Uses esp8266, zeroseg
 
 Schematics d5.115
 
+
+
+
+```
+jupyter nbconvert --to script clockesp.ipynb 
+```
+
+
 ## See also
 
 

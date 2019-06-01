@@ -8,13 +8,12 @@ from machine import Pin, SPI, RTC
 from utime import sleep_ms, ticks_ms, ticks_diff
 #import urtc
 
-#import mel
+import mel
+from mel import Every, adjustBST
 #import settings # personal settings which contain Wifi info
 
-from mel import do_connect, Every, adjustBST
-
-heart = Pin(16, Pin.OUT) # D0
-heart.off()
+heart = Pin(16, Pin.OUT) # D0, but internal LED
+heart.on() # counterintuively, for the internal LED, ON means OFF
 sw1 = Pin(4, Pin.IN, Pin.PULL_UP) # D2
 sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1
 buzzer = Pin(0, Pin.OUT) # D3
@@ -22,12 +21,7 @@ buzzer.off()
 cs_pin = Pin(15, Pin.OUT) # aka SS slave select, D8
 cs_pin.on()
 
-do_connect()
-
-rtc = RTC()
-settime()
-print(rtc.datetime())
-
+# set up display
 spi = SPI(1)
 spi.init(phase = 0)
 spi.init(baudrate=400000)
@@ -67,12 +61,57 @@ def set_display(list4):
  
 #set_display([19, None, 85, 76])
 
+#def write_digit(pos, digit, dp = False):
+#    maxTransfer()
+def show_status(num):
+    for i in range(3):
+        num, digit = divmod(num, 10)
+        maxTransfer(6+i, digit)
+
+
+class Pauser:
+    def __init__(self):
+        self.callback = None
+        self.condition = None
+        self.start = None
+        self.delay_ms = None
+    
+    def pause(self, callback, condition = None, delay_ms = 0):
+        self.callback = callback
+        self.condition = condition
+        self.start = ticks_ms()
+        self.delay_ms = delay_ms
+        
+    def update(self):
+        if self.callback == None: return
+        if ticks_diff(ticks_ms(), self.start) < self.delay_ms:
+            return
+        try: 
+            triggered = self.condition()
+        except TypeError:
+            triggered = True
+        if triggered:
+            fn = self.callback
+            self.callback = None
+            fn(self)
+
+show_status(401)
+mel.do_connect()
+
+rtc = RTC()
+
+def update_ntp():
+    show_status(402)
+    settime()
+    show_status(403)
+#print(rtc.datetime())
+
+
 def display_time():
     yr , imonth, iday, _ , hr, mint, _, _ = rtc.datetime()
     #print(mint)
-    imonth, iday, hr = adjustBST(yr, imonth, iday, hr)
+    imonth, iday, hr = mel.adjustBST(yr, imonth, iday, hr)
     set_display([iday, None, hr, mint])
-display_time()
 
 timing = False
 timer_start = None
@@ -118,31 +157,7 @@ def update_display():
     else:
         display_time()
 
-class Pauser:
-    def __init__(self):
-        self.callback = None
-        self.condition = None
-        self.start = None
-        self.delay_ms = None
-    
-    def pause(self, callback, condition = None, delay_ms = 0):
-        self.callback = callback
-        self.condition = condition
-        self.start = ticks_ms()
-        self.delay_ms = delay_ms
-        
-    def update(self):
-        if self.callback == None: return
-        if ticks_diff(ticks_ms(), self.start) < self.delay_ms:
-            return
-        try: 
-            triggered = self.condition()
-        except TypeError:
-            triggered = True
-        if triggered:
-            fn = self.callback
-            self.callback = None
-            fn(self)
+
 
 def button_pressed(pauser):
     #print('Button pressed')
@@ -156,22 +171,27 @@ def button_released(pauser):
     pauser.pause(button_pressed, condition = lambda: sw1.value() == 0, 
                  delay_ms = 20)    
 
+def update_heartbeat():
+    heart.off()
+    utime.sleep_ms(10)
+    heart.on()
+
 #from machine import Timer
 import utime
 def loop():
+    update_ntp()
+    display_time()
     p = Pauser()
     p.pause(button_pressed, condition = lambda: sw1.value() == 0)
     ev_buzzer = Every(5000, update_buzzer)
-    ev_clock = Every(1000*60*30, settime)
+    ev_clock = Every(1000*60*30, update_ntp)
     ev_display = Every(500, update_display)
-    #ev_button = Every(20, tmrButton)
-    #tmr_button = Timer()
-    #tmr_button.init(period=20, mode=Timer.PERIODIC, callback = tmrButton)
+    ev_heartbeat = Every(3000, update_heartbeat)
     while True:
         ev_clock.update()
         p.update()
         ev_buzzer.update()
         ev_display.update()
+        ev_heartbeat.update()
 loop()    
-
 
