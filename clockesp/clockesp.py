@@ -1,3 +1,6 @@
+
+
+
 #import machine
 #import network
 from ntptime import settime
@@ -9,7 +12,7 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 #import urtc
 
 import mel
-from mel import Every, adjustBST
+from mel import adjustBST
 #import settings # personal settings which contain Wifi info
 
 heart = Pin(16, Pin.OUT) # D0, but internal LED
@@ -67,6 +70,28 @@ def show_status(num):
     for i in range(3):
         num, digit = divmod(num, 10)
         maxTransfer(6+i, digit)
+
+
+class Every:
+    def __init__(self, interval_ms, func = None ):
+        self.start = utime.ticks_ms()
+        self.interval_ms = interval_ms
+        self.func = func
+        self.first = True
+        
+    def rising(self):
+        now =utime.ticks_ms()
+        if now<self.start: self.start = now
+        if now - self.start < self.interval_ms: return False
+        self.start = now
+        return True
+    
+    def update(self):
+        if self.first:
+            self.first = False
+        elif not self.rising(): 
+            return
+        self.func() 
 
 
 class Pauser:
@@ -184,11 +209,12 @@ def loop():
     p = Pauser()
     p.pause(button_pressed, condition = lambda: sw1.value() == 0)
     ev_buzzer = Every(5000, update_buzzer)
-    ev_clock = Every(1000*60*30, update_ntp)
+    ev_ntp = Every(1000*60*30, update_ntp)
     ev_display = Every(500, update_display)
     ev_heartbeat = Every(3000, update_heartbeat)
     while True:
-        ev_clock.update()
+        if not timing:
+            ev_ntp.update()
         p.update()
         ev_buzzer.update()
         ev_display.update()

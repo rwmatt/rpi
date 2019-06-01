@@ -1,6 +1,6 @@
 import json
 
-fname = 'clockesp.upynb'
+fname = 'clockesp.ipynb'
 
 fp = open(fname, "r")
 js = json.load(fp)
