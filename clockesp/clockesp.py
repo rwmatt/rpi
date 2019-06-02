@@ -2,8 +2,6 @@
 
 
 #import machine
-#import network
-from ntptime import settime
 import time
 #import utime
 from machine import Pin, SPI, RTC
@@ -120,17 +118,7 @@ class Pauser:
             self.callback = None
             fn(self)
 
-show_status(401)
-mel.do_connect()
-
 rtc = RTC()
-
-def update_ntp():
-    show_status(402)
-    settime()
-    show_status(403)
-#print(rtc.datetime())
-
 
 def display_time():
     yr , imonth, iday, _ , hr, mint, _, _ = rtc.datetime()
@@ -201,11 +189,32 @@ def update_heartbeat():
     utime.sleep_ms(10)
     heart.on()
 
+def update_ntp():
+    import network, ntptime
+    import settings
+    show_status(401)
+    sta_if = network.WLAN(network.STA_IF)
+    if not sta_if.isconnected():
+        print('connecting to network...')
+        sta_if.active(True)
+        sta_if.connect(settings.wifi_essid, settings.wifi_password)
+        while not sta_if.isconnected():
+            sleep_ms(250)
+            
+    show_status(402)
+    ntptime.settime()    
+    sta_if.disconnect()
+    sta_if.active(False)
+    show_status(403)
+    update_display()
+#print(rtc.datetime())
+
 #from machine import Timer
 import utime
 def loop():
-    update_ntp()
-    display_time()
+    global timing
+    #update_ntp()
+    #display_time()
     p = Pauser()
     p.pause(button_pressed, condition = lambda: sw1.value() == 0)
     ev_buzzer = Every(5000, update_buzzer)
@@ -220,4 +229,5 @@ def loop():
         ev_display.update()
         ev_heartbeat.update()
 loop()    
+
 

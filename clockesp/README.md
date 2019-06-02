@@ -11,6 +11,13 @@ Schematics d5.115
 jupyter nbconvert --to script clockesp.ipynb 
 ```
 
+## Status codes
+
+```
+401 Initiating Wifi connect
+402 Initiating NTP update
+403 NTP update complete
+```
 
 ## See also
 
