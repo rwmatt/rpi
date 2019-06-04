@@ -5,6 +5,7 @@
 import time
 #import utime
 from machine import Pin, SPI, RTC
+import ntptime
 #import uasyncio as asyncio
 from utime import sleep_ms, ticks_ms, ticks_diff
 #import urtc
@@ -61,6 +62,7 @@ def set_display(list4):
         maxTransfer(8-2*i, lo)                        
  
 #set_display([19, None, 85, 76])
+set_display([None, None, None, None])
 
 #def write_digit(pos, digit, dp = False):
 #    maxTransfer()
@@ -189,22 +191,76 @@ def update_heartbeat():
     utime.sleep_ms(10)
     heart.on()
 
-def update_ntp():
-    import network, ntptime
+# watchdog functions
+import machine
+dog_started = False
+dog_start_time = None
+killed=False
+def _killer():
+    #print('*',)
+    global dog_started, dog_start_time, killed
+    #killed = True
+    if not dog_started: return
+    if ticks_diff(ticks_ms(), dog_start_time) > 10000:
+        machine.reset() # too long. Just kill the whole MCU
+        killed = True
+        #print("You're terminated!")
+    
+def killer(dog): _killer()
+def start_killer():
+    global dog_started, dog_start_time, killed
+    state = machine.disable_irq()
+    dog_started = True
+    dog_start_time = ticks_ms()
+    killed = False
+    machine.enable_irq(state)
+    
+def stop_killer():
+    global dog_started, dog_start_time, killed
+    state = machine.disable_irq()
+    dog_started = False
+    dog_start_time = None
+    killed = False
+    machine.enable_irq(state)
+
+  
+# ensure the dog is set up only once, otherwise we'll get an OSError 261
+activate_dog = not ('dog' in locals())
+#activate_dog = False
+if activate_dog:
+    dog = machine.Timer(0)
+    dog.init(period = 1000, mode=machine.Timer.PERIODIC, callback = killer)
+
+sta = None
+
+def do_connect(delay_ms = 100):
+    import network
     import settings
     show_status(401)
-    sta_if = network.WLAN(network.STA_IF)
-    if not sta_if.isconnected():
+    start_killer()
+    sta = network.WLAN(network.STA_IF)
+    if not sta.isconnected():
         print('connecting to network...')
-        sta_if.active(True)
-        sta_if.connect(settings.wifi_essid, settings.wifi_password)
-        while not sta_if.isconnected():
-            sleep_ms(250)
-            
+        sta.active(True)
+        sta.connect(settings.wifi_essid, settings.wifi_password)
+        while not sta.isconnected():
+            sleep_ms(delay_ms)
+    stop_killer()
+    return sta
+
+#if sta is not None:
+#    sta = do_connect()
+do_connect()
+
+def update_ntp():
+    #import ntptime
     show_status(402)
+    #start_killer()
+    ntptime.host = '192.168.0.17'
     ntptime.settime()    
-    sta_if.disconnect()
-    sta_if.active(False)
+    #sta_if.disconnect()
+    #sta_if.active(False)
+    #stop_killer()
     show_status(403)
     update_display()
 #print(rtc.datetime())

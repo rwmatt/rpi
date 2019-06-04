@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+DEV=`ls /dev/ttyU* | tail -1`
+echo "DEV: $DEV"
+
+function up {
+	rshell --buffer-size=30 -p $DEV cp $1 /pyboard
+}
+
+up $REDOCS/secret/settings.py
+up ../esp8266/mel.py
+up main.py

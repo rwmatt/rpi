@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+DEV=`ls /dev/ttyU* | tail -1`
+echo "DEV: $DEV"
+
+
+esptool.py --port $DEV erase_flash
+esptool.py --port $DEV write_flash 0x0000 ~/Downloads/esp8266-20190125-v1.10.bin
