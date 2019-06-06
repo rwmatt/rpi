@@ -23,6 +23,11 @@ buzzer.off()
 cs_pin = Pin(15, Pin.OUT) # aka SS slave select, D8
 cs_pin.on()
 
+# maybe put in boot mode
+if(sw2.value() == 0):
+    while True:
+        sleep_ms(1000)
+
 # set up display
 spi = SPI(1)
 spi.init(phase = 0)
@@ -255,12 +260,12 @@ do_connect()
 def update_ntp():
     #import ntptime
     show_status(402)
-    #start_killer()
+    start_killer()
     ntptime.host = '192.168.0.17'
     ntptime.settime()    
     #sta_if.disconnect()
     #sta_if.active(False)
-    #stop_killer()
+    stop_killer()
     show_status(403)
     update_display()
 #print(rtc.datetime())
