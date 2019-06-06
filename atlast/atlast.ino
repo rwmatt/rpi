@@ -1453,33 +1453,41 @@ prim P_tan()			      /* Tangent */
 prim P_dot()			      /* Print top of stack, pop it */
 {
   Sl(1);
-  V printf(base == 16 ? "%lX" : "%ld ", S0);
+  //V printf(base == 16 ? "%lX" : "%ld ", S0);
+  write_long(S0);
   Pop;
+}
+
+void write_long(long  v){  
+
+      char str[30];
+      snprintf(str, 30, base == 16 ? "%lX" : "%ld ", v);
+      V writing(str);
 }
 
 prim P_question()		      /* Print value at address */
 {
   Sl(1);
   Hpc(S0);
-  V printf(base == 16 ? "%lX" : "%ld ", *((stackitem *) S0));
+  write_long(*((stackitem *) S0));
   Pop;
 }
 
 prim P_cr()			      /* Carriage return */
 {
-  V printf("\n");
+  V writing("\r\n");
 }
 
 prim P_dots()			      /* Print entire contents of stack */
 {
   stackitem *tsp;
 
-  V printf("Stack: ");
+  V writing("Stack: ");
   if (stk == stackbot)
-    V printf("Empty.");
+    V writing("Empty.");
   else {
     for (tsp = stack; tsp < stk; tsp++) {
-      V printf(base == 16 ? "%lX" : "%ld ", *tsp);
+      write_long(*tsp);
     }
   }
 }
@@ -1506,7 +1514,8 @@ prim P_type()			      /* Print string pointed to by stack */
 {
   Sl(1);
   Hpc(S0);
-  V printf("%s", (char *) S0);
+  //V printf("%s", (char *) S0);
+  writing((char*) S0);
   Pop;
 }
 
@@ -2708,7 +2717,7 @@ prim P_fwdresolve()		      /* Emit forward jump offset */
 
 prim P_hi()
 {
-  Serial.println("Hello yourself");
+  writeln("Hello yourself");
 }
 
 /*  Table of primitive words  */
@@ -3266,7 +3275,7 @@ void atl_init()
     //dmsg("atl_init", "done Csonst");
 
     if (stack == NULL) {	      /* Allocate stack if needed */
-      dmsg("atl_init", "stack == NULL");
+      //dmsg("atl_init", "stack == NULL");
       stack = (stackitem *)
               alloc(((unsigned int) atl_stklen) * sizeof(stackitem));
     }
@@ -3600,7 +3609,7 @@ void dmsg(const char* str1, const char* str2)
 int atl_eval(char *sp)
 {
   int i;
-  dmsg("eval", sp);
+  //dmsg("eval", sp);
 
 #undef Memerrs
 #define Memerrs evalstat
@@ -3687,7 +3696,9 @@ int atl_eval(char *sp)
             }
           } else {
 #ifdef MEMMESSAGE
-            V printf(" '%s' undefined ", tokbuf);
+  writing("undefined");
+  writing(tokbuf);
+            //V printf(" '%s' undefined ", tokbuf);
 #endif
             evalstat = ATL_UNDEFINED;
           }
@@ -3699,7 +3710,9 @@ int atl_eval(char *sp)
             Push = (stackitem) di; /* Push word compile address */
           } else {
 #ifdef MEMMESSAGE
-            V printf(" '%s' undefined ", tokbuf);
+  writing("undefined");
+  writing(tokbuf);
+            //V printf(" '%s' undefined ", tokbuf);
 #endif
             evalstat = ATL_UNDEFINED;
           }
@@ -3843,25 +3856,43 @@ int atl_eval(char *sp)
   }
 */
 
+
+void writing(char *str) {
+  Serial.print(str);  
+}
+void writeln(char *str) {
+  Serial.println(str);
+}
+
 char t[132];
 
 int readln()
 {
   t[0] = 0;
   int n = 0;
-  if (Serial.available() > 0) {
-    n = Serial.readBytes(t, 132);
-    t[n] = 0;
-    if (n > 0) {
-      Serial.print("input: ");
-      Serial.println(t);
+  for (;;) {
+    if (Serial.available() > 0) {
+      int b = Serial.read();
+      if(b == '\r') {Serial.print('\r'); b = '\n'; }
+      t[n++] = b;
+      Serial.print((char) b);
+      if (b == '\n') goto eoi;
+      //n = Serial.readBytes(t, 132);
+      //t[n] = 0;
+      //if (n > 0) {
+      //  Serial.print("input: ");
+      //  Serial.println(t);
     }
   }
-  return n;
+eoi:
+  t[n] = 0;
+  //Serial.print("input: ");
+  //Serial.println(t);
+  return n - 1;
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("atlast started 2");
   int fname = FALSE, defmode = FALSE;
   FILE *ifp;
@@ -3869,7 +3900,7 @@ void setup() {
   while (TRUE) {
     if (readln() != 0) {
       V atl_eval(t);
-      V printf(" ok");
+      V writing(" ok");
     }
   }
 }
