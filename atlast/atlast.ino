@@ -2392,6 +2392,12 @@ prim P_semicolon()		      /* End compilation */
   createword = NULL;		      /* Flag no word being created */
 }
 
+void undefined(char* token) {
+        writing(" '");
+        writing(token);
+        writing("' undefined ");
+}
+
 prim P_tick()			      /* Take address of next word */
 {
   int i;
@@ -2411,7 +2417,7 @@ prim P_tick()			      /* Take address of next word */
         So(1);
         Push = (stackitem) di; /* Push word compile address */
       } else {
-        V printf(" '%s' undefined ", tokbuf);
+        undefined(tokbuf);
       }
     } else {
       V printf("\nWord not specified when expected.\n");
@@ -3374,6 +3380,27 @@ void atl_init()
       }
     }
 #endif /* FILEIO */
+
+//init_arduino
+// words for Arduino
+char *arduino[] = {
+  "0 constant LOW",
+  "1 constant HIGH",  
+  0
+};
+char **line = arduino;
+while(*line) {
+  //strcpy(t, *line);
+  atl_eval(*line);
+  //Push = (stackitem) *line;
+  //P_evaluate();
+  line++;
+}
+
+
+
+
+
     dictprot = dict;	      /* Protect all standard words */
     //dmsg("atl_init", "finished");
 
@@ -3696,9 +3723,7 @@ int atl_eval(char *sp)
             }
           } else {
 #ifdef MEMMESSAGE
-  writing("undefined");
-  writing(tokbuf);
-            //V printf(" '%s' undefined ", tokbuf);
+  undefined(tokbuf);
 #endif
             evalstat = ATL_UNDEFINED;
           }
@@ -3710,9 +3735,7 @@ int atl_eval(char *sp)
             Push = (stackitem) di; /* Push word compile address */
           } else {
 #ifdef MEMMESSAGE
-  writing("undefined");
-  writing(tokbuf);
-            //V printf(" '%s' undefined ", tokbuf);
+undefined(tokbuf);
 #endif
             evalstat = ATL_UNDEFINED;
           }
@@ -3722,8 +3745,9 @@ int atl_eval(char *sp)
              it on the return stack. */
           defpend = False;
           ucase(tokbuf);
-          if (atl_redef && (lookup(tokbuf) != NULL))
-            V printf("\n%s isn't unique.", tokbuf);
+          if (atl_redef && (lookup(tokbuf) != NULL)) {
+            report("isn't unique", tokbuf);            
+          }
           enter(tokbuf);
         } else {
           di = lookup(tokbuf);
@@ -3753,7 +3777,7 @@ int atl_eval(char *sp)
             }
           } else {
 #ifdef MEMMESSAGE
-            V printf(" '%s' undefined ", tokbuf);
+undefined(tokbuf);
 #endif
             evalstat = ATL_UNDEFINED;
             state = Falsity;
@@ -3864,6 +3888,13 @@ void writeln(char *str) {
   Serial.println(str);
 }
 
+void report(char* s1, char* s2) {
+  writing("Report:");
+  writing(s1);
+  writing(":'");
+  writing(s2);
+  writing("' ");
+}
 char t[132];
 
 int readln()
