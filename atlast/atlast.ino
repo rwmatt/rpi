@@ -3414,6 +3414,9 @@ char *arduino[] = {
   "2 constant OUTPUT",
   "1 constant INPUT",
   "5 constant INPUT_PULLUP", 
+  ": output: create dup , output pinm does> @ ;", // similar to CONSTANT
+  ": on high digw ;",
+  ": off low digw ;",
   0
 };
 char **line = arduino;

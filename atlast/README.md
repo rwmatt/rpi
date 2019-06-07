@@ -41,3 +41,13 @@ pin low  digw   \ and off again
 : blink5 blink blink blink blink blink ; \ blink 5 times, obviously
 blink5 \ now actually do it
 ```
+
+The above is quite verbose and low-level. We can be more succinct:
+```
+2 output: led \ equivalent to the first two lines above
+led on \ turn it on. ON is just shorthand for HIGH DIGW
+led off \ no prizes for guessing what this does
+: pause 500 delay-ms ;
+: blink led on pause led off pause ; \ implemented slightly differently
+blink blink blink blink blink \ 5 times, as before
+```
