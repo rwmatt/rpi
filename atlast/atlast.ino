@@ -2726,6 +2726,27 @@ prim P_hi()
   writeln("Hello yourself");
 }
 
+prim P_pinm() {
+  Sl(2);
+  pinMode(S1, S0);
+  Pop2;
+}
+prim P_digw() {
+  Sl(2);
+  digitalWrite(S1, S0);
+  Pop2;
+}
+prim P_digr() {
+  Sl(1);
+  stackitem s = digitalRead(S0);
+  S0 = s;
+}
+prim P_delay_ms() {
+  Sl(1);
+  delay(S0);
+  Pop;
+}
+
 /*  Table of primitive words  */
 
 static struct primfcn primt[] = {
@@ -3004,6 +3025,10 @@ static struct primfcn primt[] = {
 
   // mcarter added for Arduino
   {"0HI", P_hi},
+  {"0PINM", P_pinm},
+  {"0DIGW", P_digw},
+  {"0DIGR", P_digr},
+  {"0DELAY-MS", P_delay_ms},
 
 
 
@@ -3385,7 +3410,10 @@ void atl_init()
 // words for Arduino
 char *arduino[] = {
   "0 constant LOW",
-  "1 constant HIGH",  
+  "1 constant HIGH", 
+  "2 constant OUTPUT",
+  "1 constant INPUT",
+  "5 constant INPUT_PULLUP", 
   0
 };
 char **line = arduino;
