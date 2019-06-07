@@ -1475,7 +1475,7 @@ prim P_question()		      /* Print value at address */
 
 prim P_cr()			      /* Carriage return */
 {
-  V writing("\r\n");
+  V writing("\n");
 }
 
 prim P_dots()			      /* Print entire contents of stack */
@@ -3916,7 +3916,8 @@ void writing(char *str) {
   Serial.print(str);  
 }
 void writeln(char *str) {
-  Serial.println(str);
+  Serial.print(str);
+  P_cr();
 }
 
 void report(char* s1, char* s2) {
@@ -3937,7 +3938,7 @@ int readln()
       int b = Serial.read();
       if(b == '\r') {Serial.print('\r'); b = '\n'; }
       t[n++] = b;
-      Serial.print((char) b);
+      //Serial.print((char) b);
       if (b == '\n') goto eoi;
       //n = Serial.readBytes(t, 132);
       //t[n] = 0;
@@ -3955,15 +3956,15 @@ eoi:
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("atlast started 2");
+  //Serial.println("atlast started 2");
   int fname = FALSE, defmode = FALSE;
   FILE *ifp;
 
   while (TRUE) {
     if (readln() != 0) {
-      V atl_eval(t);
-      V writing(" ok");
+      V atl_eval(t);      
     }
+    V writeln("\n  ok");
   }
 }
 
