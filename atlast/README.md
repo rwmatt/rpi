@@ -25,6 +25,19 @@ matter of adding in the hooks to get all the hardware stuff going
 * It uses malloc/free in places, which isn't ideal. Maybe there's a way
 around that.
 
+## Communicating with the device
+
+Communication with atlast's repl happens over the serial line at
+a speed of 115200, and expects and emits \n at the end of the line.
+The best way to do this is:
+```
+python3 set.py
+```
+
+Note that this probably won't work on Windows due to the way that
+keyboard input is detected.
+
+
 ## GPIO pins
 
 A simple blink example:
