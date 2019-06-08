@@ -42,6 +42,7 @@ You can send files over the serial line:
 python3 ser.py < foo.4th
 ```
 or several:
+```
 cat *4th | python3 ser.py
 ```
 
