@@ -75,3 +75,9 @@ led off \ no prizes for guessing what this does
 : blink led on pause led off pause ; \ implemented slightly differently
 blink blink blink blink blink \ 5 times, as before
 ```
+
+Let's create a demo which blinks until the user presses a key:
+```
+: loop begin blink key? if "Finished" type exit then again ;
+loop \ start the loop
+```

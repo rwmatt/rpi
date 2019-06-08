@@ -2747,6 +2747,9 @@ prim P_delay_ms() {
   Pop;
 }
 
+prim P_keyq() {
+  Push = Serial.available();
+}
 /*  Table of primitive words  */
 
 static struct primfcn primt[] = {
@@ -3029,6 +3032,7 @@ static struct primfcn primt[] = {
   {"0DIGW", P_digw},
   {"0DIGR", P_digr},
   {"0DELAY-MS", P_delay_ms},
+  {"0KEY?", P_keyq},
 
 
 
