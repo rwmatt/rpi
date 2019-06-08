@@ -31,11 +31,21 @@ Communication with atlast's repl happens over the serial line at
 a speed of 115200, and expects and emits \n at the end of the line.
 The best way to do this is:
 ```
-python3 set.py
+python3 ser.py
 ```
 
 Note that this probably won't work on Windows due to the way that
 keyboard input is detected.
+
+You can send files over the serial line:
+```
+python3 ser.py < foo.4th
+```
+or several:
+cat *4th | python3 ser.py
+```
+
+You need to enter Ctl-c to exit, though. I hope to improve upon this.
 
 
 ## GPIO pins
