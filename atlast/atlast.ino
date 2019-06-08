@@ -11,6 +11,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <SPIFFS.h> // ESP file system
+
 #ifdef ALIGNMENT
 #include <memory.h>
 #endif
@@ -2750,6 +2752,56 @@ prim P_delay_ms() {
 prim P_keyq() {
   Push = Serial.available();
 }
+
+// https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_Test/SPIFFS_Test.ino
+prim P_testfs() {
+  writeln("Testing the file system");
+  int res;
+
+  writeln("Formatting. Make take awhile");
+  res = SPIFFS.format();
+  if(!res) {
+    writeln("Error formatting SPIFFS");
+  }
+    
+  res = SPIFFS.begin();
+  if(!res) {
+    writeln("Error mounting SPIFFS");
+    return;
+  }
+
+  File file = SPIFFS.open("/hello.txt", "w");
+  if(!file) {
+    writeln("Error opening file for writing");
+    return;
+  }
+
+  int nbytes = file.print("hello world");
+  if(nbytes == 0) {
+    writeln("Error writing to file");
+    return;
+  }
+
+  file.close();
+
+  file = SPIFFS.open("/hello.txt", "r");
+  if(!file) {
+    writeln("Error opening file for reading");
+    return;
+  }
+
+  writeln("Contents of file are:");
+  while(file.available()) {
+    Serial.write(file.read());
+  }
+
+  file.close();
+
+  writeln("\nFinished testfs");
+  
+}
+// end of ARDUINO defs
+
 /*  Table of primitive words  */
 
 static struct primfcn primt[] = {
@@ -3033,6 +3085,7 @@ static struct primfcn primt[] = {
   {"0DIGR", P_digr},
   {"0DELAY-MS", P_delay_ms},
   {"0KEY?", P_keyq},
+  {"0TESTFS", P_testfs},
 
 
 

@@ -81,3 +81,11 @@ Let's create a demo which blinks until the user presses a key:
 : loop begin blink key? if "Finished" type exit then again ;
 loop \ start the loop
 ```
+
+## Filesystem
+
+`atlast` uses the `SPIFFS` file-system. It needs to be formatted first.
+You can test the filesystem using the word `testfs`. Also refer to
+it (`P_testfs`) for clues as to how it is implemented internally.
+
+[Link](https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_Test/SPIFFS_Test.ino)
