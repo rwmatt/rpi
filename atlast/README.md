@@ -89,3 +89,73 @@ You can test the filesystem using the word `testfs`. Also refer to
 it (`P_testfs`) for clues as to how it is implemented internally.
 
 [Link](https://github.com/espressif/arduino-esp32/blob/master/libraries/SPIFFS/examples/SPIFFS_Test/SPIFFS_Test.ino)
+
+## Macrology
+
+Ah, the dark arts of extending the Forth compiler. Now then, now then, now then ...
+
+Forth doesn't have "macros" per se, but there are ways of embedding code within other code, with the same logic
+as exists in Lisp. It allows you to abstract away common lexical patterns.
+
+I'm going to suggest an approach that works for `atlast`. It seems to have a very Forth79 feel to it. Some
+might say that's the best feeling to have. The standard has enough in there to do what we want. Your Forth may
+act a little different, esp. wrt the way branching works.
+
+I'd say that a good strategy when developing macros which branching in them to forget about `IF`, `THEN`, `ELSE`, etc.,
+and think in terms of `BRANCH`, `?BRANCH`, `[`, `]`, `HERE` and `COMPILE`. Sometimes `[COMPILE]` might be useful,
+but I haven't wrapped my brain around it yet.
+
+Before writing a macro, write it non-macro form to see if you can get the thing working for starters. 
+
+Suppose we want a word that prints out `5 4 3 2 1` using a block-like approach. Here's a solution:
+```
+: foo 5 [ here ] dup . 1- dup 0= ?branch [ here - cell / , ] drop ;
+```
+
+Note that vanilla `atlast` does not define `CELL`. It's a word that I've added myself. It is simple `sizeof(void*)`. 
+So on 64-bit systems, it will be 8, on 32-bit systems like for the ESP32, it will be 8.
+
+So here's how `FOO` works
+```
+5        \ put 5 on stack. Obvious enough
+
+[ here ] \ [ puts us into immediate mode,  
+         \ HERE puts the current heap address on the stack during the compilation stage
+         \ ] puts us back into compilation mode
+
+dup .    \ copy the top of the stack and print
+
+1- dup 0= \ have we finished?
+
+?branch   \ if the top of the stack is 0, jump relative to the cell offset indicated by ....
+[ here - cell / \ when compiling, go into immediate mode, work out the offset we need
+,         \ embed that offset in the word being compiled     
+]         \ go back into compilation mode
+
+drop      \ clean up the stack 
+```
+
+Simple? OK, maybe not. Now let's take things up a notch. Let's abstract away the `[ here ]`. Actually,
+Forth already has a word for that called `BEGIN`, so we won't bother to define out own terms.
+
+Now we want to abstract away a pattern that we think is common, namely:
+```
+0= ?branch [ here - cell / , ]
+```
+It means that we go back to where the `BEGIN`is if the top of the stack isn't 0, Let's call that word `?AGAIN`.
+Here's how we'd define it:
+```
+: ?AGAIN compile 0= compile ?branch here - cell / , ; immediate
+```
+
+You following this? `?AGAIN` is declared `IMMEDIATE` because we want to embed it in whatever word we use it in.
+`COMPILE` means that we want the next word compiled into the word being defined. The rest of the word happens
+at compile time, immediately, so we don't need the `[` or the `]`.
+
+So here' how we'd rewrite `foo`:
+```
+: foo 5 begin dup . 1- dup ?again drop ;
+```
+
+See how much simpler it becomes? We can now use that pattern repeatedly. Praise the Lord!
+

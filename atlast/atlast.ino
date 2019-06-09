@@ -612,6 +612,11 @@ static Boolean kbquit()
 #define Compconst(x) Ho(1); Hstore = (stackitem) (x)
 #define Skipstring ip += *((char *) ip)
 
+prim P_cell() // number of bytes for an address
+{
+  Push = sizeof(void*);  
+}
+
 prim P_plus()			      /* Add two numbers */
 {
   Sl(2);
@@ -2806,6 +2811,7 @@ prim P_testfs() {
 
 static struct primfcn primt[] = {
   {"0+", P_plus},
+  {"0CELL", P_cell},
   {"0-", P_minus},
   {"0*", P_times},
   {"0/", P_div},
