@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# upload a file to an ESP board
+
+DEV=`ls /dev/ttyU* | tail -1`
+echo "DEV: $DEV"
+
+rshell --buffer-size=30 -p $DEV cp $1 /pyboard
