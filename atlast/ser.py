@@ -16,13 +16,17 @@ ser = serial.Serial(
 #ser.open()
 ser.isOpen()
 
+trans = open("trans.txt", "a")
+
 print('Enter your commands below.\r\nInsert "exit" to leave the application.')
 
 def do_input():
     resp, data = keys.heardEnter()
     if not resp: return
-    data = str.encode(data)
-    ser.write(data)
+    serdata = str.encode(data)
+    ser.write(serdata)
+    trans.write(data)
+    trans.flush()
     # maybe flush?
     # get keyboard input
     #input = raw_input(">> ")
@@ -57,7 +61,10 @@ def inner_loop():
     do_output()
 
 def loop(): 
-    while True: 
-        inner_loop()            
+    try: 
+        while True: 
+            inner_loop()
+    finally:
+        trans.close()
 
 loop()
