@@ -12,4 +12,4 @@ case $1 in
     h) print_help ; echo . ;;
 esac
 
-python3 ser.py
+rlwrap python3 ser.py

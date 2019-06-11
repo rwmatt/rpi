@@ -2805,6 +2805,15 @@ prim P_testfs() {
   writeln("\nFinished testfs");
   
 }
+
+prim P_usecs() {
+  Push = micros();
+}
+
+prim P_msecs() {
+  Push = millis();
+}
+
 // end of ARDUINO defs
 
 /*  Table of primitive words  */
@@ -3092,6 +3101,8 @@ static struct primfcn primt[] = {
   {"0DELAY-MS", P_delay_ms},
   {"0KEY?", P_keyq},
   {"0TESTFS", P_testfs},
+  {"0USECS", P_usecs},
+  {"0MSECS", P_msecs},
 
 
 
