@@ -3,30 +3,29 @@ import serial
 
 import keys
 
-# configure the serial connections (the parameters differs on the device you are connecting to)
-ser = serial.Serial(
-    port='/dev/ttyUSB0',
-    baudrate=115200,
-    #parity=serial.PARITY_ODD,
-    #
-    #stopbits=serial.STOPBITS_TWO,
-    #bytesize=serial.SEVENBITS
-)
+class Port:
+    def __init__(self):
+        self.port = serial.Serial( port='/dev/ttyUSB0', baudrate=115200)
+    def write(self, data): self.port.write(data)
+    def __del__(self):
+        print("Closing port")
+        self.port.close()
+
 
 #ser.open()
-ser.isOpen()
+#ser.isOpen()
 
-trans = open("trans.txt", "a")
+#trans = open("trans.txt", "a")
 
-print('Enter your commands below.\r\nInsert "exit" to leave the application.')
+#print('Enter your commands below.\r\nInsert "exit" to leave the application.')
 
-def do_input():
+def do_input(p):
     resp, data = keys.heardEnter()
     if not resp: return
     serdata = str.encode(data)
-    ser.write(serdata)
-    trans.write(data)
-    trans.flush()
+    p.write(serdata)
+    #trans.write(data)
+    #trans.flush()
     # maybe flush?
     # get keyboard input
     #input = raw_input(">> ")
@@ -36,7 +35,7 @@ def do_input():
     #    ser.close()
     #    exit()
 
-def do_output(): 
+def do_output(p): 
     # send the character to the device
     # (note that I happend a \r\n carriage return and line feed to the characters - this is requested by my device)
     #ser.write(input + '\n')
@@ -45,9 +44,9 @@ def do_output():
     # let's wait one second before reading output (let's give device time to answer)
     #time.sleep(0.5)
     #response = yypser.readline()
-    n = ser.in_waiting
+    n = p.port.in_waiting
     if n == 0: return
-    data = ser.read(n)
+    data = p.port.read(n)
     data = data.decode() # turn bytes int a string
     print(data, end = '')
     #while True:
@@ -56,15 +55,18 @@ def do_output():
     #    if response == "  ok\n": break
 
 #input=1
-def inner_loop():
-    do_input()
-    do_output()
+def inner_loop(p):
+    do_input(p)
+    do_output(p)
 
-def loop(): 
-    try: 
+def main(): 
+    try:
+        p = Port()
         while True: 
-            inner_loop()
+            inner_loop(p)
     finally:
-        trans.close()
+        #trans.close()
+        pass
 
-loop()
+if __name__ == "__main__":
+    main()
