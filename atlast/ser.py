@@ -19,11 +19,14 @@ class Port:
 
 #print('Enter your commands below.\r\nInsert "exit" to leave the application.')
 
+def send(p, data):
+    serdata = str.encode(data)
+    p.write(serdata)
+
 def do_input(p):
     resp, data = keys.heardEnter()
     if not resp: return
-    serdata = str.encode(data)
-    p.write(serdata)
+    send(p, data)
     #trans.write(data)
     #trans.flush()
     # maybe flush?
