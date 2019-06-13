@@ -5,7 +5,7 @@ A reminder to take your pills.
 There are two versions of the code:
 * pills-1 uses about 2.4mA whilsts idle, giving the battery life of 43 days, assuming the use of 2500mA rechargeable batteries. Reality seems to suggest that the battery life is far shorter
 * pills-2 uses about half the energy of pills-1. It requires the [narcoleptic](https://github.com/brabl2/narcoleptic) library.
-* [pills-3](README.md) is  for Arduino Nano only.
+* [pills-3](pills-3) is  for Arduino Nano only.
 
 
 ## Components
