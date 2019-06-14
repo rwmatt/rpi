@@ -6,6 +6,7 @@ Reference information:
 
 * [ATTiny85](attiny85)
 * [ESP8266](esp8266)
+* [esp-wroom](esp-wroom)
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
 * [i2c](i2c): Arduino and RPi3 master, ATTiny85 slave
 
