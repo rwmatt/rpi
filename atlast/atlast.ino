@@ -2814,11 +2814,13 @@ prim P_msecs() {
   Push = millis();
 }
 
+prim P_format() { Push = SPIFFS.format(); }
 // end of ARDUINO defs
 
 /*  Table of primitive words  */
 
 static struct primfcn primt[] = {
+  {"0FORMAT", P_format},
   {"0+", P_plus},
   {"0CELL", P_cell},
   {"0-", P_minus},
