@@ -82,6 +82,30 @@ Let's create a demo which blinks until the user presses a key:
 loop \ start the loop
 ```
 
+## Arduino-specific words
+
+dacw ( vol pin -- ): set the pin usually 25 or 26) to a volume (0-255 inc)
+
+digr (pin --): digitalRead(pin)
+
+digw (bool pin --): set pin high or low
+
+format: format the SPIFFs filesystem ready for reading/writing
+
+hi: prints a friendly greeting
+
+key?: returns if the serial is avaliable
+
+msecs ( -- ms): returns  millis()
+
+info - print out info about the system
+
+pinm ( pin mode --): set the pin mode
+
+usecs ( -- us): returns micros()
+
+
+
 ## Filesystem
 
 `atlast` uses the `SPIFFS` file-system. It needs to be formatted first.

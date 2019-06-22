@@ -70,12 +70,14 @@
 //typedef int64_t atl_int;    	      /* Stack integer type */
 //#else
 #if ADDRESS_SIZE == 32
-typedef long atl_int;            /* Stack integer type */
+//typedef long atl_int;            /* Stack integer type */
+//typedef int32_t atl_int;            /* Stack integer type */
+typedef int atl_int;
 #endif
 //#endif
 
-typedef double atl_real;	      /* Real number type */
-//typedef float atl_real;	      /* Real number type */
+//typedef double atl_real;	      /* Real number type */
+typedef float atl_real;	      /* Real number type */
 
 /*  External symbols accessible by the calling program.  */
 
@@ -732,18 +734,14 @@ static int token(char** cp)
       char tc;
       char *tcp;
 
-#ifdef USE_SSCANF
-      if (sscanf(tokbuf, "%li%c", &tokint, &tc) == 1)
-        return TokInt;
-#else
-      tokint = strtoul(tokbuf, &tcp, 0);
-      if (*tcp == 0) {
-        return TokInt;
-      }
-#endif
+      tokint = strtoul(tokbuf, &tcp, 10);
+      if (*tcp == 0) { return TokInt; }
 #ifdef REAL
-      if (sscanf(tokbuf, "%lf%c", &tokreal, &tc) == 1)
-        return TokReal;
+      //if (sscanf(tokbuf, "%f%c", &tokreal, &tc) == 1) return TokReal;
+      tokreal = strtof(tokbuf, &tcp);
+      if (*tcp == 0) { 
+	      //Serial.println("Encountered real");
+	      return TokReal; }
 #endif
     }
     return TokWord;
@@ -1670,8 +1668,12 @@ prim P_fleq()			      /* Test less than or equal */
 prim P_fdot()			      /* Print floating point top of stack */
 {
   Sl(Realsize);
-  //V printf("%g ", REAL0);
-  write30("%g ", REAL0);
+  //V printf("%f ", REAL0);
+  char str[30];
+  snprintf(str, 30, "%f ", (atl_real) REAL0);
+  Serial.print(str);
+
+  //write30("%g ", REAL0);
   Realpop;
 }
 
@@ -1688,10 +1690,8 @@ prim P_float()			      /* Convert integer to floating */
 
 prim P_fix()			      /* Convert floating to integer */
 {
-  stackitem i;
-
   Sl(Realsize);
-  i = (int) REAL0;
+  stackitem i = (atl_int) REAL0;
   Realpop;
   Push = i;
 }
@@ -3125,7 +3125,7 @@ prim P_msecs() {
 
 prim P_format() { Push = SPIFFS.format(); }
 
-prim P_dacWrite()
+prim P_dacw()
 {
 	Sl(2);
 	dacWrite(S0, S1);
@@ -3133,13 +3133,23 @@ prim P_dacWrite()
 	Pop;
 }
 
+prim P_info()
+{
+	write30("sizeof int: %d\n", sizeof(int));
+	write30("sizeof atl_int: %d\n", sizeof(atl_int));
+	write30("sizeof long: %d\n", sizeof(long));
+	write30("sizeof atl_real: %d\n", sizeof(atl_real));
+	write30("sizeof float: %d\n", sizeof(float));
+	write30("sizeof double: %d\n", sizeof(double));
+}
 
 // end of ARDUINO defs
 
 /*  Table of primitive words  */
 
 static struct primfcn primt[] = {
-	{"0DACW", P_dacWrite},
+	{"0INFO", P_info},
+	{"0DACW", P_dacw},
   {"0FORMAT", P_format},
   {"0+", P_plus},
   {"0CELL", P_cell},
@@ -4248,9 +4258,11 @@ undefined(tokbuf);
 
           So(Realsize);
           tru.r = tokreal;
-          for (i = 0; i < Realsize; i++) {
-            Push = tru.s[i];
-          }
+          //for (i = 0; i < Realsize; i++) { Push = tru.s[i]; }
+	  //*(atl_real) stk = tokreal;
+	  //stk++;
+	  memcpy(stk++, &tokreal, 4);
+	  //Push = (atl_int) tokreal;
         }
         break;
 #endif /* REAL */
@@ -4309,10 +4321,10 @@ undefined(tokbuf);
 
 void write30(const char* fmt, ...)
 {
-	static char str[30];
+	static char str[80];
 	va_list arglist;
 	va_start(arglist, fmt);
-	snprintf(str, sizeof(str), fmt, arglist);
+	vsnprintf(str, sizeof(str), fmt, arglist);
 	va_end(arglist);
 	Serial.print(str);
 }
