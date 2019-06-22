@@ -1362,7 +1362,8 @@ prim P_fleq()			      /* Test less than or equal */
 prim P_fdot()			      /* Print floating point top of stack */
 {
   Sl(Realsize);
-  V printf("%g ", REAL0);
+  //V printf("%g ", REAL0);
+  write30("%g ", REAL0);
   Realpop;
 }
 
@@ -2815,11 +2816,22 @@ prim P_msecs() {
 }
 
 prim P_format() { Push = SPIFFS.format(); }
+
+prim P_dacWrite()
+{
+	Sl(2);
+	dacWrite(S0, S1);
+	Pop;
+	Pop;
+}
+
+
 // end of ARDUINO defs
 
 /*  Table of primitive words  */
 
 static struct primfcn primt[] = {
+	{"0DACW", P_dacWrite},
   {"0FORMAT", P_format},
   {"0+", P_plus},
   {"0CELL", P_cell},
@@ -3987,6 +3999,15 @@ undefined(tokbuf);
   }
 */
 
+void write30(const char* fmt, ...)
+{
+	static char str[30];
+	va_list arglist;
+	va_start(arglist, fmt);
+	snprintf(str, sizeof(str), fmt, arglist);
+	va_end(arglist);
+	Serial.print(str);
+}
 
 void writing(char *str) {
   Serial.print(str);  

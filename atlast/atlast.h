@@ -23,13 +23,18 @@
 //#include "atldef.h"
 
 // mcarter hack
+#define ADDRESS_SIZE 32
+
 //#if sizeof(size_t) == 8
 //typedef int64_t atl_int;    	      /* Stack integer type */
 //#else
-typedef int32_t atl_int;            /* Stack integer type */
+#if ADDRESS_SIZE == 32
+typedef long atl_int;            /* Stack integer type */
+#endif
 //#endif
 
-typedef double atl_real;	      /* Real number type */
+//typedef double atl_real;	      /* Real number type */
+typedef float atl_real;	      /* Real number type */
 
 /*  External symbols accessible by the calling program.  */
 
