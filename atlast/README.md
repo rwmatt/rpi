@@ -85,6 +85,9 @@ loop \ start the loop
 ## Arduino-specific words
 
 dacw ( vol pin -- ): set the pin usually 25 or 26) to a volume (0-255 inc)
+See `dac.4th` for generating a tone at 440Hz using a sine wave.
+
+delay-ms ( n --): delay for n milliseconds
 
 digr (pin --): digitalRead(pin)
 

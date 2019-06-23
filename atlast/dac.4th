@@ -1,24 +1,12 @@
 1
-variable start usecs start !
-variable now
-\ variable q  : q! 1 q ! ;
+440 constant freq 	\ this is the frequncy we want to output
+1000000 constant 1m 	\ work in microseconds
+1m freq / constant T 	\ time period
 
-\ : -usecs usecs 1000000 mod ;
-\ : -usecs now @ start @  - 8000 mod ;
-: secs usecs float 1000000.0 f/ ;
-
-440.0 constant freq
-: vol secs  freq f* 2.0 f/ 3.1412 f/  sin 127.0 f* fix 128 + ;
-
-: looper 
-\ 0 q !
-begin 
-	key? if exit then 
-	usecs now !
-	now @ start @ - 125  >=  if
-		vol 25 dacw
-		now @ start !
-	then	
-again  
-;
-
+2.0 3.14159 f* freq float f* 1m float f/ constant scale
+\ you should use the mod operator to bring
+\ usecs within a reasonable range for sine
+: vol usecs T mod float scale f* sin 127.0 f* fix 128 + ;
+\ the inner loop of tone takes about 28us
+: tone begin vol 25 dacw key? until ;
+tone \ press return key to exit
