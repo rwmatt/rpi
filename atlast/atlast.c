@@ -1,4 +1,5 @@
 /*
+	Pop;
 			      A T L A S T
 	 Autodesk Threaded Language Application System Toolkit
 		    Main Interpreter and Compiler
@@ -39,7 +40,7 @@
 #define DEFFIELDS		      /* Definition field access for words */
 #define DOUBLE			      /* Double word primitives (2DUP) */
 #define EVALUATE		      /* The EVALUATE primitive */
-#define FILEIO			      /* File I/O primitives */
+//#define FILEIO			      /* File I/O primitives */
 #define MATH			      /* Math functions */
 #define MEMMESSAGE		      /* Print message for stack/heap errors */
 #define PROLOGUE		      /* Prologue processing and auto-init */
@@ -3125,6 +3126,62 @@ prim P_msecs() {
 
 prim P_format() { Push = SPIFFS.format(); }
 
+prim P_fallot()
+{
+	hptr += sizeof(File);
+}
+
+prim P_fopen() 
+{ 
+	Sl(3); 
+	Hpc(S1);
+	Hpc(S2);
+	File* f = (File*) S0;
+
+	//char* filename = S1;
+	//char* mode = S0;
+	Serial.println("About the open");
+	*f = SPIFFS.open((char*) S2, (char*) S1); 
+	Serial.println("Phew");
+	Pop;
+	Pop;
+	S0 = (stackitem) &f;
+}
+
+prim P_favail()
+{
+	Sl(1);
+	File* f = (File*) S0;
+	S0 = f->available();
+}
+
+prim P_freadc()
+{
+	Sl(1);
+	//spiffs_t* sp;
+	//spiffs_check(sp);
+
+	File* f = (File*) S0;
+	S0 = f->read();
+}
+
+prim P_fwritec()
+{
+	Sl(2);
+	File* f = (File*) S0;
+	Pop;
+	S0 = f->write(S1);
+}
+
+prim P_fclose() 
+{ 
+	Sl(1); 
+	File* f = (File*) S0; 
+	f->close();
+	Pop;
+	//Push = f.close(); 
+}
+
 prim P_dacw()
 {
 	Sl(2);
@@ -3143,6 +3200,22 @@ prim P_info()
 	write30("sizeof double: %d\n", sizeof(double));
 }
 
+prim P_char()
+{
+	Serial.println("TODO: implement CHAR");
+
+}
+
+prim P_emit()
+{
+	Sl(1);
+	char str[2];
+	str[0] = (char) S0;
+	str[1] = 0;
+	Serial.print(str);
+	Pop;
+}
+
 // end of ARDUINO defs
 
 /*  Table of primitive words  */
@@ -3150,7 +3223,15 @@ prim P_info()
 static struct primfcn primt[] = {
 	{"0INFO", P_info},
 	{"0DACW", P_dacw},
+	{"0FALLOT", P_fallot},
   {"0FORMAT", P_format},
+  {"0FOPEN", P_fopen},
+  {"0FCLOSE", P_fclose},
+  {"0FWRITEC", P_fwritec},
+  {"0FREADC", P_freadc},
+  {"0FAVAIL", P_favail},
+  {"0CHAR", P_char},
+  {"0EMIT", P_emit},
   {"0+", P_plus},
   {"0CELL", P_cell},
   {"0-", P_minus},
@@ -3985,6 +4066,7 @@ void atl_break()
 
 /*  ATL_LOAD  --  Load a file into the system.	*/
 
+#ifdef USE_ATL_LOAD
 int atl_load(FILE *fp)
 {
   int es = ATL_SNORM;
@@ -4021,6 +4103,7 @@ int atl_load(FILE *fp)
   instream = sinstr;		      /* Unstack input stream */
   return es;
 }
+#endif
 
 /*  ATL_PROLOGUE  --  Recognise and process prologue statement.
 		      Returns 1 if the statement was part of the
@@ -4375,7 +4458,15 @@ void setup() {
   Serial.begin(115200);
   //Serial.println("atlast started 2");
   int fname = FALSE, defmode = FALSE;
-  FILE *ifp;
+  //FILE *ifp;
+
+  Serial.print("Mounting SPIFFS:");
+  if(SPIFFS.begin())
+	  Serial.print("success\n");
+  else {
+	  Serial.print("failure\n");
+	  Serial.println("Have you formatted it?");
+  }
 
   while (TRUE) {
     if (readln() != 0) {

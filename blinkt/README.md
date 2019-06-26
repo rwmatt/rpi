@@ -1,6 +1,6 @@
 # blinkt
 
-Turning the blinkt on and off.
+Turning the blinkt on and off. Low-level implementation is in **blinktlow**.
 
 ## Setup
 
@@ -39,7 +39,7 @@ PIN Notes
 
 [Reference](https://pinout.xyz/pinout/blinkt#)
 
-NB: power the device using pin 2, not pin 4, which is also a 5V output on the RPi.
+NB: power the device using pin 2, not pin 4, which is also a 5V output on the RPi. A test revealed that you can power it using 3V3, though.
 
 The code supplied on the aforementioned link appears to be wrong, and seems to contain a slight bug. However, its near equivalent, `example01.py`, does the same thing, and can be run by executing the following command:
 ```
