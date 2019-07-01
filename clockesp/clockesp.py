@@ -1,18 +1,16 @@
 
 
 
-#import machine
+import machine
 import time
-#import utime
 from machine import Pin, SPI, RTC
 import ntptime
-#import uasyncio as asyncio
 from utime import sleep_ms, ticks_ms, ticks_diff
-#import urtc
+import machine
+import socket
 
 import mel
-from mel import adjustBST
-#import settings # personal settings which contain Wifi info
+#from mel import adjustBST
 
 heart = Pin(16, Pin.OUT) # D0, but internal LED
 heart.on() # counterintuively, for the internal LED, ON means OFF
@@ -129,8 +127,8 @@ rtc = RTC()
 
 def display_time():
     yr , imonth, iday, _ , hr, mint, _, _ = rtc.datetime()
-    #print(mint)
-    imonth, iday, hr = mel.adjustBST(yr, imonth, iday, hr)
+    #imonth, iday, hr = mel.adjustBST(yr, imonth, iday, hr)
+    #set_display([iday, None, hr, mint])
     set_display([iday, None, hr, mint])
 
 timing = False
@@ -257,18 +255,31 @@ def do_connect(delay_ms = 100):
 #    sta = do_connect()
 do_connect()
 
+
+def use_local():
+    try:
+        s = socket.socket()
+        addr = socket.getaddrinfo("192.168.0.17", 1762)[0][-1]
+        s.connect(addr)
+        data = s.recv(100)
+    finally:
+        s.close()
+    
+    fields = data.decode().split(" ")
+    fields = tuple(map(int, fields))
+    rtc = machine.RTC()
+    rtc.datetime(fields)
+
 def update_ntp():
-    #import ntptime
     show_status(402)
     start_killer()
-    ntptime.host = '192.168.0.17'
-    ntptime.settime()    
-    #sta_if.disconnect()
-    #sta_if.active(False)
+    #ntptime.host = '192.168.0.17'
+    #ntptime.settime()
+    use_local()    
     stop_killer()
     show_status(403)
     update_display()
-#print(rtc.datetime())
+
 
 #from machine import Timer
 import utime
