@@ -11,7 +11,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
     """
 
     def handle(self):
-        resp = time.strftime("%Y %m %d %H %M %S\n", time.localtime())
+        resp = time.strftime("%Y %m %d %u %H %M %S 0\n", time.localtime())
         resp = str.encode(resp)
         self.request.sendall(resp)
         return
