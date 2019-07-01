@@ -19,6 +19,39 @@ jupyter nbconvert --to script clockesp.ipynb
 403 NTP update complete
 ```
 
+## Setup of ltp (local time protocol) daemon
+
+Check that systemd has enabled rc.local:
+```
+systemctl status rc-local.service
+```
+
+sudo vim /etc/rc.local:
+```
+nohup python3 /home/mcarter/repos/rpi/clockesp/ltpd.py &
+exit 0
+```
+
+Set permissions:
+```
+sudo chown root /etc/rc.local
+sudo chmod 755 /etc/rc.local
+```
+
+If the process is already hogging the port:
+```
+fuser -k 1762/tcp
+```
+
+Test it:
+```
+/etc/rc.local
+telnet pi2 1762
+
+```
+
+Reboot and see if telnetting is still OK.
+
 ## See also
 
 
