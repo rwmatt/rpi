@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+function print_help {
+cat <<EOF
+Description here
+etc
+EOF
+}
+ 
+
+case $1 in
+    h) print_help ; exit ;;
+esac
+
+picocom -b 115200 /dev/ttyUSB0
