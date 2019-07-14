@@ -190,6 +190,7 @@ def button_released(pauser):
                  delay_ms = 20)    
 
 def update_heartbeat():
+    return # turn it off for now
     heart.off()
     utime.sleep_ms(10)
     heart.on()
