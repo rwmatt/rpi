@@ -19,6 +19,7 @@ Reference information:
 ## General
 
 * [debounce](https://gist.github.com/blippy/430cc73cb50b9e44c3423c2717ab22ee) a button
+* [Twiddle-factor FFT for mcus](https://blog.podkalicki.com/twiddle-factor-based-fft-for-microcontrollers/)
 
 ## Projects
 
