@@ -15,16 +15,17 @@ import mel
 heart = Pin(16, Pin.OUT) # D0, but internal LED
 heart.on() # counterintuively, for the internal LED, ON means OFF
 sw1 = Pin(4, Pin.IN, Pin.PULL_UP) # D2
-sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1
 buzzer = Pin(0, Pin.OUT) # D3
 buzzer.off()
 cs_pin = Pin(15, Pin.OUT) # aka SS slave select, D8
 cs_pin.on()
 
-# maybe put in boot mode
-if(sw2.value() == 0):
-    while True:
-        sleep_ms(1000)
+# maybe put in programming mode
+sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1 # right switch
+normal_mode = (sw2.value() != 0)
+#if(sw2.value() == 0):
+#    while True:
+#        sleep_ms(1000)
 
 # set up display
 spi = SPI(1)
@@ -84,8 +85,8 @@ class Every:
         
     def rising(self):
         now =utime.ticks_ms()
-        if now<self.start: self.start = now
-        if now - self.start < self.interval_ms: return False
+        #if now<self.start: self.start = now
+        if ticks_diff(now, self.start) < self.interval_ms: return False
         self.start = now
         return True
     
@@ -127,18 +128,12 @@ rtc = RTC()
 
 def display_time():
     yr , imonth, iday, _ , hr, mint, _, _ = rtc.datetime()
-    #imonth, iday, hr = mel.adjustBST(yr, imonth, iday, hr)
-    #set_display([iday, None, hr, mint])
     set_display([iday, None, hr, mint])
 
 timing = False
 timer_start = None
 
-def change_major_mode():
-    global timing, timer_start
-    timing = not timing;
-    if timing:
-        timer_start = ticks_ms()
+
 
 def elapsed_time():
     global timer_start
@@ -175,11 +170,13 @@ def update_display():
     else:
         display_time()
 
-
-
 def button_pressed(pauser):
-    #print('Button pressed')
-    change_major_mode()
+    #print('Button pressed')    
+    #change_major_mode()
+    global timing, timer_start
+    timing = not timing;
+    if timing:
+        timer_start = ticks_ms()        
     pauser.pause(button_released, condition = lambda: sw1.value() == 1, 
                  delay_ms = 20)
     
@@ -252,9 +249,8 @@ def do_connect(delay_ms = 100):
     stop_killer()
     return sta
 
-#if sta is not None:
-#    sta = do_connect()
-do_connect()
+
+#do_connect()
 
 
 def use_local():
@@ -301,6 +297,10 @@ def loop():
         ev_buzzer.update()
         ev_display.update()
         ev_heartbeat.update()
-loop()    
+#loop()    
 
-
+if normal_mode:
+    do_connect()
+    loop()
+else:
+    show_status(404)

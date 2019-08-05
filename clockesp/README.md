@@ -17,7 +17,14 @@ jupyter nbconvert --to script clockesp.ipynb
 401 Initiating Wifi connect
 402 Initiating NTP update
 403 NTP update complete
+404 Programming mode
 ```
+
+## Programming mode
+
+Normal operation is not started, but the device is put into programming mode. 
+To activate programming mode, hold down right switch whilst turning on the 
+device.
 
 ## Setup of ltp (local time protocol) daemon
 
