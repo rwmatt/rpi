@@ -1,5 +1,14 @@
 # esp32-wroom
 
+## Unclassified
+
+***Built-in blue LED***: GPIO2 (unconfirmed)
+
+***Upload program*** whilst avoiding having to press Boot: 
+put a 10uF cap between EN and GND (1-3uF was the one I saw 
+recommended, though)
+
+
 ## See also
 
 ### Audio
