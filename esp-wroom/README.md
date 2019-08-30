@@ -2,9 +2,9 @@
 
 ## Unclassified
 
-***Built-in blue LED***: GPIO2 (unconfirmed)
+**Built-in blue LED**: GPIO2 (unconfirmed)
 
-***Upload program*** whilst avoiding having to press Boot: 
+**Upload program** whilst avoiding having to press Boot: 
 put a 10uF cap between EN and GND (1-3uF was the one I saw 
 recommended, though)
 
@@ -19,6 +19,7 @@ recommended, though)
 * [Playing hard-coded audio on an ESP32 via DAC](https://gist.github.com/blippy/ee1b0f970c56d8eee7f54f796c5b20f1)
 * [Stream Your Audio on the ESP32](https://www.hackster.io/julianfschroeter/stream-your-audio-on-the-esp32-2e4661)
 * [Streaming audio on an ESP32 with a blinkt](https://gist.github.com/blippy/f9d008d7c6a7db1018bd3929f2352e12)
+* [Synthesizer](https://www.youtube.com/watch?v=aShBEQNSTgA)
 * [WAV](https://www.xtronical.com/basics/audio/digitised-speech-sound-esp32-playing-wavs/)
 
 ### Other
