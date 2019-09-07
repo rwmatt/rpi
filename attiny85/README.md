@@ -23,4 +23,7 @@ Notes:
 ## See also
 
 * [clock](clock.md) - setting the clock frequency
-* [carcoleptic](https://github.com/brabl2/narcoleptic) - recuded power consumption
+* [carcoleptic](https://github.com/brabl2/narcoleptic) - 
+reduced power consumption
+* [megaphone](https://www.youtube.com/watch?v=__ECzxnvEg8)
+
