@@ -3,7 +3,8 @@
 DEV=`ls /dev/ttyU* | tail -1`
 echo "DEV: $DEV"
 
-BIN=~/Downloads/esp32-20190529-v1.11.bin
+#BIN=~/Downloads/esp32-20190529-v1.11.bin
+BIN=~/extras/upython-esp32-20190529-v1.11.bin
 
 esptool.py --port $DEV erase_flash
 esptool.py --port $DEV write_flash 0x1000 $BIN

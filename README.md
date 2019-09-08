@@ -46,6 +46,8 @@ Reference information:
 * [Mini USB nano](https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=mini+usb+nano&_sacat=0). Amazon also has good deals on these
 * [ZeroSeg](zeroseg/README.md)
 
+---
+![](1306.jpg) [1306)(1306) I2C 
 ___
 
 ![](4/4.jpg) [4](4)
