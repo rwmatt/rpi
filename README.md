@@ -47,7 +47,7 @@ Reference information:
 * [ZeroSeg](zeroseg/README.md)
 
 ---
-![](1306.jpg) [1306)(1306) I2C 
+![](1306/1306.jpg) [1306](1306) I2C, WROOM 
 ___
 
 ![](4/4.jpg) [4](4)

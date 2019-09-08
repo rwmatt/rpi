@@ -1,5 +1,14 @@
 # esp32-wroom
 
+## Pins
+
+```
+21 SDA (I2C)
+22 SDL (I2C)
+```
+
+
+
 ## Unclassified
 
 **Built-in blue LED**: GPIO2 (unconfirmed)
@@ -9,7 +18,11 @@ put a 10uF cap between EN and GND (1-3uF was the one I saw
 recommended, though)
 
 
-## See also
+## Also on this site
+
+* [1306](../1306) OLED display
+
+## Links to other sites
 
 ### Audio
 
