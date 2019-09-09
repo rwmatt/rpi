@@ -7,7 +7,7 @@
 22 SDL (I2C)
 ```
 
-
+![Diagram](wroon-pins.png)
 
 ## Unclassified
 
