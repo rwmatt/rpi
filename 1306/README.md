@@ -17,7 +17,7 @@ SCL     D22
 Download and setup:
 
 ```
-sudp pip3 install adafruit-ampy
+sudp pip3 install adafruit-ampy # but included here
 wget https://raw.githubusercontent.com/adafruit/micropython-adafruit-ssd1306/master/ssd1306.py
 ampy --port /dev/ttyUSB0 --baud 115200 put ssd1306.py
 ```
