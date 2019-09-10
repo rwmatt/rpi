@@ -9,6 +9,7 @@ Reference information:
 * [esp-wroom](esp-wroom)
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
 * [i2c](i2c): Arduino and RPi3 master, ATTiny85 slave
+* [i2s](i2s)
 * [spi](spi)
 
 ## Arduino Nano/Uno
