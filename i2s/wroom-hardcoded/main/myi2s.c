@@ -28,7 +28,6 @@ void app_main()
 
 	static const i2s_config_t i2s_config = {
 		.mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,
-		//.mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,
 		.sample_rate = 8000,
 		.bits_per_sample = 16,
 		.channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
@@ -37,7 +36,6 @@ void app_main()
 		.dma_buf_count = 8,
 		.dma_buf_len = 64,
 		.use_apll = false
-			//.intr_alloc_flags = ESP_INTR_FLAG_LEVEL1
 	};
 
 	ret = i2s_driver_install(i2s_num, &i2s_config, 0, NULL);	
@@ -50,22 +48,15 @@ void app_main()
 
 	puts("Hi 1");
 	fflush(stdout);
-
-
-
 	puts("Data received");
 	fflush(stdout);
 
 
 	size_t nbytes;
-	//size_t nblocks = track_raw_len /512;
-	//for(int blk = 0 ; blk < nblocks; ++blk) {
 	while(1) {
 		for(int i = 0 ; i < track_raw_len; ++i) {
 			uint16_t vol = track_raw[i] << 8;
-			//ret = i2s_write(0, track_raw + 512*blk , 512, &nbytes, portMAX_DELAY);
 			ret = i2s_write(0, &vol , 2, &nbytes, portMAX_DELAY);
-			//printf("bytes written: %zu\n", nbytes);
 			assert(ret == ESP_OK);
 		}
 		puts("Seems to have written OK");
