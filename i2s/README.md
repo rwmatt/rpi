@@ -1,4 +1,4 @@
 # I2S
 
-* [wroom-hardcoded](wroom-harcoded)
+* [wroom-hardcoded](wroom-hardcoded)
 
