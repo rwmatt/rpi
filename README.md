@@ -64,6 +64,11 @@ I2C
 
 ---
 
+![](jack.jpg) Stereo Audio Jack. G=GND, L=Left speaker, R=Right speaker, 1=unknown, 2=unknown.
+Underside shown.
+
+---
+
 ![](rtc/rtc.jpg) [rtc](rtc)
 
 I2C
