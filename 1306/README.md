@@ -1,4 +1,4 @@
-# 1307
+# 1306
 
 OLED SSD1306, I2C, 128x64, 12864 LCD screen
 
@@ -39,3 +39,7 @@ oled.show()
 ```
 
 [xlink](https://www.instructables.com/id/MicroPython-on-an-ESP32-Board-With-Integrated-SSD1/)
+
+## Links to other sites
+
+* [oscilloscope.py](https://gist.github.com/blippy/dd93dc64640f31dd9616af8e35cc602a) - seems a slow old thing
