@@ -51,12 +51,36 @@ const int IPV6_GOTIP_BIT = BIT1;
 
 //static const char *TAG = "example";
 static const char *payload = "Message from ESP32 ";
+//static const char *payload = "";
 
 int get_hr()
 {
-	return 666; //TODO
+	//struct timeval tv;
+	//gettimeofday(&tv, NULL);
+	time_t rawtime = time(NULL);
+	struct tm* tm = localtime(&rawtime);
+	return tm->tm_hour;
 }
 
+void set_datetime(char* str)
+{
+
+	int  y, m , d, dow, hr, min, sec, dummy;
+	sscanf(str, "%d %d %d %d %d %d %d %d", &y, &m , &d, &dow, &hr, &min, &sec, &dummy);
+	struct tm tm;
+	tm.tm_year = y-1900;
+	tm.tm_mon = m-1;
+	tm.tm_mday = d;
+	tm.tm_hour = hr;
+	tm.tm_min = min;
+	tm.tm_sec = sec;
+	ESP_LOGI(TAG, "Setting time: %s", asctime(&tm));
+
+	time_t t = mktime(&tm);
+	struct timeval now = { .tv_sec = t };
+	settimeofday(&now, NULL);
+
+}
 
 void tcp_client_task(void *pvParameters)
 {
@@ -100,11 +124,13 @@ void tcp_client_task(void *pvParameters)
         ESP_LOGI(TAG, "Successfully connected");
 
         while (1) {
+		 // /* don't think we need send
             int err = send(sock, payload, strlen(payload), 0);
             if (err < 0) {
                 ESP_LOGE(TAG, "Error occured during sending: errno %d", errno);
                 break;
             }
+	    // */
 
             int len = recv(sock, rx_buffer, sizeof(rx_buffer) - 1, 0);
             // Error occured during receiving
@@ -117,9 +143,11 @@ void tcp_client_task(void *pvParameters)
                 rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
                 ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
                 ESP_LOGI(TAG, "%s", rx_buffer);
+		set_datetime(rx_buffer);
             }
 
-            vTaskDelay(2000 / portTICK_PERIOD_MS);
+            //vTaskDelay(2000 / portTICK_PERIOD_MS);
+	    DELAY_MIN(30);
         }
 
         if (sock != -1) {

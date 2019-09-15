@@ -52,10 +52,9 @@ const char *TAG = "alacrity";
 char rx_buffer[128];
 char tx_buffer[128];
 
+
 int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
-#define DELAY_S(n) vTaskDelay(secs(n))
-#define DELAY_MIN(n) for(int i=0; i<n; ++i) { DELAY_S(60); }
-#define DELAY_MS(n) vTaskDelay(n/portTICK_PERIOD_MS)
+
 
 static int alarm_activated = 0;
 void both_on(int yes)
@@ -70,7 +69,7 @@ static void beep_twice_task(void* pvParameters)
 	while(1) {
 		if(do_beep_twice) {
 			for(int j = 0; j<2; ++j) {
-				for(int i = 0; i<5; ++i) {
+				for(int i = 0; i<15; ++i) {
 					both_on(1);
 					DELAY_MS(100);
 					both_on(0);
@@ -147,12 +146,22 @@ void process_rx()
 
 	if(matching("ALON")) {
 		alarm_activated = 1;
+		strcpy(tx_buffer, "+OK alarm raised\n");
 	} else if(matching("BEEP")) {
 		do_beep_twice = 1;
+		strcpy(tx_buffer, "+OK beeping\n");
+	} else if(matching("TIME")) {
+		time_t rawtime;
+		time(&rawtime);
+		struct tm* timeinfo = localtime(&rawtime);
+		sprintf(tx_buffer, "+OK date is %s", asctime(timeinfo));
+	} else {
+		strcpy(tx_buffer, "400 unknown command\n");
 	}
+
 	rx_buffer[0] = 0;
 
-	strcpy(tx_buffer, "OK\n");
+	//strcpy(tx_buffer, "OK\n");
 				
 }
 
