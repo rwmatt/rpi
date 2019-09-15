@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := tcp_server
+PROJECT_NAME := alacrity
 
 include $(IDF_PATH)/make/project.mk
 

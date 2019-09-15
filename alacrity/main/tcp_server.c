@@ -23,6 +23,7 @@
 #include "lwip/sys.h"
 #include <lwip/netdb.h>
 
+#include "common.h"
 
 /* The examples use simple WiFi configuration that you can set via
    'make menuconfig'.
@@ -41,19 +42,49 @@
 /* FreeRTOS event group to signal when we are connected & ready to make a request */
 static EventGroupHandle_t wifi_event_group;
 
-const int IPV4_GOTIP_BIT = BIT0;
-const int IPV6_GOTIP_BIT = BIT1;
 
 const int led = 19;
 const int bzr = 22;
 
-static const char *TAG = "alacrity";
+
+const char *TAG = "alacrity";
 
 char rx_buffer[128];
 char tx_buffer[128];
 
 int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
 #define DELAY_S(n) vTaskDelay(secs(n))
+#define DELAY_MIN(n) for(int i=0; i<n; ++i) { DELAY_S(60); }
+#define DELAY_MS(n) vTaskDelay(n/portTICK_PERIOD_MS)
+
+static int alarm_activated = 0;
+void both_on(int yes)
+{
+	gpio_set_level(bzr, yes);
+	gpio_set_level(led, yes);
+}
+
+int do_beep_twice = 0;
+static void beep_twice_task(void* pvParameters)
+{
+	while(1) {
+		if(do_beep_twice) {
+			for(int j = 0; j<2; ++j) {
+				for(int i = 0; i<5; ++i) {
+					both_on(1);
+					DELAY_MS(100);
+					both_on(0);
+					DELAY_MS(100);
+				}
+				DELAY_MIN(1);
+			}
+			do_beep_twice = 0;
+		}
+		DELAY_S(1);
+	}
+
+	vTaskDelete(NULL);
+}
 
 static void remind(void *pvParameters)
 {
@@ -65,22 +96,16 @@ static void remind(void *pvParameters)
 		//time_t now = time(0);
 		//struct tm* localtm = localtime(&now);
 		if(get_hr() == on_hr) {
-			beep_twice();
-			DELAY_MIN(1);
-			beep_twice();
-			while(get_hr() == on_hr)
-				DELAY_MIN(1);
+			do_beep_twice =1;
+			//DELAY_MIN(2);
+			//do_beep_twice =1;
+			//while(get_hr() == on_hr) DELAY_MIN(1);
+			DELAY_MIN(63);
 		}
 		DELAY_S(10);
 	}
 }
 
-static int alarm_activated = 0;
-void both_on(int yes)
-{
-	gpio_set_level(bzr, yes);
-	gpio_set_level(led, yes);
-}
 
 static void play_alarm(void *pvParameters)
 {
@@ -104,6 +129,14 @@ static void play_alarm(void *pvParameters)
 }
 
 
+int matching(char* str)
+{
+	if(strncmp(rx_buffer, str, strlen(str)) == 0)
+		return 1;
+	else
+		return 0;
+}
+
 void process_rx()
 {
 	int len = strlen(rx_buffer);
@@ -112,8 +145,13 @@ void process_rx()
 	while((len>0) && ((rx_buffer[len-1] == '\n') || (rx_buffer[len-1] == '\r')))
 		rx_buffer[--len] = 0;
 
-	if(strcmp(rx_buffer, "ALON") ==0)
+	if(matching("ALON")) {
 		alarm_activated = 1;
+	} else if(matching("BEEP")) {
+		do_beep_twice = 1;
+	}
+	rx_buffer[0] = 0;
+
 	strcpy(tx_buffer, "OK\n");
 				
 }
@@ -305,4 +343,6 @@ void app_main()
     xTaskCreate(remind, "remind12", 4096, (void*) 12, 5, NULL);
     xTaskCreate(remind, "remind17", 4096, (void*) 17, 5, NULL);
     xTaskCreate(remind, "remind21", 4096, (void*) 21, 5, NULL);
+    xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL);
+    xTaskCreate(beep_twice_task, "beep_twice", 4096, NULL, 5, NULL);
 }
