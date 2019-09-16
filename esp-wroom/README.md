@@ -19,7 +19,7 @@ cp -r $IDF_PATH/../esp-idf-template SOMEWHERE
 
 ## Unclassified
 
-**Built-in blue LED**: GPIO2 (unconfirmed)
+**Built-in blue LED**: GPIO2 (confirmed)
 
 **Upload program** whilst avoiding having to press Boot: 
 put a 10uF cap between EN and GND (1-3uF was the one I saw 
