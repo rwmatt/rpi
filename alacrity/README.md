@@ -1,5 +1,13 @@
 
-# TCP Server example
+# Alacrity
+
+Reminds you for pills, but also has an alert.
+
+Compiled with IDF v 3.2.3
+
+The companion project is alert.
+
+---
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
 

@@ -5,7 +5,7 @@
    Unless required by applicable law or agreed to in writing, this
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
-*/
+   */
 #include <string.h>
 #include <sys/param.h>
 #include "freertos/FreeRTOS.h"
@@ -29,7 +29,7 @@
    'make menuconfig'.
    If you'd rather not, just change the below entries to strings with
    the config you want - ie #define EXAMPLE_WIFI_SSID "mywifissid"
-*/
+   */
 #if __has_include("/home/mcarter/repos/redact/docs/secret/settings.h")
 #include "/home/mcarter/repos/redact/docs/secret/settings.h"
 //else
@@ -162,196 +162,209 @@ void process_rx()
 	rx_buffer[0] = 0;
 
 	//strcpy(tx_buffer, "OK\n");
-				
+
 }
 
 static esp_err_t event_handler(void *ctx, system_event_t *event)
 {
-    switch (event->event_id) {
-    case SYSTEM_EVENT_STA_START:
-        esp_wifi_connect();
-        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_START");
-        break;
-    case SYSTEM_EVENT_STA_CONNECTED:
-        /* enable ipv6 */
-        tcpip_adapter_create_ip6_linklocal(TCPIP_ADAPTER_IF_STA);
-        break;
-    case SYSTEM_EVENT_STA_GOT_IP:
-        xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT);
-        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
-        break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-        /* This is a workaround as ESP32 WiFi libs don't currently auto-reassociate. */
-        esp_wifi_connect();
-        xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
-        xEventGroupClearBits(wifi_event_group, IPV6_GOTIP_BIT);
-        break;
-    case SYSTEM_EVENT_AP_STA_GOT_IP6:
-        xEventGroupSetBits(wifi_event_group, IPV6_GOTIP_BIT);
-        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP6");
+	switch (event->event_id) {
+		case SYSTEM_EVENT_STA_START:
+			esp_wifi_connect();
+			ESP_LOGI(TAG, "SYSTEM_EVENT_STA_START");
+			break;
+		case SYSTEM_EVENT_STA_CONNECTED:
+			/* enable ipv6 */
+			tcpip_adapter_create_ip6_linklocal(TCPIP_ADAPTER_IF_STA);
+			break;
+		case SYSTEM_EVENT_STA_GOT_IP:
+			xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT);
+			ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
+			break;
+		case SYSTEM_EVENT_STA_DISCONNECTED:
+			/* This is a workaround as ESP32 WiFi libs don't currently auto-reassociate. */
+			esp_wifi_connect();
+			xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
+			xEventGroupClearBits(wifi_event_group, IPV6_GOTIP_BIT);
+			break;
+		case SYSTEM_EVENT_AP_STA_GOT_IP6:
+			xEventGroupSetBits(wifi_event_group, IPV6_GOTIP_BIT);
+			ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP6");
 
-        char *ip6 = ip6addr_ntoa(&event->event_info.got_ip6.ip6_info.ip);
-        ESP_LOGI(TAG, "IPv6: %s", ip6);
-    default:
-        break;
-    }
-    return ESP_OK;
+			char *ip6 = ip6addr_ntoa(&event->event_info.got_ip6.ip6_info.ip);
+			ESP_LOGI(TAG, "IPv6: %s", ip6);
+		default:
+			break;
+	}
+	return ESP_OK;
 }
 
 static void initialise_wifi(void)
 {
-    tcpip_adapter_init();
-    wifi_event_group = xEventGroupCreate();
-    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
-    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
-    wifi_config_t wifi_config = {
-        .sta = {
-            .ssid = EXAMPLE_WIFI_SSID,
-            .password = EXAMPLE_WIFI_PASS,
-        },
-    };
-    ESP_LOGI(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
-    ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_STA) );
-    ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
-    ESP_ERROR_CHECK( esp_wifi_start() );
+	tcpip_adapter_init();
+	wifi_event_group = xEventGroupCreate();
+	ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
+	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+	ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
+	ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
+	wifi_config_t wifi_config = {
+		.sta = {
+			.ssid = EXAMPLE_WIFI_SSID,
+			.password = EXAMPLE_WIFI_PASS,
+		},
+	};
+	ESP_LOGI(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
+	ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_STA) );
+	ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
+	ESP_ERROR_CHECK( esp_wifi_start() );
 }
 
 static void wait_for_ip()
 {
-    uint32_t bits = IPV4_GOTIP_BIT | IPV6_GOTIP_BIT ;
+	uint32_t bits = IPV4_GOTIP_BIT | IPV6_GOTIP_BIT ;
 
-    ESP_LOGI(TAG, "Waiting for AP connection...");
-    xEventGroupWaitBits(wifi_event_group, bits, false, true, portMAX_DELAY);
-    ESP_LOGI(TAG, "Connected to AP");
+	ESP_LOGI(TAG, "Waiting for AP connection...");
+	xEventGroupWaitBits(wifi_event_group, bits, false, true, portMAX_DELAY);
+	ESP_LOGI(TAG, "Connected to AP");
+}
+
+int setup_listen_sock(int *ptr_listen_sock)
+{
+	char addr_str[128];
+	int addr_family;
+	int ip_protocol;
+	int err = 0;
+#ifdef CONFIG_EXAMPLE_IPV4
+	struct sockaddr_in destAddr;
+	destAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	destAddr.sin_family = AF_INET;
+	destAddr.sin_port = htons(PORT);
+	addr_family = AF_INET;
+	ip_protocol = IPPROTO_IP;
+	inet_ntoa_r(destAddr.sin_addr, addr_str, sizeof(addr_str) - 1);
+#else // IPV6
+	struct sockaddr_in6 destAddr;
+	bzero(&destAddr.sin6_addr.un, sizeof(destAddr.sin6_addr.un));
+	destAddr.sin6_family = AF_INET6;
+	destAddr.sin6_port = htons(PORT);
+	addr_family = AF_INET6;
+	ip_protocol = IPPROTO_IPV6;
+	inet6_ntoa_r(destAddr.sin6_addr, addr_str, sizeof(addr_str) - 1);
+#endif
+
+	*ptr_listen_sock = socket(addr_family, SOCK_STREAM, ip_protocol);
+	if (*ptr_listen_sock < 0) {
+		ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);
+		return errno;
+	}
+	ESP_LOGI(TAG, "Socket created");
+
+	err = bind(*ptr_listen_sock, (struct sockaddr *)&destAddr, sizeof(destAddr));
+	if (err != 0) {
+		ESP_LOGE(TAG, "Socket unable to bind: errno %d", errno);
+		return err;
+	}
+	ESP_LOGI(TAG, "Socket binded");
+
+	err = listen(*ptr_listen_sock, 1);
+	if (err != 0) {
+		ESP_LOGE(TAG, "Error occured during listen: errno %d", errno);
+		return err;
+	}
+	ESP_LOGI(TAG, "Socket listening");
+	return 0;
 }
 
 static void tcp_server_task(void *pvParameters)
 {
-    char addr_str[128];
-    int addr_family;
-    int ip_protocol;
+	char addr_str[128];
 
-    while (1) {
+	int listen_sock;
+	int err = setup_listen_sock(&listen_sock);
+	if(err !=0) {
+		ESP_LOGE(TAG, "Listening socket unestablished. Server task will be deleted.");
+		vTaskDelete(NULL);
+	}
 
-#ifdef CONFIG_EXAMPLE_IPV4
-        struct sockaddr_in destAddr;
-        destAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-        destAddr.sin_family = AF_INET;
-        destAddr.sin_port = htons(PORT);
-        addr_family = AF_INET;
-        ip_protocol = IPPROTO_IP;
-        inet_ntoa_r(destAddr.sin_addr, addr_str, sizeof(addr_str) - 1);
-#else // IPV6
-        struct sockaddr_in6 destAddr;
-        bzero(&destAddr.sin6_addr.un, sizeof(destAddr.sin6_addr.un));
-        destAddr.sin6_family = AF_INET6;
-        destAddr.sin6_port = htons(PORT);
-        addr_family = AF_INET6;
-        ip_protocol = IPPROTO_IPV6;
-        inet6_ntoa_r(destAddr.sin6_addr, addr_str, sizeof(addr_str) - 1);
-#endif
+	while (1) {
 
-        int listen_sock = socket(addr_family, SOCK_STREAM, ip_protocol);
-        if (listen_sock < 0) {
-            ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);
-            break;
-        }
-        ESP_LOGI(TAG, "Socket created");
 
-        int err = bind(listen_sock, (struct sockaddr *)&destAddr, sizeof(destAddr));
-        if (err != 0) {
-            ESP_LOGE(TAG, "Socket unable to bind: errno %d", errno);
-            break;
-        }
-        ESP_LOGI(TAG, "Socket binded");
+		struct sockaddr_in6 sourceAddr; // Large enough for both IPv4 or IPv6
+		uint addrLen = sizeof(sourceAddr);
+		int sock = accept(listen_sock, (struct sockaddr *)&sourceAddr, &addrLen);
+		if (sock < 0) {
+			ESP_LOGE(TAG, "Unable to accept connection: errno %d", errno);
+			break;
+		}
+		ESP_LOGI(TAG, "Socket accepted");
 
-        err = listen(listen_sock, 1);
-        if (err != 0) {
-            ESP_LOGE(TAG, "Error occured during listen: errno %d", errno);
-            break;
-        }
-        ESP_LOGI(TAG, "Socket listening");
+		while (1) {
+			int len = recv(sock, rx_buffer, sizeof(rx_buffer) - 1, 0);
+			// Error occured during receiving
+			if (len < 0) {
+				ESP_LOGE(TAG, "recv failed: errno %d", errno);
+				break;
+			}
+			// Connection closed
+			else if (len == 0) {
+				ESP_LOGI(TAG, "Connection closed");
+				break;
+			}
+			// Data received
+			else {
+				// Get the sender's ip address as string
+				if (sourceAddr.sin6_family == PF_INET) {
+					inet_ntoa_r(((struct sockaddr_in *)&sourceAddr)->sin_addr.s_addr, addr_str, sizeof(addr_str) - 1);
+				} else if (sourceAddr.sin6_family == PF_INET6) {
+					inet6_ntoa_r(sourceAddr.sin6_addr, addr_str, sizeof(addr_str) - 1);
+				}
 
-        struct sockaddr_in6 sourceAddr; // Large enough for both IPv4 or IPv6
-        uint addrLen = sizeof(sourceAddr);
-        int sock = accept(listen_sock, (struct sockaddr *)&sourceAddr, &addrLen);
-        if (sock < 0) {
-            ESP_LOGE(TAG, "Unable to accept connection: errno %d", errno);
-            break;
-        }
-        ESP_LOGI(TAG, "Socket accepted");
+				rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
+				ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
+				ESP_LOGI(TAG, "%s", rx_buffer);
 
-        while (1) {
-            int len = recv(sock, rx_buffer, sizeof(rx_buffer) - 1, 0);
-            // Error occured during receiving
-            if (len < 0) {
-                ESP_LOGE(TAG, "recv failed: errno %d", errno);
-                break;
-            }
-            // Connection closed
-            else if (len == 0) {
-                ESP_LOGI(TAG, "Connection closed");
-                break;
-            }
-            // Data received
-            else {
-                // Get the sender's ip address as string
-                if (sourceAddr.sin6_family == PF_INET) {
-                    inet_ntoa_r(((struct sockaddr_in *)&sourceAddr)->sin_addr.s_addr, addr_str, sizeof(addr_str) - 1);
-                } else if (sourceAddr.sin6_family == PF_INET6) {
-                    inet6_ntoa_r(sourceAddr.sin6_addr, addr_str, sizeof(addr_str) - 1);
-                }
+				process_rx();
 
-                rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
-                ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
-                ESP_LOGI(TAG, "%s", rx_buffer);
+				int err = send(sock, tx_buffer, strlen(tx_buffer), 0);
+				if (err < 0) {
+					ESP_LOGE(TAG, "Error occured during sending: errno %d", errno);
+					break;
+				}
+			}
+		}
 
-		process_rx();
+		if (sock != -1) {
+			ESP_LOGI(TAG, "Shutting down socket and restarting...");
+			shutdown(sock, 0);
+			close(sock);
+			// mcarter 13-Sep-2019 err 112 fix. Ostensibly
+			//shutdown(listen_sock, 0);
+			//close(listen_sock);
+			vTaskDelay(5);
 
-                int err = send(sock, tx_buffer, strlen(tx_buffer), 0);
-                if (err < 0) {
-                    ESP_LOGE(TAG, "Error occured during sending: errno %d", errno);
-                    break;
-                }
-            }
-        }
-
-        if (sock != -1) {
-            ESP_LOGE(TAG, "Shutting down socket and restarting...");
-            shutdown(sock, 0);
-            close(sock);
-
-	    // mcarter 13-Sep-2019 err 112 fix. Ostensibly
-	    shutdown(listen_sock, 0);
-	    close(listen_sock);
-
-	    vTaskDelay(5);
-        }
-    }
-    vTaskDelete(NULL);
+		}
+	}
+	vTaskDelete(NULL);
 }
 
 void app_main()
 {
-    ESP_ERROR_CHECK( nvs_flash_init() );
+	ESP_ERROR_CHECK( nvs_flash_init() );
 
-    gpio_pad_select_gpio(bzr);
-    gpio_set_direction(bzr, GPIO_MODE_OUTPUT);
-    gpio_pad_select_gpio(led);
-    gpio_set_direction(led, GPIO_MODE_OUTPUT);
+	gpio_pad_select_gpio(bzr);
+	gpio_set_direction(bzr, GPIO_MODE_OUTPUT);
+	gpio_pad_select_gpio(led);
+	gpio_set_direction(led, GPIO_MODE_OUTPUT);
 
-    initialise_wifi();
-    wait_for_ip();
+	initialise_wifi();
+	wait_for_ip();
 
 
-    xTaskCreate(tcp_server_task, "tcp_server", 4096, NULL, 5, NULL);
-    xTaskCreate(play_alarm, "play_alarm", 4096, NULL, 5, NULL);
-    xTaskCreate(remind, "remind09", 4096, (void*)  9, 5, NULL);
-    xTaskCreate(remind, "remind12", 4096, (void*) 12, 5, NULL);
-    xTaskCreate(remind, "remind17", 4096, (void*) 17, 5, NULL);
-    xTaskCreate(remind, "remind21", 4096, (void*) 21, 5, NULL);
-    xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL);
-    xTaskCreate(beep_twice_task, "beep_twice", 4096, NULL, 5, NULL);
+	xTaskCreate(tcp_server_task, "tcp_server", 4096, NULL, 5, NULL);
+	xTaskCreate(play_alarm, "play_alarm", 4096, NULL, 5, NULL);
+	xTaskCreate(remind, "remind09", 4096, (void*)  9, 5, NULL);
+	xTaskCreate(remind, "remind12", 4096, (void*) 12, 5, NULL);
+	xTaskCreate(remind, "remind17", 4096, (void*) 17, 5, NULL);
+	xTaskCreate(remind, "remind21", 4096, (void*) 21, 5, NULL);
+	xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL);
+	xTaskCreate(beep_twice_task, "beep_twice", 4096, NULL, 5, NULL);
 }
