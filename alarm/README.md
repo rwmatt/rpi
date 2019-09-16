@@ -3,6 +3,8 @@
 
 Companion project of Alacrity. Alarm calls Alacrity.
 
+Built using IDF v3.2.3
+
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
 
 The application creates a TCP socket and tries to connect to the server with predefined IP address and port number. When a connection is successfully established, the application sends message and waits for the answer. After the server's reply, application prints received reply as ASCII text, waits for 2 seconds and sends another message.
