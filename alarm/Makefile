@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := tcp_client
+PROJECT_NAME := alarm
 
 include $(IDF_PATH)/make/project.mk
 
