@@ -23,6 +23,7 @@
 #include "lwip/sys.h"
 #include <lwip/netdb.h>
 
+#include "common.h"
 
 #include "/home/mcarter/repos/redact/docs/secret/settings.h"
 
@@ -53,6 +54,7 @@ void _button_task()
 {
 	ESP_LOGI(TAG, "_button_task() called");
 	send_message("BEEP\n");
+	raise_mqtt_alarm();
 	while(gpio_get_level(btn) == 0) DELAY_MS(30);
 }
 
@@ -215,6 +217,7 @@ void app_main()
 
     initialise_wifi();
     wait_for_ip();
+    mqtt_app_main();
 
     xTaskCreate(button_task, "button_task", 4096, NULL, 5, NULL);
 }
