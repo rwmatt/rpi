@@ -111,6 +111,10 @@ static void play_alarm(void *pvParameters)
 	while(1) {
 		if(alarm_activated) {
 			alarm_activated = 0;
+			both_on(1);
+			DELAY_S(10);
+			both_on(0);
+			/*
 			for(int i=0; i<20; ++i) {
 				both_on(1);
 				DELAY_S(4);
@@ -121,6 +125,7 @@ static void play_alarm(void *pvParameters)
 				both_on(0);
 				DELAY_S(1);
 			}
+			*/
 		}
 		DELAY_S(1);
 	}
