@@ -53,7 +53,7 @@ static void send_message(char* msg);
 void _button_task()
 {
 	ESP_LOGI(TAG, "_button_task() called");
-	send_message("BEEP\n");
+	send_message("ALON\n");
 	raise_mqtt_alarm();
 	while(gpio_get_level(btn) == 0) DELAY_MS(30);
 }
