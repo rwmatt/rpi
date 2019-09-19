@@ -27,12 +27,16 @@ const static int CONNECTED_BIT = BIT0;
 
 #define CONFIG_BROKER_URL "mqtt://192.168.0.17"
 
-esp_mqtt_client_handle_t g_client;
+static volatile esp_mqtt_client_handle_t g_client;
+void pub_msg(char* data)
+{
+	esp_mqtt_client_publish(g_client, "alarm/1", data, strlen(data), 0, 0);
+}
 void raise_mqtt_alarm()
 {
-	//esp_mqtt_client_handle_t client;
-	char data[] = "BEEP";
-	esp_mqtt_client_publish(g_client, "alarm/1", data, strlen(data), 0, 0);
+	//char data[] = "BEEP";
+	//esp_mqtt_client_publish(g_client, "alarm/1", data, strlen(data), 0, 0);
+	pub_msg("BEEP");
 }
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)

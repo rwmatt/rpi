@@ -207,6 +207,18 @@ finis:
     
 }
 
+void heartbeat_task(void* pv)
+{
+	static int count = 0;
+	char msg[128];
+	for(;;) {
+		sprintf(msg, "BEAT %s %d", TAG, count++);
+		pub_msg(msg);
+		DELAY_MIN(1);
+	}
+}
+
+
 void app_main()
 {
     ESP_ERROR_CHECK( nvs_flash_init() );
@@ -220,4 +232,5 @@ void app_main()
     mqtt_app_main();
 
     xTaskCreate(button_task, "button_task", 4096, NULL, 5, NULL);
+    xTaskCreate(heartbeat_task, "heartbeat_task", 4096, NULL, 5, NULL);
 }
