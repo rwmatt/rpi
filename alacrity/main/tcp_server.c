@@ -43,8 +43,8 @@
 static EventGroupHandle_t wifi_event_group;
 
 
-const int led = 19;
-const int bzr = 22;
+const volatile int led = 19;
+const volatile int bzr = 22;
 
 
 const char *TAG = "alacrity";
@@ -56,12 +56,23 @@ char tx_buffer[128];
 int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
 
 
-static volatile int alarm_activated = 0;
 void both_on(int yes)
 {
 	gpio_set_level(bzr, yes);
 	gpio_set_level(led, yes);
 }
+
+void beepn(int n)
+{
+	for(int i = 0; i<n; ++i) {
+		both_on(1);
+		DELAY_MS(100);
+		both_on(0);
+		DELAY_MS(100);
+	}
+}
+
+static volatile int alarm_activated = 0;
 
 static volatile int do_beep_twice = 0;
 static void beep_twice_task(void* pvParameters)
@@ -69,12 +80,7 @@ static void beep_twice_task(void* pvParameters)
 	while(1) {
 		if(do_beep_twice) {
 			for(int j = 0; j<2; ++j) {
-				for(int i = 0; i<15; ++i) {
-					both_on(1);
-					DELAY_MS(100);
-					both_on(0);
-					DELAY_MS(100);
-				}
+				beepn(15);
 				DELAY_MIN(1);
 			}
 			do_beep_twice = 0;
@@ -373,15 +379,24 @@ void boot_btn_task( void* pvParameters)
 	}
 }
 
+void boot_beep_task(void* pv)
+{
+	// Let everyone know we've just started
+	beepn(2);
+	vTaskDelete(NULL);
+}
+
 void app_main()
 {
-	ESP_ERROR_CHECK( nvs_flash_init() );
 
 	gpio_pad_select_gpio(bzr);
 	gpio_set_direction(bzr, GPIO_MODE_OUTPUT);
 	gpio_pad_select_gpio(led);
 	gpio_set_direction(led, GPIO_MODE_OUTPUT);
 
+	xTaskCreate(boot_beep_task, "boot_beep_task", 1024, NULL, 5, NULL);
+
+	ESP_ERROR_CHECK( nvs_flash_init() );
 	initialise_wifi();
 	wait_for_ip();
 
