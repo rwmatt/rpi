@@ -56,14 +56,14 @@ char tx_buffer[128];
 int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
 
 
-static int alarm_activated = 0;
+static volatile int alarm_activated = 0;
 void both_on(int yes)
 {
 	gpio_set_level(bzr, yes);
 	gpio_set_level(led, yes);
 }
 
-int do_beep_twice = 0;
+static volatile int do_beep_twice = 0;
 static void beep_twice_task(void* pvParameters)
 {
 	while(1) {
@@ -351,6 +351,28 @@ static void tcp_server_task(void *pvParameters)
 	vTaskDelete(NULL);
 }
 
+#define BOOT  GPIO_NUM_0 // boot button GPIO
+int is_boot_pressed()
+{
+	return 0 == gpio_get_level(BOOT);
+}
+
+void boot_btn_task( void* pvParameters)
+{
+	//gpio_pad_select_gpio(boot);
+	gpio_set_direction(BOOT, GPIO_MODE_INPUT);
+	gpio_set_pull_mode(BOOT, GPIO_PULLUP_ONLY);
+	for(;;) {
+		if(is_boot_pressed()) {
+			gpio_set_level(bzr, 1);
+			while(is_boot_pressed()) DELAY_MS(20);
+			gpio_set_level(bzr, 0);
+		}
+		DELAY_MS(20);
+			
+	}
+}
+
 void app_main()
 {
 	ESP_ERROR_CHECK( nvs_flash_init() );
@@ -372,4 +394,5 @@ void app_main()
 	xTaskCreate(remind, "remind21", 4096, (void*) 21, 5, NULL);
 	xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL);
 	xTaskCreate(beep_twice_task, "beep_twice", 4096, NULL, 5, NULL);
+	xTaskCreate(boot_btn_task, "boot_btn_task", 1024, NULL, 5, NULL);
 }
