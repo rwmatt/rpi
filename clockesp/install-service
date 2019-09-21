@@ -1,0 +1,7 @@
+sudo loginctl enable-linger $USER
+#mkdir -p $HOME/.local/share/systemd/user
+#ln -s $PWD/ltpd.service $HOME/.local/share/systemd/user
+sudo ln -s $PWD/ltpd.service /etc/systemd/system
+sudo systemctl start ltpd
+sudo systemctl enable ltpd
+

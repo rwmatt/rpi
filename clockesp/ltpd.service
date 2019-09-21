@@ -1,0 +1,11 @@
+[Unit]
+Description=Serve local time
+After=network.target
+
+[Service]
+User=pi
+#ExecStart=/usr/bin/python3 /home/pi/repos/rpi/clockesp/lptd.py
+ExecStart=/home/pi/repos/rpi/clockesp/ltpd.py
+
+[Install]
+WantedBy=multi-user.target
