@@ -9,6 +9,7 @@ Reference information:
 * [esp-wroom](esp-wroom)
 * [GPIO-pi3](GPIO-pi3.md): pin diagram for RPi3.
 * [i2c](i2c): Arduino and RPi3 master, ATTiny85 slave
+* [i2s](i2s)
 * [spi](spi)
 
 ## Arduino Nano/Uno
@@ -19,11 +20,15 @@ Reference information:
 ## General
 
 * [debounce](https://gist.github.com/blippy/430cc73cb50b9e44c3423c2717ab22ee) a button
+* [picocom](picocom.md)
+* [Twiddle-factor FFT for mcus](https://blog.podkalicki.com/twiddle-factor-based-fft-for-microcontrollers/)
 
 ## Projects
 
 * [0clock](0clock): clock made with nano, 0seg, and tiny RTC.
 * [abaclock](abaclock): clock made with a RTC clock and an Arduino LED backpack
+* [alacrity](alacrity): pills reminder and warnings raised by alarm
+* [alarm](alarm): raises a panic call to alacrity
 * [atlast](atlast): a Forth for mcus based on Walker's Forth
 * blinky85: directory containing code for blinking an ATTiny85 from RPi - consider it a baseline for making projects using C++, and not the IDE
 * [blinkt](blinkt).
@@ -45,6 +50,8 @@ Reference information:
 * [Mini USB nano](https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=mini+usb+nano&_sacat=0). Amazon also has good deals on these
 * [ZeroSeg](zeroseg/README.md)
 
+---
+![](1306/1306.jpg) [1306](1306) I2C, WROOM 
 ___
 
 ![](4/4.jpg) [4](4)
@@ -56,6 +63,11 @@ ___
 ![](8x8.jpg) [8x8](8x8)
 
 I2C
+
+---
+
+![](jack.jpg) Stereo Audio Jack. G=GND, L=Left speaker, R=Right speaker, 1=unknown, 2=unknown.
+Underside shown.
 
 ---
 

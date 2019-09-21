@@ -1,32 +1,31 @@
 
 
 
-#import machine
+import machine
 import time
-#import utime
 from machine import Pin, SPI, RTC
 import ntptime
-#import uasyncio as asyncio
 from utime import sleep_ms, ticks_ms, ticks_diff
-#import urtc
+import machine
+import socket
 
 import mel
-from mel import adjustBST
-#import settings # personal settings which contain Wifi info
+#from mel import adjustBST
 
 heart = Pin(16, Pin.OUT) # D0, but internal LED
 heart.on() # counterintuively, for the internal LED, ON means OFF
 sw1 = Pin(4, Pin.IN, Pin.PULL_UP) # D2
-sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1
 buzzer = Pin(0, Pin.OUT) # D3
 buzzer.off()
 cs_pin = Pin(15, Pin.OUT) # aka SS slave select, D8
 cs_pin.on()
 
-# maybe put in boot mode
-if(sw2.value() == 0):
-    while True:
-        sleep_ms(1000)
+# maybe put in programming mode
+sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1 # right switch
+normal_mode = (sw2.value() != 0)
+#if(sw2.value() == 0):
+#    while True:
+#        sleep_ms(1000)
 
 # set up display
 spi = SPI(1)
@@ -86,8 +85,8 @@ class Every:
         
     def rising(self):
         now =utime.ticks_ms()
-        if now<self.start: self.start = now
-        if now - self.start < self.interval_ms: return False
+        #if now<self.start: self.start = now
+        if ticks_diff(now, self.start) < self.interval_ms: return False
         self.start = now
         return True
     
@@ -129,18 +128,12 @@ rtc = RTC()
 
 def display_time():
     yr , imonth, iday, _ , hr, mint, _, _ = rtc.datetime()
-    #print(mint)
-    imonth, iday, hr = mel.adjustBST(yr, imonth, iday, hr)
     set_display([iday, None, hr, mint])
 
 timing = False
 timer_start = None
 
-def change_major_mode():
-    global timing, timer_start
-    timing = not timing;
-    if timing:
-        timer_start = ticks_ms()
+
 
 def elapsed_time():
     global timer_start
@@ -177,11 +170,13 @@ def update_display():
     else:
         display_time()
 
-
-
 def button_pressed(pauser):
-    #print('Button pressed')
-    change_major_mode()
+    #print('Button pressed')    
+    #change_major_mode()
+    global timing, timer_start
+    timing = not timing;
+    if timing:
+        timer_start = ticks_ms()        
     pauser.pause(button_released, condition = lambda: sw1.value() == 1, 
                  delay_ms = 20)
     
@@ -192,6 +187,7 @@ def button_released(pauser):
                  delay_ms = 20)    
 
 def update_heartbeat():
+    return # turn it off for now
     heart.off()
     utime.sleep_ms(10)
     heart.on()
@@ -253,22 +249,34 @@ def do_connect(delay_ms = 100):
     stop_killer()
     return sta
 
-#if sta is not None:
-#    sta = do_connect()
-do_connect()
+
+#do_connect()
+
+
+def use_local():
+    try:
+        s = socket.socket()
+        addr = socket.getaddrinfo("192.168.0.17", 1762)[0][-1]
+        s.connect(addr)
+        data = s.recv(100)
+    finally:
+        s.close()
+    
+    fields = data.decode().split(" ")
+    fields = tuple(map(int, fields))
+    rtc = machine.RTC()
+    rtc.datetime(fields)
 
 def update_ntp():
-    #import ntptime
     show_status(402)
     start_killer()
-    ntptime.host = '192.168.0.17'
-    ntptime.settime()    
-    #sta_if.disconnect()
-    #sta_if.active(False)
+    #ntptime.host = '192.168.0.17'
+    #ntptime.settime()
+    use_local()    
     stop_killer()
     show_status(403)
     update_display()
-#print(rtc.datetime())
+
 
 #from machine import Timer
 import utime
@@ -289,6 +297,10 @@ def loop():
         ev_buzzer.update()
         ev_display.update()
         ev_heartbeat.update()
-loop()    
+#loop()    
 
-
+if normal_mode:
+    do_connect()
+    loop()
+else:
+    show_status(404)
