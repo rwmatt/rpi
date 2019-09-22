@@ -57,7 +57,7 @@ const char *TAG = "alacrity";
 static const char *payload = "Message from ESP32 ";
 //static const char *payload = "";
 
-static volatile int alarm_activated = 0;
+volatile int alarm_activated = 0;
 
 int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
 
@@ -295,6 +295,8 @@ void app_main()
         ESP_ERROR_CHECK( nvs_flash_init() );
         initialise_wifi();
         wait_for_ip();
+
+	mqtt_app_main();
 
 
         //xTaskCreate(tcp_server_task, "tcp_server", 4096, NULL, 5, NULL);
