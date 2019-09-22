@@ -25,7 +25,7 @@
 
 #include "common.h"
 
-#include "/home/mcarter/repos/redact/docs/secret/settings.h"
+#include "/home/pi/repos/redact/docs/secret/settings.h"
 
 #define PORT 3333
 #define HOST_IP_ADDR "192.168.0.32"
@@ -54,7 +54,8 @@ void _button_task()
 {
 	ESP_LOGI(TAG, "_button_task() called");
 	send_message("ALON\n");
-	raise_mqtt_alarm();
+	//raise_mqtt_alarm();
+	pub_topic_msg("alarm/1", "BUZZ");
 	while(gpio_get_level(btn) == 0) DELAY_MS(30);
 }
 
@@ -213,7 +214,7 @@ void heartbeat_task(void* pv)
 	char msg[128];
 	for(;;) {
 		sprintf(msg, "BEAT %s %d", TAG, count++);
-		pub_msg(msg);
+		pub_topic_msg("alarm/heart",msg);
 		DELAY_MIN(1);
 	}
 }
