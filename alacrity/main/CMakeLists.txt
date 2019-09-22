@@ -1,4 +1,4 @@
-set(COMPONENT_SRCS "tcp_server.c" "tcp_cleint.c")
+set(COMPONENT_SRCS "alacrity.c" "mqtt_alacrity.c", "networkmc.c")
 set(COMPONENT_ADD_INCLUDEDIRS ".")
 
 register_component()
