@@ -27,8 +27,8 @@
 
 #include "/home/pi/repos/redact/docs/secret/settings.h"
 
-#define PORT 3333
-#define HOST_IP_ADDR "192.168.0.32"
+//#define PORT 3333
+// #define HOST_IP_ADDR "192.168.0.32"
 
 /* FreeRTOS event group to signal when we are connected & ready to make a request */
 static EventGroupHandle_t wifi_event_group;
@@ -38,7 +38,7 @@ const int IPV4_GOTIP_BIT = BIT0;
 const int IPV6_GOTIP_BIT = BIT1;
 #endif
 
-static const char *TAG = "alarm";
+const char *TAG = "alarm";
 
 int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
 #define DELAY_S(n) vTaskDelay(secs(n))
@@ -48,13 +48,12 @@ int secs(int n) { return n * 1000 / portTICK_PERIOD_MS;}
 
 const int btn = 18;
 
-static void send_message(char* msg);
+//static void send_message(char* msg);
 
 void _button_task()
 {
 	ESP_LOGI(TAG, "_button_task() called");
-	send_message("ALON\n");
-	//raise_mqtt_alarm();
+	//send_message("ALON\n");
 	pub_topic_msg("alarm/1", "BUZZ");
 	while(gpio_get_level(btn) == 0) DELAY_MS(30);
 }
@@ -140,6 +139,7 @@ static void wait_for_ip()
     ESP_LOGI(TAG, "Connected to AP");
 }
 
+/*
 static void send_message(char* msg)
 {
 	char rx_buffer[128];
@@ -207,6 +207,7 @@ finis:
 	}
     
 }
+*/
 
 void heartbeat_task(void* pv)
 {

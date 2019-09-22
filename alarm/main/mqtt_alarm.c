@@ -20,7 +20,9 @@
 #include "esp_log.h"
 #include "mqtt_client.h"
 
-static const char *TAG = "MQTT_EXAMPLE";
+#include "common.h"
+
+//static const char *TAG = "MQTT_EXAMPLE";
 
 //static EventGroupHandle_t wifi_event_group;
 const static int CONNECTED_BIT = BIT0;
@@ -33,16 +35,6 @@ void pub_topic_msg(char* topic, char* msg)
 	esp_mqtt_client_publish(g_client, topic,  msg, strlen(msg), 0, 0);
 }
 
-/*
-void pub_msg(char* data)
-{
-	esp_mqtt_client_publish(g_client, "alarm/1", data, strlen(data), 0, 0);
-}
-void raise_mqtt_alarm()
-{
-	pub_msg("BEEP");
-}
-*/
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 {
@@ -107,33 +99,6 @@ static void mqtt_app_start(void)
         .event_handle = mqtt_event_handler,
         // .user_context = (void *)your_context
     };
-
-    /*
-#if CONFIG_BROKER_URL_FROM_STDIN
-    char line[128];
-
-    if (strcmp(mqtt_cfg.uri, "FROM_STDIN") == 0) {
-        int count = 0;
-        printf("Please enter url of mqtt broker\n");
-        while (count < 128) {
-            int c = fgetc(stdin);
-            if (c == '\n') {
-                line[count] = '\0';
-                break;
-            } else if (c > 0 && c < 127) {
-                line[count] = c;
-                ++count;
-            }
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-        }
-        mqtt_cfg.uri = line;
-        printf("Broker url: %s\n", line);
-    } else {
-        ESP_LOGE(TAG, "Configuration mismatch: wrong broker url");
-        abort();
-    }
-#endif 
-*/
 
     esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
     esp_mqtt_client_start(client);
