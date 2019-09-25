@@ -44,17 +44,17 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
     switch (event->event_id) {
         case MQTT_EVENT_CONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-            msg_id = esp_mqtt_client_publish(client, "/topic/qos1", "data_3", 0, 1, 0);
-            ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
+            //msg_id = esp_mqtt_client_publish(client, "/topic/qos1", "data_3", 0, 1, 0);
+            //ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
 
-            msg_id = esp_mqtt_client_subscribe(client, "/topic/qos0", 0);
-            ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+            //msg_id = esp_mqtt_client_subscribe(client, "/topic/qos0", 0);
+            //ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
 
-            msg_id = esp_mqtt_client_subscribe(client, "/topic/qos1", 1);
-            ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+            //msg_id = esp_mqtt_client_subscribe(client, "/topic/qos1", 1);
+            //ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
 
-            msg_id = esp_mqtt_client_unsubscribe(client, "/topic/qos1");
-            ESP_LOGI(TAG, "sent unsubscribe successful, msg_id=%d", msg_id);
+            //msg_id = esp_mqtt_client_unsubscribe(client, "/topic/qos1");
+            //ESP_LOGI(TAG, "sent unsubscribe successful, msg_id=%d", msg_id);
 
             msg_id = esp_mqtt_client_subscribe(client, "alarm/1", 0);
             ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);

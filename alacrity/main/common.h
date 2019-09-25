@@ -9,6 +9,7 @@ extern const char *TAG;
 //void tcp_client_task(void *pvParameters);
 void mqtt_app_main();
 int get_hr();
+void pub_topic_msg(char* topic, char* msg);
 
 int secs(int n);
 #define DELAY_S(n) vTaskDelay(secs(n))

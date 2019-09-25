@@ -239,11 +239,22 @@ void boot_btn_task( void* pvParameters)
 
 void boot_beep_task(void* pv)
 {
-	// Let everyone know we've just started
+	pub_topic_msg("alacrity/restart", "Done");
 	beepn(2);
 	vTaskDelete(NULL);
 }
 
+
+void heartbeat_task(void* pv)
+{
+	static int count = 0;
+	char msg[128];
+	for(;;) {
+		sprintf(msg, "BEAT %s %d", TAG, count++);
+		pub_topic_msg("alacrity/heart",msg);
+		DELAY_MIN(1);
+	}
+}
 
 
 
@@ -254,7 +265,6 @@ void app_main()
 	gpio_pad_select_gpio(led);
 	gpio_set_direction(led, GPIO_MODE_OUTPUT);
 
-	xTaskCreate(boot_beep_task, "boot_beep_task", 1024, NULL, 5, NULL);
 
 	ESP_ERROR_CHECK( nvs_flash_init() );
 	initialise_wifi();
@@ -263,7 +273,7 @@ void app_main()
 	mqtt_app_main();
 
 
-	//xTaskCreate(tcp_server_task, "tcp_server", 4096, NULL, 5, NULL);
+	xTaskCreate(boot_beep_task, "boot_beep_task", 1024, NULL, 5, NULL);
 	xTaskCreate(play_alarm, "play_alarm", 4096, NULL, 5, NULL);
 	xTaskCreate(remind, "remind09", 4096, (void*)  9, 5, NULL);
 	xTaskCreate(remind, "remind12", 4096, (void*) 12, 5, NULL);
@@ -271,6 +281,8 @@ void app_main()
 	xTaskCreate(remind, "remind21", 4096, (void*) 21, 5, NULL);
 	xTaskCreate(tcp_client_task, "tcp_client", 4096, NULL, 5, NULL);
 	xTaskCreate(beep_twice_task, "beep_twice", 4096, NULL, 5, NULL);
-	xTaskCreate(boot_btn_task, "boot_btn_task", 1024, NULL, 5, NULL);
+	xTaskCreate(boot_btn_task, "boot_btn_task", 4096, NULL, 5, NULL);
+	xTaskCreate(heartbeat_task, "heartbeat_task", 4096, NULL, 5, NULL);
+
 }
 
