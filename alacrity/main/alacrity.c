@@ -14,7 +14,7 @@
 #include "esp_system.h"
 //#include "esp_wifi.h"
 //#include "esp_event_loop.h"
-#include "esp_event.h"
+//#include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
 #include "driver/gpio.h"
@@ -139,6 +139,7 @@ void reset_time()
 	int len = recv(sock, rx_buffer, sizeof(rx_buffer) - 1, 0);
 	if (len < 0) {
 		ESP_LOGE(TAG, "recv failed: errno %d", errno);
+		pub_topic_msg("alacrity/time", "Failed");
 		goto cleanup;
 	}
 	// Data received
@@ -146,6 +147,7 @@ void reset_time()
 		rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
 		ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
 		ESP_LOGI(TAG, "%s", rx_buffer);
+		pub_topic_msg("alacrity/time", rx_buffer);
 		set_datetime(rx_buffer);
 	}
 
@@ -174,6 +176,7 @@ static void play_alarm(void *pvParameters)
 	while(1) {
 		if(alarm_activated) {
 			alarm_activated = 0;
+			pub_topic_msg("alacrity/alarm", "Activated");
 			both_on(1);
 			DELAY_S(10);
 			both_on(0);
@@ -208,6 +211,7 @@ static void remind(void *pvParameters)
 	for(;;) {
 		if(get_hr() == on_hr) {
 			do_beep_twice =1;
+			pub_topic_msg("alacrity/pills", "Reminded");
 			DELAY_MIN(63);
 		}
 		DELAY_S(10);
@@ -273,7 +277,7 @@ void app_main()
 	mqtt_app_main();
 
 
-	xTaskCreate(boot_beep_task, "boot_beep_task", 1024, NULL, 5, NULL);
+	xTaskCreate(boot_beep_task, "boot_beep_task", 4096, NULL, 5, NULL);
 	xTaskCreate(play_alarm, "play_alarm", 4096, NULL, 5, NULL);
 	xTaskCreate(remind, "remind09", 4096, (void*)  9, 5, NULL);
 	xTaskCreate(remind, "remind12", 4096, (void*) 12, 5, NULL);
