@@ -40,3 +40,26 @@ produce just a stream of bytes. This is the RAW format. There are two concepts t
 * volume encoding. This is how we choose to repesent the volume. We could use 8 bits, 16 bits, and others. We could express the volumes as signed or unsigned, little-endian or big-endian
 
 For convience of playing back on our ESP, we will choose 8 bit unsigned integers
+
+## Step 2 - Timing UDP transfer
+
+We want to be able to time how long it takes for a song to be transferred from the server to the client. Run the following:
+```
+python3 02server.py &
+python3 02client.py
+```
+
+`02server.py` send UDP internet packets, and `02client.py` receives them.
+
+The song Tutti Frutti is transmitted as 53156 blocks of 256 bytes each. The 
+song is 2m34s duration. `02client.py` receives it in 1.49s. That 1.49s is 
+spread over 53156 blocks, so the delay between each block is 0.028ms 
+(=1.49/53156). The test was run on an x86_64 with both server and residing on 
+the same machine. So it is not a test of wifi. However, it seems worth a 
+gamble to assume that the latency for receiving a packet will be so low that we 
+will not have to resort to double-buffering of input.
+
+The server does what appears to be a curious thing:
+* it doubles the size of the RAW song. Data is stored in the even byte, and 0 is stored in the odd byte. This is because the I2S interface on the ESP does not allow for 8-bit data as-is. It accepts it as 16-bit data, and discards the second byte. It does mean that twice as much data is transmitted than is strictly necessary
+* the array is padded to a 256 boundary. This makes transmission and reception easier. Data is sent as whole blocks, without needing to worry about the size of the last block
+
