@@ -2,6 +2,7 @@
 
 ## Also on this site
 
+* [sow](sow) - sound over wifi
 * [wroom-hardcoded](wroom-hardcoded)
 
 ## Links to other sites
