@@ -46,3 +46,7 @@ void app_main()
         xTaskCreate(user_loop_task, "user_loop", 4096, NULL, 5, NULL);
 }
 ```
+
+## Links to other sites
+
+* [stdin_out.c](https://github.com/espressif/esp-idf/blob/master/examples/common_components/protocol_examples_common/stdin_out.c)
