@@ -1,9 +1,11 @@
 import socket
 import time
 
+import sowsettings as ss
+
 #msgFromClient       = "Hello UDP Server"
 bytesToSend         = str.encode("SND")
-serverAddressPort   = ("127.0.0.1", 20001)
+serverAddressPort   = (ss.host, 20001)
 bufferSize          = 256
   
 

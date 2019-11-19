@@ -5,6 +5,7 @@ import socket
 import sounddevice as sd
 import numpy as np
 
+import sowsettings as ss
 
 #arr = np.array( dtype = np.uint8)
 arr = np.fromfile("song.raw", dtype =np.uint8)
@@ -21,7 +22,7 @@ block = 0
 nblocks = int(new_size / 256)
 print("Number of blocks of size 256:", nblocks)
 
-localIP     = "127.0.0.1"
+localIP     = ss.host
 localPort   = 20001
 bufferSize  = 32
 
