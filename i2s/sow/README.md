@@ -43,6 +43,8 @@ For convience of playing back on our ESP, we will choose 8 bit unsigned integers
 
 ## Step 2 - Timing UDP transfer
 
+Edit file sowsettings.py to set `host` to the right IP address.
+
 We want to be able to time how long it takes for a song to be transferred from the server to the client. Run the following:
 ```
 python3 02server.py &
@@ -59,7 +61,12 @@ the same machine. So it is not a test of wifi. However, it seems worth a
 gamble to assume that the latency for receiving a packet will be so low that we 
 will not have to resort to double-buffering of input.
 
+Using different machines with wired connections, the transfer time was 11.0s, a factor of 10 increase. This is a bit worrying, but not yet siasterous.
+
+
 The server does what appears to be a curious thing:
 * it doubles the size of the RAW song. Data is stored in the even byte, and 0 is stored in the odd byte. This is because the I2S interface on the ESP does not allow for 8-bit data as-is. It accepts it as 16-bit data, and discards the second byte. It does mean that twice as much data is transmitted than is strictly necessary
 * the array is padded to a 256 boundary. This makes transmission and reception easier. Data is sent as whole blocks, without needing to worry about the size of the last block
+
+
 
