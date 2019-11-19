@@ -5,7 +5,7 @@ import sowsettings as ss
 
 #msgFromClient       = "Hello UDP Server"
 bytesToSend         = str.encode("SND")
-serverAddressPort   = (ss.host, 20001)
+serverAddressPort   = (ss.host, ss.port)
 bufferSize          = 256
   
 

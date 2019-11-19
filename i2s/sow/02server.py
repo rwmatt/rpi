@@ -23,7 +23,7 @@ nblocks = int(new_size / 256)
 print("Number of blocks of size 256:", nblocks)
 
 localIP     = ss.host
-localPort   = 20001
+localPort   = ss.port
 bufferSize  = 32
 
 msgFromServer       = "Hello UDP Client"

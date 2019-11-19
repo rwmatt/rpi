@@ -118,15 +118,27 @@ static void udp_client_task(void *pvParameters)
 	vTaskDelete(NULL);
 }
 
+/*
+void do_step3()
+{
+	puts("do_step3: TODO");
+}
+*/
 
 void user_loop_task(void* pvp)
 {
 	while(1) {
+		puts("\nMenu:");
+		puts(" 3: Speed test");
 		puts("Enter step:");
 		int c = getc(stdin);
 		printf("%c\n", c);
-		if(c == '3')
-			puts("found 3");
+		switch(c) {
+			case '3':
+				xTaskCreate(udp_client_task, "udp_client", 4096, NULL, 5, NULL);
+				//do_step3();
+				break;
+		}
 	}
 
 }
