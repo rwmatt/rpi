@@ -1,12 +1,5 @@
 # esp32-wroom
 
-# FreeRTOS IDF
-
-* Create a new project:
-cp -r $IDF_PATH/../esp-idf-template SOMEWHERE
-* Hack it.
-* `make menuconfig`
-
 
 ## Pins
 
@@ -29,6 +22,7 @@ recommended, though)
 ## Also on this site
 
 * [1306](../1306) OLED display
+* [FreeRTOS](FreeRTOS)
 
 ## Links to other sites
 
