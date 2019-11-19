@@ -41,7 +41,7 @@ produce just a stream of bytes. This is the RAW format. There are two concepts t
 
 For convience of playing back on our ESP, we will choose 8 bit unsigned integers
 
-## Step 2 - Timing UDP transfer
+## Step 2 - Timing UDP transfer without ESP32
 
 Edit file sowsettings.py to set `host` to the right IP address.
 
@@ -69,4 +69,25 @@ The server does what appears to be a curious thing:
 * the array is padded to a 256 boundary. This makes transmission and reception easier. Data is sent as whole blocks, without needing to worry about the size of the last block
 
 
+## Step 3 - Timing UDP transfer with ESP32
+
+ESP-IDF v4.0-beta2 was used
+
+Compile the `sow32` project for the ESP32:
+
+```
+cd sow32
+make
+
+Using make menuconfig if necessary, set the following configurations:
+  Example Configuration:
+    IP4 address: as per your sowsettings.py
+    Port: 2001 (same as sowsettings.py)
+  Example Connection Configuration:
+    Set Wifi SSID and password for your network
+
+On build completion:
+make flash
+
+```
 
