@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := udp_client
+PROJECT_NAME := sow32
 
 EXTRA_COMPONENT_DIRS = $(IDF_PATH)/examples/common_components/protocol_examples_common
 
