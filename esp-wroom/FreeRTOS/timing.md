@@ -11,3 +11,5 @@ int64_t stop = esp_timer_get_timer();
 int64_t elapsed_seconds = (stop -  start)/ 1000 / 1000;
 printf("Seconds elapsed: %" PRId64 "\n", elapsed_seconds();
 ```
+
+An `int64` should give you 584,941 years before rollover. So, plenty!
