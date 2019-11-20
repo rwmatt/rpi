@@ -91,3 +91,13 @@ make flash
 
 ```
 
+Start the server in a different shell:
+```
+python3 02server.py
+```
+
+Connect to the ESP serial port, using `picocom` or similar. A menu of options is displayed. Type `3` to start the timing sequence for step 3. 
+The timing reported on my computer was 161s for the transfer. This means that each transfer of 256 bytes took c. 3ms (161/53156*1000). 
+Clearly, transferring date over wifi is an order of magnitude slower.
+I will assume, for now, that the latency is still acceptable.
+
