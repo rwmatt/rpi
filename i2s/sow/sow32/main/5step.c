@@ -102,6 +102,7 @@ void download_snd()
 		struct sockaddr_in source_addr; // Large enough for both IPv4 or IPv6
 		socklen_t socklen = sizeof(source_addr);
 		int len = recvfrom(sock, snd + block*256, 256 , 0, (struct sockaddr *)&source_addr, &socklen);
+		assert(len == 256);
 
 		// Error occurred during receiving
 		if (len < 0) {
@@ -265,8 +266,10 @@ void do_step5()
 
 	size_t nbytes;
 	//ret = i2s_write(0, snd , sizeof(snd), &nbytes, portMAX_DELAY);
-	for(int i = 0; i<sizeof(snd)/2; ++i)
-		ret = i2s_write(0, snd + i*2 , 2, &nbytes, portMAX_DELAY);
+	for(int i = 0; i<sizeof(snd)/2; ++i) {
+		uint16_t vol = snd[i*2] << 8;
+		ret = i2s_write(0, &vol , 2, &nbytes, portMAX_DELAY);
+	}
 
 	i2s_driver_uninstall(i2s_num);
 	return;
