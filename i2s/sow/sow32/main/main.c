@@ -24,22 +24,14 @@
 #include "lwip/sys.h"
 #include <lwip/netdb.h>
 
-//#include "FreeRTOS_IO.h"
-
 #include "esp_err.h"
+
 #include "esp_vfs_dev.h"
 #include "driver/uart.h"
+
+
+
 #include <inttypes.h>
-
-#ifdef CONFIG_EXAMPLE_IPV4
-#define HOST_IP_ADDR CONFIG_EXAMPLE_IPV4_ADDR
-#else
-#define HOST_IP_ADDR CONFIG_EXAMPLE_IPV6_ADDR
-#endif
-
-#define PORT CONFIG_EXAMPLE_PORT
-
-//static const char *TAG = "example";
 
 void delay_ms(int ms)
 {
@@ -48,15 +40,9 @@ void delay_ms(int ms)
 
 
 void do_step3(void *pvParameters);
-//void do_step4(void *pvParameters);
 void do_step4();
+void do_step5();
 
-/*
-   void do_step3()
-   {
-   puts("do_step3: TODO");
-   }
-   */
 
 void user_loop_task(void* pvp)
 {
@@ -64,6 +50,7 @@ void user_loop_task(void* pvp)
 		puts("\nMenu:");
 		puts(" 3: Speed test");
 		puts(" 4: hard-coded sound test");
+		puts(" 5: wifi sound test");
 		puts("Enter step:");
 		int c = getc(stdin);
 		printf("%c\n", c);
@@ -72,8 +59,10 @@ void user_loop_task(void* pvp)
 				xTaskCreate(do_step3, "step3", 4096, NULL, 5, NULL);
 				break;
 			case '4':
-				//xTaskCreate(do_step4, "step4", 4096, NULL, 5, NULL);
 				do_step4();
+				break;
+			case '5':
+				do_step5();
 				break;
 
 		}
@@ -110,8 +99,5 @@ void app_main()
 
 	ESP_ERROR_CHECK(config_stdio());
 
-	//user_loop();
-
 	xTaskCreate(user_loop_task, "user_loop", 4096, NULL, 5, NULL);
-	//xTaskCreate(udp_client_task, "udp_client", 4096, NULL, 5, NULL);
 }
