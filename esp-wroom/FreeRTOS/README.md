@@ -9,3 +9,4 @@ cp -r $IDF_PATH/../esp-idf-template SOMEWHERE
 ## Also on this site
 
 * [stdio](stdio.md)
+* [timing](timing.md)
