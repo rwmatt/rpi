@@ -21,7 +21,10 @@
                 "import ntptime\n",
                 "from utime import sleep_ms, ticks_ms, ticks_diff\n",
                 "import machine\n",
-                "import socket"
+                "import socket\n",
+                "\n",
+                "import mel\n",
+                "#from mel import adjustBST"
             ]
         },
         {
@@ -47,7 +50,10 @@
             "source": [
                 "# maybe put in programming mode\n",
                 "sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1 # right switch\n",
-                "normal_mode = (sw2.value() != 0)"
+                "normal_mode = (sw2.value() != 0)\n",
+                "#if(sw2.value() == 0):\n",
+                "#    while True:\n",
+                "#        sleep_ms(1000)"
             ]
         },
         {
@@ -68,6 +74,9 @@
                 "    cs_pin.on()\n",
                 "\n",
                 "def init_display():\n",
+                "    #global cs_pin, spi   \n",
+                "    #cs_pin.on()\n",
+                "    #spi = SPI(sck=Pin(14), mosi=Pin(13), miso=Pin(12))\n",
                 "    maxTransfer(0x0F, 0x00)\n",
                 "    maxTransfer(0x09, 0xFF) # enable mode B\n",
                 "    maxTransfer(0x0A, 0x0F) # set intensity\n",
@@ -90,10 +99,12 @@
                 "            hi |= (1 << 7) # decimal point\n",
                 "        maxTransfer(7-2*i, hi)\n",
                 "        maxTransfer(8-2*i, lo)                        \n",
-                "\n",
-                "\n",
+                " \n",
+                "#set_display([19, None, 85, 76])\n",
                 "set_display([None, None, None, None])\n",
                 "\n",
+                "#def write_digit(pos, digit, dp = False):\n",
+                "#    maxTransfer()\n",
                 "def show_status(num):\n",
                 "    for i in range(3):\n",
                 "        num, digit = divmod(num, 10)\n",
@@ -134,12 +145,45 @@
             "metadata": {},
             "outputs": [],
             "source": [
-                "rtc = RTC()"
+                "class Pauser:\n",
+                "    def __init__(self):\n",
+                "        self.callback = None\n",
+                "        self.condition = None\n",
+                "        self.start = None\n",
+                "        self.delay_ms = None\n",
+                "    \n",
+                "    def pause(self, callback, condition = None, delay_ms = 0):\n",
+                "        self.callback = callback\n",
+                "        self.condition = condition\n",
+                "        self.start = ticks_ms()\n",
+                "        self.delay_ms = delay_ms\n",
+                "        \n",
+                "    def update(self):\n",
+                "        if self.callback == None: return\n",
+                "        if ticks_diff(ticks_ms(), self.start) < self.delay_ms:\n",
+                "            return\n",
+                "        try: \n",
+                "            triggered = self.condition()\n",
+                "        except TypeError:\n",
+                "            triggered = True\n",
+                "        if triggered:\n",
+                "            fn = self.callback\n",
+                "            self.callback = None\n",
+                "            fn(self)"
             ]
         },
         {
             "cell_type": "code",
             "execution_count": 8,
+            "metadata": {},
+            "outputs": [],
+            "source": [
+                "rtc = RTC()"
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 9,
             "metadata": {},
             "outputs": [],
             "source": [
@@ -187,7 +231,9 @@
                 "    else:\n",
                 "        display_time()\n",
                 "\n",
-                "def button_pressedXXX(pauser):\n",
+                "def button_pressed(pauser):\n",
+                "    #print('Button pressed')    \n",
+                "    #change_major_mode()\n",
                 "    global timing, timer_start\n",
                 "    timing = not timing;\n",
                 "    if timing:\n",
@@ -196,7 +242,7 @@
                 "                 delay_ms = 20)\n",
                 "    \n",
                 "\n",
-                "def button_releasedXXX(pauser):\n",
+                "def button_released(pauser):\n",
                 "    #print(\"Button released\")\n",
                 "    pauser.pause(button_pressed, condition = lambda: sw1.value() == 0, \n",
                 "                 delay_ms = 20)    \n",
@@ -206,28 +252,6 @@
                 "    heart.off()\n",
                 "    utime.sleep_ms(10)\n",
                 "    heart.on()"
-            ]
-        },
-        {
-            "cell_type": "code",
-            "execution_count": 9,
-            "metadata": {},
-            "outputs": [],
-            "source": [
-                "def sw1_falling():    \n",
-                "    global timing, timer_start\n",
-                "    print(\"sw1_falling:\", ticks_ms())\n",
-                "    timing = not timing;\n",
-                "    if timing:\n",
-                "        timer_start = ticks_ms()        \n",
-                "\n",
-                "_prev_sw1 = sw1.value()\n",
-                "def update_sw1():\n",
-                "    global _prev_sw1\n",
-                "    curr_sw1 = sw1.value()\n",
-                "    falling = (_prev_sw1 == 1) and (curr_sw1 == 0 )\n",
-                "    _prev_sw1 = curr_sw1\n",
-                "    if falling: sw1_falling()"
             ]
         },
         {
@@ -268,7 +292,7 @@
                 "    killed = False\n",
                 "    machine.enable_irq(state)\n",
                 "\n",
-                "\n",
+                "  \n",
                 "# ensure the dog is set up only once, otherwise we'll get an OSError 261\n",
                 "activate_dog = not ('dog' in locals())\n",
                 "#activate_dog = False\n",
@@ -328,6 +352,8 @@
                 "def update_ntp():\n",
                 "    show_status(402)\n",
                 "    start_killer()\n",
+                "    #ntptime.host = '192.168.0.17'\n",
+                "    #ntptime.settime()\n",
                 "    use_local()    \n",
                 "    stop_killer()\n",
                 "    show_status(403)\n",
@@ -340,18 +366,22 @@
             "metadata": {},
             "outputs": [],
             "source": [
+                "#from machine import Timer\n",
                 "import utime\n",
                 "def loop():\n",
                 "    global timing\n",
+                "    #update_ntp()\n",
+                "    #display_time()\n",
+                "    p = Pauser()\n",
+                "    p.pause(button_pressed, condition = lambda: sw1.value() == 0)\n",
                 "    ev_buzzer = Every(5000, update_buzzer)\n",
                 "    ev_ntp = Every(1000*60*30, update_ntp)\n",
                 "    ev_display = Every(500, update_display)\n",
-                "    ev_sw1 = Every(20, update_sw1)\n",
                 "    ev_heartbeat = Every(3000, update_heartbeat)\n",
                 "    while True:\n",
                 "        if not timing:\n",
                 "            ev_ntp.update()\n",
-                "        ev_sw1.update()\n",
+                "        p.update()\n",
                 "        ev_buzzer.update()\n",
                 "        ev_display.update()\n",
                 "        ev_heartbeat.update()\n",
@@ -360,7 +390,7 @@
         },
         {
             "cell_type": "code",
-            "execution_count": 14,
+            "execution_count": null,
             "metadata": {},
             "outputs": [],
             "source": [
@@ -370,13 +400,6 @@
                 "else:\n",
                 "    show_status(404)"
             ]
-        },
-        {
-            "cell_type": "code",
-            "execution_count": null,
-            "metadata": {},
-            "outputs": [],
-            "source": []
         }
     ],
     "metadata": {

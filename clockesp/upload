@@ -3,4 +3,5 @@
 DEV=`ls /dev/ttyU* | tail -1`
 echo "DEV: $DEV"
 
-rshell --buffer-size=30 -p $DEV cp clockesp.py /pyboard
+#rshell --buffer-size=30 -p $DEV cp clockesp.py /pyboard
+ampy --port $DEV put clockesp.py

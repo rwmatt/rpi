@@ -8,5 +8,5 @@ function up {
 }
 
 up $REDOCS/secret/settings.py
-up ../esp8266/mel.py
+#up ../esp8266/mel.py
 up main.py

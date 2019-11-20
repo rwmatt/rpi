@@ -1,6 +1,5 @@
 
 
-
 import machine
 import time
 from machine import Pin, SPI, RTC
@@ -8,9 +7,6 @@ import ntptime
 from utime import sleep_ms, ticks_ms, ticks_diff
 import machine
 import socket
-
-import mel
-#from mel import adjustBST
 
 heart = Pin(16, Pin.OUT) # D0, but internal LED
 heart.on() # counterintuively, for the internal LED, ON means OFF
@@ -23,9 +19,6 @@ cs_pin.on()
 # maybe put in programming mode
 sw2 = Pin(5, Pin.IN, Pin.PULL_UP) # D1 # right switch
 normal_mode = (sw2.value() != 0)
-#if(sw2.value() == 0):
-#    while True:
-#        sleep_ms(1000)
 
 # set up display
 spi = SPI(1)
@@ -39,9 +32,6 @@ def maxTransfer(address, value):
     cs_pin.on()
 
 def init_display():
-    #global cs_pin, spi   
-    #cs_pin.on()
-    #spi = SPI(sck=Pin(14), mosi=Pin(13), miso=Pin(12))
     maxTransfer(0x0F, 0x00)
     maxTransfer(0x09, 0xFF) # enable mode B
     maxTransfer(0x0A, 0x0F) # set intensity
@@ -64,12 +54,10 @@ def set_display(list4):
             hi |= (1 << 7) # decimal point
         maxTransfer(7-2*i, hi)
         maxTransfer(8-2*i, lo)                        
- 
-#set_display([19, None, 85, 76])
+
+
 set_display([None, None, None, None])
 
-#def write_digit(pos, digit, dp = False):
-#    maxTransfer()
 def show_status(num):
     for i in range(3):
         num, digit = divmod(num, 10)
@@ -97,32 +85,6 @@ class Every:
             return
         self.func() 
 
-
-class Pauser:
-    def __init__(self):
-        self.callback = None
-        self.condition = None
-        self.start = None
-        self.delay_ms = None
-    
-    def pause(self, callback, condition = None, delay_ms = 0):
-        self.callback = callback
-        self.condition = condition
-        self.start = ticks_ms()
-        self.delay_ms = delay_ms
-        
-    def update(self):
-        if self.callback == None: return
-        if ticks_diff(ticks_ms(), self.start) < self.delay_ms:
-            return
-        try: 
-            triggered = self.condition()
-        except TypeError:
-            triggered = True
-        if triggered:
-            fn = self.callback
-            self.callback = None
-            fn(self)
 
 rtc = RTC()
 
@@ -170,9 +132,7 @@ def update_display():
     else:
         display_time()
 
-def button_pressed(pauser):
-    #print('Button pressed')    
-    #change_major_mode()
+def button_pressedXXX(pauser):
     global timing, timer_start
     timing = not timing;
     if timing:
@@ -181,7 +141,7 @@ def button_pressed(pauser):
                  delay_ms = 20)
     
 
-def button_released(pauser):
+def button_releasedXXX(pauser):
     #print("Button released")
     pauser.pause(button_pressed, condition = lambda: sw1.value() == 0, 
                  delay_ms = 20)    
@@ -191,6 +151,21 @@ def update_heartbeat():
     heart.off()
     utime.sleep_ms(10)
     heart.on()
+
+def sw1_falling():    
+    global timing, timer_start
+    print("sw1_falling:", ticks_ms())
+    timing = not timing;
+    if timing:
+        timer_start = ticks_ms()        
+
+_prev_sw1 = sw1.value()
+def update_sw1():
+    global _prev_sw1
+    curr_sw1 = sw1.value()
+    falling = (_prev_sw1 == 1) and (curr_sw1 == 0 )
+    _prev_sw1 = curr_sw1
+    if falling: sw1_falling()
 
 # watchdog functions
 import machine
@@ -224,7 +199,7 @@ def stop_killer():
     killed = False
     machine.enable_irq(state)
 
-  
+
 # ensure the dog is set up only once, otherwise we'll get an OSError 261
 activate_dog = not ('dog' in locals())
 #activate_dog = False
@@ -270,30 +245,24 @@ def use_local():
 def update_ntp():
     show_status(402)
     start_killer()
-    #ntptime.host = '192.168.0.17'
-    #ntptime.settime()
     use_local()    
     stop_killer()
     show_status(403)
     update_display()
 
 
-#from machine import Timer
 import utime
 def loop():
     global timing
-    #update_ntp()
-    #display_time()
-    p = Pauser()
-    p.pause(button_pressed, condition = lambda: sw1.value() == 0)
     ev_buzzer = Every(5000, update_buzzer)
     ev_ntp = Every(1000*60*30, update_ntp)
     ev_display = Every(500, update_display)
+    ev_sw1 = Every(20, update_sw1)
     ev_heartbeat = Every(3000, update_heartbeat)
     while True:
         if not timing:
             ev_ntp.update()
-        p.update()
+        ev_sw1.update()
         ev_buzzer.update()
         ev_display.update()
         ev_heartbeat.update()
@@ -304,3 +273,5 @@ if normal_mode:
     loop()
 else:
     show_status(404)
+
+
