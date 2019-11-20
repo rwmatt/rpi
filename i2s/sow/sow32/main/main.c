@@ -48,6 +48,8 @@ void delay_ms(int ms)
 
 
 void do_step3(void *pvParameters);
+//void do_step4(void *pvParameters);
+void do_step4();
 
 /*
    void do_step3()
@@ -61,15 +63,19 @@ void user_loop_task(void* pvp)
 	while(1) {
 		puts("\nMenu:");
 		puts(" 3: Speed test");
+		puts(" 4: hard-coded sound test");
 		puts("Enter step:");
 		int c = getc(stdin);
 		printf("%c\n", c);
 		switch(c) {
 			case '3':
-				//xTaskCreate(udp_client_task, "udp_client", 4096, NULL, 5, NULL);
 				xTaskCreate(do_step3, "step3", 4096, NULL, 5, NULL);
-				//do_step3();
 				break;
+			case '4':
+				//xTaskCreate(do_step4, "step4", 4096, NULL, 5, NULL);
+				do_step4();
+				break;
+
 		}
 	}
 

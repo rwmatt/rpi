@@ -101,3 +101,9 @@ The timing reported on my computer was 161s for the transfer. This means that ea
 Clearly, transferring date over wifi is an order of magnitude slower.
 I will assume, for now, that the latency is still acceptable.
 
+
+## Step 4 - Playing a hard-coded sample
+
+Test that your speaker has been set up correctly. Use pin D26 for output.
+
+Over the serial port, type `4` to test the functionality. You must wait until the test is completed before trying it again. 
