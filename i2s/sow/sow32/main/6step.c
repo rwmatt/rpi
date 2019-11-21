@@ -52,6 +52,7 @@ static unsigned char buf1[1024];
 static unsigned char buf2[1024];
 
 static const char *payload = "OK";
+static bool read_finished;
 
 void fetch6(void *pvParameters)
 {
@@ -89,6 +90,7 @@ void fetch6(void *pvParameters)
 	uint8_t* buf;
 	while (1) {
 		xQueueReceive(q1, &buf, portMAX_DELAY);
+		read_finished = false;
 
 		int err = sendto(sock, payload, strlen(payload), 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
 		if (err < 0) {
@@ -111,6 +113,7 @@ void fetch6(void *pvParameters)
 			buf[i*2-1] = buf[i-1];
 			buf[i*2-2] = 0;
 		}
+		read_finished = true;
 
 	}
 
@@ -124,6 +127,13 @@ void fetch6(void *pvParameters)
 	//printf("Time taken: %" PRId64 "\n", elapsed_secs);
 oops:
 	vTaskDelete(NULL);
+}
+
+void check_read()
+{
+	if(!read_finished)
+		puts("Buffer under-run");
+
 }
 
 
@@ -161,13 +171,16 @@ void do_step6()
 	size_t nbytes;
 	unsigned char *pc = buf1;
 	xQueueSend(q1, &pc, portMAX_DELAY);
+	check_read();
 	while(1) {
 		pc = buf2;
 		xQueueSend(q1, &pc, 0);
 		ret = i2s_write(0, buf1 , sizeof(buf1), &nbytes, portMAX_DELAY);
+		check_read();
 		pc = buf1;
 		xQueueSend(q1, &pc, 0);
 		ret = i2s_write(0, buf2 , sizeof(buf2), &nbytes, portMAX_DELAY);
+		check_read();
 	}
 	//i2s_driver_uninstall(i2s_num);
 }

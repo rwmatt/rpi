@@ -109,10 +109,14 @@ Test that your speaker has been set up correctly. Use pin D26 for output.
 Over the serial port, type `4` to test the functionality. You must wait until the test is completed before trying it again. 
 
 
+
 ## Step 5 - Playing hard-coded sample with double-buffering
 
 After a lot of experimentation, it seems that fetching and filling the I2S buffer is more time-consuming than I hoped for.
 I therefore rsort to double-buffering.
+
+
+
 
 ## Step 6
 
@@ -129,3 +133,6 @@ python3 06client.py
 
 The server now plays the song in a continuous loop.
 
+Stop the client, compile and upload the ESP32 project, and choose menu item `6` on the serial port. Output to an 8 ohm 0.25W speaker was of low, but distinguishable, quality. Perhaps a better speaker and/or circuitry would help.
+
+I only encountered one buffer under-run when playing, which was nice to hear. Now that we have a working baseline, we would be in a position to increase the sampling frequency.
