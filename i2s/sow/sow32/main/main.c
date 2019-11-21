@@ -42,6 +42,7 @@ void delay_ms(int ms)
 void do_step3(void *pvParameters);
 void do_step4();
 void do_step5();
+void do_step6();
 
 
 void user_loop_task(void* pvp)
@@ -50,7 +51,8 @@ void user_loop_task(void* pvp)
 		puts("\nMenu:");
 		puts(" 3: Speed test");
 		puts(" 4: hard-coded sound test");
-		puts(" 5: wifi sound test");
+		puts(" 5: hard-coded double-buffering test");
+		puts(" 6: sound over wifi");
 		puts("Enter step:");
 		int c = getc(stdin);
 		printf("%c\n", c);
@@ -63,6 +65,9 @@ void user_loop_task(void* pvp)
 				break;
 			case '5':
 				do_step5();
+				break;
+			case '6':
+				do_step6();
 				break;
 
 		}
