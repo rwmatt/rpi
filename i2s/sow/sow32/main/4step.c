@@ -9,7 +9,7 @@
 #include "driver/spi_slave.h"
 #include <driver/i2s.h>
 
-#include "track.h"
+#include "common.h"
 
 /*
  * Put your speaker into D26, not D25
