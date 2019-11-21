@@ -8,19 +8,17 @@ import numpy as np
 import sowsettings as ss
 
 #arr = np.array( dtype = np.uint8)
-arr = np.fromfile("song.raw", dtype =np.uint8)
-new_size = (len(arr) // 128 + 1) * 256
+arr = np.fromfile("song8k.raw", dtype =np.uint8)
+new_size = (len(arr) // 512 + 1) * 512
 #print(new_size)
 arr1 = np.zeros(new_size, dtype = np.uint8)
-for i in range(0, len(arr)):
-    arr1[2*i] = arr[i]
+for i in range(len(arr)):
+    arr1[i] = arr[i]
 
-#sd.play(arr,samplerate=44100)
-#sd.wait()
 
 block = 0
-nblocks = int(new_size / 256)
-print("Number of blocks of size 256:", nblocks)
+nblocks = int(new_size / 512)
+print("Number of blocks of size 512:", nblocks)
 
 localIP     = ss.host
 localPort   = ss.port
@@ -41,19 +39,12 @@ UDPServerSocket.bind((localIP, localPort))
 def respond(msg):
     global bufferSize
     bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-    #message = bytesAddressPair[0]
     address = bytesAddressPair[1]
-    #clientMsg = "Message from Client:{}".format(message)
-    #clientIP  = "Client IP Address:{}".format(address) 
-    #print(clientMsg)
-    #print(clientIP) 
-    # Sending a reply to client
-    #UDPServerSocket.sendto(bytesToSend, address)
     UDPServerSocket.sendto(msg, address)
 
 #respond(str.encode(str(nblocks)))
 
 while(True): 
     for block in range(nblocks):
-        packet = arr1[block*256:(1+block)*256]
+        packet = arr1[block*512:(1+block)*512]
         respond(packet)

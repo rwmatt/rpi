@@ -107,3 +107,25 @@ I will assume, for now, that the latency is still acceptable.
 Test that your speaker has been set up correctly. Use pin D26 for output.
 
 Over the serial port, type `4` to test the functionality. You must wait until the test is completed before trying it again. 
+
+
+## Step 5 - Playing hard-coded sample with double-buffering
+
+After a lot of experimentation, it seems that fetching and filling the I2S buffer is more time-consuming than I hoped for.
+I therefore rsort to double-buffering.
+
+## Step 6
+
+It seems as though 44.1k *might* be too ambition, so let's downsample the song to 8kHz:
+```
+sox song.wav -t raw -c 1 -r 8000  -b 8 -e unsigned-integer song.raw
+... buf info
+
+Test out the re-written server and client:
+```
+python3 06server.py &
+python3 06client.py
+```
+
+The server now plays the song in a continuous loop.
+
